@@ -1,0 +1,27 @@
+# Core - Compatible versions
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.6.0
+pydantic-settings>=2.1.0
+python-multipart>=0.0.6
+
+# PDF Processing
+pymupdf4llm
+nltk>=3.8.1
+numpy<2.0
+opencv-python<4.11.0
+
+# Async & HTTP
+httpx>=0.25.0
+aiofiles>=23.2.0
+python-dotenv>=1.0.0
+
+# LLM Providers
+openai>=1.0.0  # For GPT-4o-mini PDF cleanup
+# anthropic
+# groq
+
+# Database (optional - for Phase 2+)
+# sqlalchemy>=2.0.0
+# asyncpg>=0.29.0
+# alembic>=1.13.0

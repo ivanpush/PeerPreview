@@ -1,0 +1,87 @@
+# PDF Parser Pipeline Configuration Template
+# Copy this file and customize as needed, then load with:
+# config = load_config_from_yaml("my_config.yaml")
+
+# Geometric cleaning parameters
+geometry:
+  # Top margin to crop (points)
+  top_margin: 70
+  # Bottom margin to crop (points)
+  bottom_margin: 60
+  # Minimum x-coordinate threshold for detecting line numbers
+  left_margin_threshold: 100
+  # Enable geometric cleaning
+  enable_cleaning: true
+
+# Structure analysis parameters
+analysis:
+  # Detect bold text for structure detection
+  detect_bold_text: true
+  # Extract title from bold text
+  extract_title: true
+  # Extract abstract using fallback method
+  extract_abstract_fallback: true
+  # Minimum font size for title detection
+  min_title_fontsize: 14.0
+  # Minimum font size for section headers
+  min_header_fontsize: 10.0
+
+# Text reflow parameters
+reflow:
+  # Merge hyphenated words across line breaks
+  merge_hyphenations: true
+  # Enable smart paragraph reconstruction
+  enable_reflow: true
+
+# Cleanup parameters
+cleanup:
+  # Remove figure/table blocks
+  remove_figure_blocks: true
+  # Remove repeated headers/footers
+  remove_headers_footers: true
+  # Remove DOI lines
+  remove_doi_lines: true
+  # Remove copyright notices
+  remove_copyright: true
+  # Remove author affiliations
+  remove_affiliations: true
+  # Remove URLs
+  remove_urls: false
+  # Remove email addresses
+  remove_emails: false
+
+# Section splitting parameters
+sections:
+  # Require abstract section
+  require_abstract: true
+  # Require introduction section
+  require_intro: true
+  # Require methods section
+  require_methods: true
+  # Require results section
+  require_results: false
+  # Require discussion section
+  require_discussion: false
+  # Require references section
+  require_references: true
+
+# Sentence indexing parameters
+indexing:
+  # Enable sentence-level indexing
+  enable_sentence_indexing: true
+  # Use NLTK for sentence tokenization (more accurate but slower)
+  use_nltk: true
+  # Fallback to regex if NLTK fails
+  fallback_to_regex: true
+
+# Metadata extraction parameters
+extraction:
+  # Extract citation references
+  extract_citations: true
+  # Extract figure references
+  extract_figures: true
+  # Extract bibliography entries
+  extract_bibliography: true
+
+# Debugging
+debug_logging: false
