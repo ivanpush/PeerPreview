@@ -77,20 +77,36 @@ class PipelineBuilder:
         # Stage 2: Analyze structure (before cropping)
         structure_info = analysis.analyze_structure(doc, self.config.analysis)
         if self.capture_stages:
-            self.stage_outputs['02_analyze_structure'] = f"Title: {structure_info.title}\nAbstract: {structure_info.abstract[:200] if structure_info.abstract else 'None'}...\nSections found: {len(structure_info.section_headers)}"
+            self.stage_outputs['02_analyze_structure'] = (
+                f"Title: {structure_info.title}\n"
+                f"Abstract: {structure_info.abstract[:200] if structure_info.abstract else 'None'}...\n"
+                f"Sections found: {len(structure_info.section_headers)}\n"
+                f"Captions found: {len(structure_info.figure_captions)}"
+            )
 
-        # Stage 3: Geometric cleaning
-        doc, geom_info = geometry.apply_geometric_cleaning(doc, self.config.geometry)
+        # Stage 3: Geometric cleaning (with figure detection)
+        doc, geom_info = geometry.apply_geometric_cleaning(
+            doc,
+            self.config.geometry,
+            structure_info  # Pass structure info for figure detection
+        )
 
         # Capture text AFTER cropping
         if self.capture_stages:
             cropped_text = ""
             for page in doc:
                 cropped_text += page.get_text() + "\n\n"
-            self.stage_outputs['03_after_crop'] = cropped_text
+            self.stage_outputs['03_after_crop'] = (
+                f"Cropped text:\n{cropped_text}\n\n"
+                f"Figure regions detected: {len(geom_info.figure_regions)}"
+            )
 
-        # Stage 4: Extract markdown (ignoring images/graphics)
-        markdown = extraction.extract_markdown(doc)
+        # Stage 4: Extract markdown (with figure-aware filtering)
+        markdown = extraction.extract_markdown(
+            doc,
+            geom_info,      # Has figure regions
+            structure_info  # Has caption list
+        )
         if self.capture_stages:
             self.stage_outputs['04_extract_markdown'] = markdown
 

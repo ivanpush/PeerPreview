@@ -5,7 +5,7 @@ parsed document structure and metadata.
 """
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 
 
 @dataclass
@@ -102,6 +102,32 @@ class SectionHeader:
 
 
 @dataclass
+class FigureCaption:
+    """Detected figure caption with spatial metadata."""
+    text: str                    # Full caption text
+    figure_type: str            # 'Figure', 'Fig', 'Table', 'Scheme'
+    figure_num: str             # '1', '2A', 'S3', etc.
+    page: int                   # Page number
+    bbox: Tuple[float, float, float, float]  # Bounding box (x0, y0, x1, y1)
+    y_position: float           # Vertical position for proximity matching
+    is_bold: bool              # Whether caption is bold
+    confidence: float          # Detection confidence (0-1)
+    is_standalone: bool        # True if caption is on its own line
+
+
+@dataclass
+class FigureRegion:
+    """Detected or inferred figure region for exclusion."""
+    bbox: Tuple[float, float, float, float]  # Exclusion zone (x0, y0, x1, y1)
+    page: int                   # Page number
+    detection_method: str       # 'image', 'drawing', 'caption_inferred', 'synthetic'
+    confidence: float          # Detection confidence (0-1)
+    has_actual_figure: bool    # True if real image/drawing found
+    associated_caption: Optional['FigureCaption'] = None
+    exclusion_margin: Tuple[float, float, float, float] = (10, 30, 5, 5)  # top, bottom, left, right
+
+
+@dataclass
 class GeometryInfo:
     """Geometric information detected from PDF."""
     has_line_numbers: bool
@@ -110,6 +136,7 @@ class GeometryInfo:
     bottom_margin: float
     has_columns: bool = False
     column_count: int = 1
+    figure_regions: List[FigureRegion] = field(default_factory=list)
 
 
 @dataclass
@@ -119,6 +146,7 @@ class StructureInfo:
     abstract: Optional[str]
     section_headers: List[SectionHeader]
     bold_spans: List[BoldSpan]
+    figure_captions: List[FigureCaption] = field(default_factory=list)
 
 
 @dataclass

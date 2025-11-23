@@ -1,0 +1,150 @@
+[
+  {
+    "pdf": "tes4.pdf",
+    "run": 1,
+    "duration_sec": 3.73,
+    "title": "Suspendable hydrogel nanovials for massively parallel single-cell functional analysis and sorting",
+    "sections": [
+      "preamble",
+      "abstract",
+      "introduction",
+      "conclusions",
+      "methods",
+      "acknowledgements",
+      "references"
+    ],
+    "evaluation": {
+      "issues": [
+        "Very long lines without breaks: 3 lines"
+      ],
+      "captions_found": 52,
+      "word_count": 14108,
+      "char_count": 97322
+    },
+    "status": "FAIL",
+    "timestamp": "2025-11-22T12:10:08.619976"
+  },
+  {
+    "pdf": "tes5.pdf",
+    "run": 1,
+    "duration_sec": 4.05,
+    "title": "Defining T cell receptor repertoires using nanovial",
+    "sections": [
+      "preamble",
+      "introduction",
+      "results",
+      "materials_and_methods"
+    ],
+    "evaluation": {
+      "issues": [
+        "Scattered characters found: ['d h h b', 'k f d d', 'i i b d']... (4 total)",
+        "Very long lines without breaks: 20 lines"
+      ],
+      "captions_found": 28,
+      "word_count": 6706,
+      "char_count": 44966
+    },
+    "status": "FAIL",
+    "timestamp": "2025-11-22T12:10:12.674367"
+  },
+  {
+    "pdf": "test.pdf",
+    "run": 1,
+    "duration_sec": 3.65,
+    "title": "Building an atlas of mechanobiology: high-throughput contractility screen of",
+    "sections": [
+      "preamble",
+      "abstract",
+      "introduction",
+      "results",
+      "discussion",
+      "methods",
+      "acknowledgements",
+      "references"
+    ],
+    "evaluation": {
+      "issues": [
+        "Sections out of order: ['abstract', 'introduction', 'results', 'discussion', 'methods', 'references']"
+      ],
+      "captions_found": 25,
+      "word_count": 6972,
+      "char_count": 50978
+    },
+    "status": "FAIL",
+    "timestamp": "2025-11-22T12:10:16.334807"
+  },
+  {
+    "pdf": "test2.pdf",
+    "run": 1,
+    "duration_sec": 14.33,
+    "title": "Elastomeric sensor surfaces for high-throughput",
+    "sections": [
+      "preamble",
+      "introduction",
+      "results",
+      "discussion",
+      "methods",
+      "references",
+      "acknowledgements"
+    ],
+    "evaluation": {
+      "issues": [
+        "Very long lines without breaks: 37 lines",
+        "Unicode symbols found: ['\ufffd', '\ufffd', '\ufffd']... (3 total)",
+        "Sections out of order: ['introduction', 'results', 'discussion', 'methods', 'references']"
+      ],
+      "captions_found": 53,
+      "word_count": 14182,
+      "char_count": 98102
+    },
+    "status": "FAIL",
+    "timestamp": "2025-11-22T12:10:30.670989"
+  },
+  {
+    "pdf": "test3.pdf",
+    "run": 1,
+    "duration_sec": 23.88,
+    "title": "SEC-seq: association of molecular signatures with antibody secretion in thousands of single human plasma cells",
+    "sections": [
+      "preamble"
+    ],
+    "evaluation": {
+      "issues": [
+        "Scattered characters found: ['d b S l']... (1 total)",
+        "Very long lines without breaks: 36 lines"
+      ],
+      "captions_found": 86,
+      "word_count": 9725,
+      "char_count": 65075
+    },
+    "status": "FAIL",
+    "timestamp": "2025-11-22T12:10:54.561697"
+  },
+  {
+    "pdf": "test6.pdf",
+    "run": 1,
+    "duration_sec": 2.6,
+    "title": "Black Dots: High-Yield Traction Force Microscopy Reveals Structural Factors Contributing to Platelet Forces",
+    "sections": [
+      "preamble",
+      "abstract",
+      "introduction",
+      "materials_and_methods",
+      "results",
+      "discussion",
+      "conclusion",
+      "acknowledgements",
+      "references"
+    ],
+    "evaluation": {
+      "issues": [
+        "Very long lines without breaks: 2 lines"
+      ],
+      "captions_found": 50,
+      "word_count": 9623,
+      "char_count": 64194
+    },
+    "status": "FAIL",
+    "timestamp": "2025-11-22T12:10:57.166702"
+  }
+]

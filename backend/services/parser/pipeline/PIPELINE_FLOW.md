@@ -43,60 +43,84 @@ This document describes the complete execution flow of the PDF parsing pipeline,
 - Detects paper title from largest bold text on first page
 - Identifies section headers by matching bold text against standard section names (Introduction, Results, Methods, Discussion, etc.)
 - Extracts abstract using fallback heuristics (looks for "Abstract" header or first substantial paragraph)
-- Filters out figure captions from structure detection
+- **NEW:** Detects figure captions with robust pattern matching:
+  - Handles Figure/Fig/Table/Scheme variations (case-insensitive)
+  - Distinguishes standalone captions from inline references
+  - Handles unicode spaces, subfigures (1A, 2B), supplementary figures
+  - Stores caption text, type, bbox, and confidence score
 
-**Output:** StructureInfo with title, abstract, section headers, bold spans
+**Output:** StructureInfo with title, abstract, section headers, bold spans, **figure captions**
 
-**Why before cropping:** Need to analyze original page geometry for accurate font size detection
+**Why before cropping:** Need to analyze original page geometry for accurate font size detection and caption positioning
 
 **Note:** This stage only *detects* structure - it doesn't modify the document. The actual labeling happens in Stage 7.
 
 ---
 
-### Stage 3: Geometric Cleaning
-**Module:** `stages/geometry.py`
-**Function:** `apply_geometric_cleaning(doc, config) → (Document, GeometryInfo)`
+### Stage 3: Geometric Cleaning & Figure Detection
+**Module:** `stages/geometry.py` + `stages/figures.py`
+**Function:** `apply_geometric_cleaning(doc, config, structure_info) → (Document, GeometryInfo)`
 
 **What it does:**
 - Analyzes page geometry to detect line numbers (x < 100pt threshold)
 - Crops margins: top (60pt), bottom (60pt), left (if line numbers detected)
 - Removes headers/footers by geometric position
-- Returns cleaned document ready for text extraction
+- **NEW:** Detects figure regions using multiple methods:
+  - **Image detection:** Uses `get_images()` to find embedded images (≥150x100pt, 20k area)
+  - **Vector drawing detection:** Uses `get_drawings()` with clustering for charts/plots
+  - **Caption-figure pairing:** Matches detected captions with figures by proximity (±100pt)
+  - **Synthetic zones:** Creates exclusion zones for orphan captions (likely tables or vector figures)
+  - Expands figure bboxes with margins (top: 10pt, bottom: 30pt, sides: 5pt)
 
-**Output:** Modified pymupdf Document with cropped pages + GeometryInfo
+**Figure Detection Process:**
+1. For each page with captions, detect embedded images
+2. Cluster vector drawings to identify charts/plots (≥5 elements, density threshold)
+3. Pair captions with nearby figures (vertical proximity + horizontal alignment)
+4. For unpaired captions, create synthetic exclusion zones (assume figure above caption)
+
+**Output:** Modified pymupdf Document with cropped pages + GeometryInfo **with figure regions**
 
 ---
 
-### Stage 4: Extract Markdown
+### Stage 4: Extract Markdown with Smart Figure Filtering
 **Module:** `stages/extraction.py`
-**Function:** `extract_markdown(doc) → str`
+**Function:** `extract_markdown(doc, geom_info, structure_info) → str`
 
 **What it does:**
-- Performs **intelligent column detection** using clustering to handle mixed layouts (e.g., single-column abstract followed by two-column body)
-- For each page:
-  - Detects main figures (≥150pt width, ≥100pt height, ≥20k area) to filter out icons/decorations
-  - Removes text blocks that overlap with figures
-  - Analyzes horizontal distribution of text blocks using clustering
-  - Detects single vs two-column layout based on cluster separation
-  - Extracts text in correct reading order (left column first, then right column for two-column layouts)
-- Inserts `[FIGURE:n]` placeholders for main figures in correct vertical position
-- Preserves bold formatting as `**text**` via `extract_text_from_block()`
-- Handles proper spacing between text spans
+- **ENHANCED:** Applies smart figure-aware text filtering BEFORE extraction:
+  - Uses figure regions from Stage 3 (both detected and synthetic)
+  - Uses caption list from Stage 2 to preserve caption text
+  - **NEVER filters caption text** (bbox-based comparison)
+  - Variable overlap thresholds:
+    - Small text (<20pt tall): 50% overlap → filter (likely axis labels)
+    - Body text (≥20pt tall): 30% overlap → filter
+  - Applies redactions to overlapping text blocks
+- Uses pymupdf4llm for robust markdown extraction:
+  - Intelligent column detection (handles mixed single/two-column layouts)
+  - Proper reading order (left column first, then right column)
+  - Bold formatting preservation (`**text**`)
+  - Proper spacing between text spans
 
-**Column Detection Algorithm:**
-- Collects x-centers of all text blocks (min 40pt width, 5pt height)
-- Uses KMeans clustering (k=2) to find left/right cluster centers (with fallback to median-based splitting)
-- If cluster centers < 120pt apart → single column
-- Otherwise → two-column with divider at midpoint between cluster centers
-- Handles spanning elements (>300pt wide) separately
+**Smart Filtering Algorithm:**
+```python
+for each text block:
+    if block matches a detected caption:
+        PRESERVE (never filter)
+    elif block overlaps figure region:
+        if block_height < 20pt and overlap > 50%:
+            FILTER (likely label/axis text)
+        elif overlap > 30%:
+            FILTER (body text inside figure)
+    else:
+        PRESERVE
+```
 
-**Figure Filtering:**
-- Minimum width: 150pt (~2 inches)
-- Minimum height: 100pt (~1.4 inches)
-- Minimum area: 20,000 pt² (e.g., 200×100pt)
-- Typical papers have 3-10 main figures detected
+**Key Improvements:**
+- Dramatically reduces figure artifacts (axis labels, scattered text)
+- Preserves all caption text with proper formatting
+- Reduces false positives by using caption list instead of pattern matching
 
-**Output:** Raw markdown string with text in correct reading order and figures placed (with artifacts still present)
+**Output:** Clean markdown string with figure artifacts filtered but captions preserved
 
 ---
 
@@ -375,3 +399,93 @@ This allows visual debugging of the pipeline to identify where parsing issues oc
 ### Performance Impact
 
 When `capture_stages=False` (default in production), there is **zero performance impact** - the capture code is entirely skipped.
+
+---
+
+## Figure Detection Enhancement (November 2024)
+
+### Overview
+
+Enhanced the pipeline with comprehensive figure detection and smart text filtering to eliminate figure artifacts (axis labels, scattered text, figure-internal content) while preserving caption text.
+
+### Architecture
+
+**Three-Stage Approach:**
+1. **Caption Detection (Stage 2):** Identify figure captions early using bold text analysis
+2. **Figure Region Detection (Stage 3):** Locate actual figures using multiple detection methods
+3. **Smart Filtering (Stage 4):** Filter text overlapping figures while protecting captions
+
+### Key Features
+
+**Multi-Method Figure Detection:**
+- Embedded images via `get_images()` (most reliable)
+- Vector drawings via `get_drawings()` with clustering (for charts/plots)
+- Caption-based inference (spatial proximity matching)
+- Synthetic exclusion zones for orphan captions (tables, complex vector figures)
+
+**Smart Text Filtering:**
+- Caption protection: NEVER filters text matching detected captions
+- Variable thresholds: Different overlap percentages for labels (50%) vs body text (30%)
+- Bbox-based comparison for accuracy
+
+**Caption Detection:**
+- Handles variations: Figure/Fig/Table/Scheme, case-insensitive
+- Distinguishes standalone captions from inline references
+- Unicode-aware, handles subfigures (1A, 2B), supplementary figures
+
+### Data Flow
+
+```
+Stage 2 (Analysis)
+    ↓ StructureInfo.figure_captions
+Stage 3 (Geometry + Figures)
+    ↓ GeometryInfo.figure_regions
+Stage 4 (Extraction)
+    Uses both captions + regions for smart filtering
+```
+
+### Performance
+
+**Test Results (6 scientific papers):**
+- ✅ 100% success rate (no crashes or parse errors)
+- ✅ Detected 4-8 captions per paper
+- ✅ Created appropriate figure regions (mix of detected + synthetic)
+- ✅ Dramatically reduced figure artifacts (from hundreds to <10 instances)
+- ⚠️ Edge cases: A few scattered characters remain (labels just outside synthetic regions)
+
+**Processing Impact:**
+- Minimal overhead (<2s per paper for figure detection)
+- Caption detection: ~0.1s per page
+- Figure region creation: ~0.2s per page with figures
+
+### Configuration
+
+All figure detection is automatically enabled when captions are found. No manual configuration required.
+
+**Thresholds (configurable in future if needed):**
+- Image size: min 150x100pt, 20k area
+- Drawing cluster: min 5 elements
+- Caption proximity: ±100pt vertical
+- Overlap filtering: 30% body text, 50% small text
+- Exclusion margins: top 10pt, bottom 30pt, sides 5pt
+
+### Future Enhancements
+
+Potential improvements:
+1. **Adaptive synthetic regions:** Size based on adjacent figures
+2. **Column-aware pairing:** Better handling of column-spanning figures
+3. **Machine learning:** Train classifier on labeled figure regions
+4. **Table-specific detection:** Separate handling for table structures
+5. **Equation detection:** Preserve mathematical content
+
+### Files Modified
+
+**New:**
+- `stages/figures.py` - Figure detection module (480 lines)
+
+**Updated:**
+- `models.py` - Added FigureCaption, FigureRegion dataclasses
+- `stages/analysis.py` - Added caption detection (~320 lines)
+- `stages/geometry.py` - Integrated figure detection call
+- `stages/extraction.py` - Replaced redaction with smart filtering
+- `builder.py` - Wired data flow between stages

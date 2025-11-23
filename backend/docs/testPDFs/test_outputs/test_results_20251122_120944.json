@@ -1,0 +1,44 @@
+[
+  {
+    "pdf": "tes4.pdf",
+    "run": 1,
+    "status": "ERROR",
+    "error": "unhashable type: 'FigureCaption'",
+    "timestamp": "2025-11-22T12:09:36.682652"
+  },
+  {
+    "pdf": "tes5.pdf",
+    "run": 1,
+    "status": "ERROR",
+    "error": "unhashable type: 'FigureCaption'",
+    "timestamp": "2025-11-22T12:09:37.714911"
+  },
+  {
+    "pdf": "test.pdf",
+    "run": 1,
+    "status": "ERROR",
+    "error": "unhashable type: 'FigureCaption'",
+    "timestamp": "2025-11-22T12:09:39.731729"
+  },
+  {
+    "pdf": "test2.pdf",
+    "run": 1,
+    "status": "ERROR",
+    "error": "unhashable type: 'FigureCaption'",
+    "timestamp": "2025-11-22T12:09:40.887528"
+  },
+  {
+    "pdf": "test3.pdf",
+    "run": 1,
+    "status": "ERROR",
+    "error": "unhashable type: 'FigureCaption'",
+    "timestamp": "2025-11-22T12:09:44.193359"
+  },
+  {
+    "pdf": "test6.pdf",
+    "run": 1,
+    "status": "ERROR",
+    "error": "unhashable type: 'FigureCaption'",
+    "timestamp": "2025-11-22T12:09:44.532210"
+  }
+]

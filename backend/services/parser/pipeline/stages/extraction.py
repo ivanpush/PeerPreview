@@ -13,6 +13,8 @@ import pymupdf4llm
 from typing import List, Tuple, Optional
 import logging
 
+from ..models import FigureCaption, FigureRegion, GeometryInfo, StructureInfo
+
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
@@ -166,49 +168,198 @@ def needs_space(a: str, b: str) -> bool:
 
 
 # ============================================================
+#  SMART FIGURE-AWARE TEXT FILTERING
+# ============================================================
+
+def calculate_overlap_ratio(bbox1: Tuple, bbox2: Tuple) -> float:
+    """Calculate overlap ratio of bbox1 with bbox2.
+
+    Args:
+        bbox1: First bbox (x0, y0, x1, y1)
+        bbox2: Second bbox (x0, y0, x1, y1)
+
+    Returns:
+        Ratio of overlap (overlap_area / bbox1_area), 0.0 to 1.0
+    """
+    # Calculate intersection
+    x0 = max(bbox1[0], bbox2[0])
+    y0 = max(bbox1[1], bbox2[1])
+    x1 = min(bbox1[2], bbox2[2])
+    y1 = min(bbox1[3], bbox2[3])
+
+    # No overlap
+    if x1 < x0 or y1 < y0:
+        return 0.0
+
+    intersection = (x1 - x0) * (y1 - y0)
+    bbox1_area = (bbox1[2] - bbox1[0]) * (bbox1[3] - bbox1[1])
+
+    return intersection / bbox1_area if bbox1_area > 0 else 0.0
+
+
+def extract_block_text_simple(block: dict) -> str:
+    """Extract all text from a text block (simple version).
+
+    Args:
+        block: Text block dict from pymupdf
+
+    Returns:
+        Concatenated text from all lines/spans
+    """
+    texts = []
+    for line in block.get("lines", []):
+        for span in line.get("spans", []):
+            text = span.get("text", "")
+            if text:
+                texts.append(text)
+    return "".join(texts)
+
+
+def is_caption_block(
+    block_bbox: Tuple[float, float, float, float],
+    block_text: str,
+    captions: List[FigureCaption]
+) -> bool:
+    """Check if text block matches a detected caption.
+
+    Uses bbox comparison (most reliable) with text fallback.
+
+    Args:
+        block_bbox: Block bounding box (x0, y0, x1, y1)
+        block_text: Block text content
+        captions: List of detected FigureCaption objects
+
+    Returns:
+        True if block is a caption
+    """
+    for caption in captions:
+        # Primary: bbox overlap (≥80% overlap = same block)
+        overlap = calculate_overlap_ratio(block_bbox, caption.bbox)
+        if overlap > 0.8:
+            return True
+
+        # Fallback: text comparison (first 20 chars)
+        if len(caption.text) >= 20 and len(block_text) >= 20:
+            if caption.text[:20] in block_text or block_text[:20] in caption.text:
+                return True
+
+    return False
+
+
+def should_filter_text(
+    block: dict,
+    figure_regions: List[FigureRegion],
+    captions: List[FigureCaption]
+) -> bool:
+    """Determine if text block should be filtered (removed).
+
+    Rules:
+    1. NEVER filter caption text (preserve it)
+    2. Use variable overlap thresholds:
+       - Small text (<20pt tall): 50% overlap → filter (likely labels)
+       - Body text (≥20pt tall): 30% overlap → filter
+
+    Args:
+        block: Text block dict from pymupdf
+        figure_regions: List of FigureRegion objects for this page
+        captions: List of FigureCaption objects for this page
+
+    Returns:
+        True if block should be filtered
+    """
+    if block.get("type") != 0:  # Not a text block
+        return False
+
+    block_bbox = tuple(block.get("bbox", [0, 0, 0, 0]))
+    block_text = extract_block_text_simple(block).strip()
+    block_height = block_bbox[3] - block_bbox[1]
+
+    # Rule 1: NEVER filter captions
+    if is_caption_block(block_bbox, block_text, captions):
+        return False
+
+    # Rule 2: Check overlap with figure regions
+    for figure_region in figure_regions:
+        overlap_ratio = calculate_overlap_ratio(block_bbox, figure_region.bbox)
+
+        # Determine threshold based on text size
+        # Small text (labels, axis numbers): 50% threshold
+        # Body text: 30% threshold
+        threshold = 0.5 if block_height < 20 else 0.3
+
+        if overlap_ratio > threshold:
+            return True  # Filter this block
+
+    return False  # Don't filter
+
+
+def filter_figure_text_from_page(
+    page: pymupdf.Page,
+    figure_regions: List[FigureRegion],
+    captions: List[FigureCaption]
+):
+    """Filter text blocks overlapping with figure regions.
+
+    Applies redactions to text that should be filtered.
+
+    Args:
+        page: pymupdf Page object
+        figure_regions: List of FigureRegion objects for this page
+        captions: List of FigureCaption objects for this page
+    """
+    if not figure_regions:
+        return  # No figures to filter
+
+    blocks = page.get_text("dict")["blocks"]
+    redactions_applied = 0
+
+    for block in blocks:
+        if should_filter_text(block, figure_regions, captions):
+            # Mark block for redaction
+            bbox = pymupdf.Rect(block["bbox"])
+            page.add_redact_annot(bbox)
+            redactions_applied += 1
+
+    # Apply all redactions
+    if redactions_applied > 0:
+        page.apply_redactions()
+        logger.debug(f"Filtered {redactions_applied} text blocks from page")
+
+
+# ============================================================
 #  MAIN EXTRACTION FUNCTION
 # ============================================================
 
-def extract_markdown(doc: pymupdf.Document) -> str:
-    """Extract markdown from PDF using pymupdf4llm.
+def extract_markdown(
+    doc: pymupdf.Document,
+    geom_info: GeometryInfo = None,
+    structure_info: StructureInfo = None
+) -> str:
+    """Extract markdown from PDF using pymupdf4llm with figure-aware filtering.
+
+    Uses detected figure regions and captions to filter text while preserving
+    caption content.
+
+    Args:
+        doc: pymupdf Document (after geometric cleaning)
+        geom_info: Optional GeometryInfo with figure regions
+        structure_info: Optional StructureInfo with caption list
 
     Returns:
-        str: Markdown text with proper column handling
+        Markdown text with proper column handling and figure filtering
     """
     logger.info(f"Extracting markdown from {len(doc)} pages using pymupdf4llm")
 
-    # Get figure bounding boxes for each page, then redact text inside them
-    for page_num, page in enumerate(doc):
-        # Get all image bboxes on this page
-        image_bboxes = []
-        for img_info in page.get_images(full=True):
-            xref = img_info[0]
-            try:
-                for rect in page.get_image_rects(xref):
-                    image_bboxes.append(rect)
-            except:
-                continue
+    # Smart filtering if we have figure data
+    if geom_info and structure_info:
+        for page_num, page in enumerate(doc):
+            page_figure_regions = [f for f in geom_info.figure_regions if f.page == page_num]
+            page_captions = [c for c in structure_info.figure_captions if c.page == page_num]
 
-        # Redact (remove) any text blocks that overlap with images
-        if image_bboxes:
-            blocks = page.get_text("dict")["blocks"]
-            for block in blocks:
-                if block["type"] != 0:  # Not a text block
-                    continue
+            if page_figure_regions:
+                filter_figure_text_from_page(page, page_figure_regions, page_captions)
 
-                bbox = pymupdf.Rect(block["bbox"])
-
-                # Check if this text overlaps any image
-                for img_rect in image_bboxes:
-                    if bbox.intersects(img_rect):
-                        # Redact this text
-                        page.add_redact_annot(bbox)
-                        break
-
-            # Apply all redactions
-            page.apply_redactions()
-
-    # Now extract markdown - text inside figures is gone
+    # Extract with pymupdf4llm (existing code works great)
     markdown = pymupdf4llm.to_markdown(doc)
 
     logger.info(f"Extracted {len(markdown)} characters total")
