@@ -246,6 +246,66 @@ def is_caption_block(
     return False
 
 
+def get_junk_score(text: str) -> int:
+    """
+    Calculate "junk score" (0-100) for a text block.
+    Higher score = more likely to be figure artifact (labels, axis values, etc.)
+
+    Args:
+        text: Text content of block
+
+    Returns:
+        Score from 0-100 (100 = definitely junk, 0 = definitely real content)
+    """
+    import re
+
+    if not text.strip():
+        return 0
+
+    clean_text = text.strip()
+    num_chars = len(clean_text)
+    num_words = len(clean_text.split())
+
+    # METRIC 1: Line/Word Sparsity
+    # Real paragraphs have many words. Figure text has few.
+    if num_words < 5:
+        return 80  # Very likely junk
+
+    # METRIC 2: Digit & Symbol Density
+    # Count digits and scientific symbols
+    digits = sum(c.isdigit() for c in clean_text)
+    symbols = len(re.findall(r'[=<>µΔ±%°]', clean_text))
+
+    numeric_density = (digits + symbols) / num_chars if num_chars > 0 else 0
+
+    # Scientific text has some numbers, but rarely >20% of chars
+    # Figure labels are often 50-100% numbers/symbols
+    if numeric_density > 0.50:
+        return 95  # Almost certainly junk
+    if numeric_density > 0.30:
+        return 85
+    if numeric_density > 0.20:
+        return 70
+
+    # METRIC 3: P-value/N-value patterns
+    # Common in figure annotations: "n = 324", "P < 0.01", "R = 0.95"
+    if re.search(r'\b(n\s*=|P\s*[=<>]|R\s*=|fps|min|sec)\b', clean_text, re.IGNORECASE):
+        return 85
+
+    # METRIC 4: Single letter labels (subfigure markers)
+    # Lines that are just "a" or "b" or "c"
+    if re.match(r'^[a-zA-Z]$', clean_text):
+        return 100
+
+    # METRIC 5: Scattered single-character sequences
+    # "a b c d" or "0 5 10 15 20"
+    if num_words >= 3 and all(len(word) <= 2 for word in clean_text.split()):
+        # All words are 1-2 chars
+        return 90
+
+    return 0  # Looks like real content
+
+
 def should_filter_text(
     block: dict,
     figure_regions: List[FigureRegion],
@@ -253,11 +313,12 @@ def should_filter_text(
 ) -> bool:
     """Determine if text block should be filtered (removed).
 
+    SIMPLE APPROACH: Delete EVERYTHING in figure regions except captions.
+    Figure regions are precisely defined (vertical deletion above caption).
+
     Rules:
-    1. NEVER filter caption text (preserve it)
-    2. Use variable overlap thresholds:
-       - Small text (<20pt tall): 50% overlap → filter (likely labels)
-       - Body text (≥20pt tall): 30% overlap → filter
+    1. NEVER filter caption text
+    2. Filter if ANY overlap with figure region
 
     Args:
         block: Text block dict from pymupdf
@@ -272,23 +333,18 @@ def should_filter_text(
 
     block_bbox = tuple(block.get("bbox", [0, 0, 0, 0]))
     block_text = extract_block_text_simple(block).strip()
-    block_height = block_bbox[3] - block_bbox[1]
 
     # Rule 1: NEVER filter captions
     if is_caption_block(block_bbox, block_text, captions):
         return False
 
-    # Rule 2: Check overlap with figure regions
+    # Rule 2: Filter if ANY overlap with figure region
     for figure_region in figure_regions:
         overlap_ratio = calculate_overlap_ratio(block_bbox, figure_region.bbox)
 
-        # Determine threshold based on text size
-        # Small text (labels, axis numbers): 50% threshold
-        # Body text: 30% threshold
-        threshold = 0.5 if block_height < 20 else 0.3
-
-        if overlap_ratio > threshold:
-            return True  # Filter this block
+        # Any significant overlap = filter
+        if overlap_ratio > 0.10:  # 10% overlap
+            return True
 
     return False  # Don't filter
 
@@ -296,7 +352,8 @@ def should_filter_text(
 def filter_figure_text_from_page(
     page: pymupdf.Page,
     figure_regions: List[FigureRegion],
-    captions: List[FigureCaption]
+    captions: List[FigureCaption],
+    page_num: int = 0
 ):
     """Filter text blocks overlapping with figure regions.
 
@@ -306,7 +363,14 @@ def filter_figure_text_from_page(
         page: pymupdf Page object
         figure_regions: List of FigureRegion objects for this page
         captions: List of FigureCaption objects for this page
+        page_num: Page number (0-indexed)
     """
+    # SAFETY: Never filter on page 0 (title/abstract/intro page)
+    # Scientific papers rarely have figures on page 1
+    if page_num == 0:
+        logger.debug(f"Skipping figure filtering on page {page_num} (title/abstract page)")
+        return
+
     if not figure_regions:
         return  # No figures to filter
 
@@ -342,8 +406,8 @@ def extract_markdown(
 
     Args:
         doc: pymupdf Document (after geometric cleaning)
-        geom_info: Optional GeometryInfo with figure regions
-        structure_info: Optional StructureInfo with caption list
+        geom_info: Optional GeometryInfo with figure regions and captions
+        structure_info: Optional StructureInfo (not currently used)
 
     Returns:
         Markdown text with proper column handling and figure filtering
@@ -351,13 +415,13 @@ def extract_markdown(
     logger.info(f"Extracting markdown from {len(doc)} pages using pymupdf4llm")
 
     # Smart filtering if we have figure data
-    if geom_info and structure_info:
+    if geom_info and geom_info.figure_regions:
         for page_num, page in enumerate(doc):
             page_figure_regions = [f for f in geom_info.figure_regions if f.page == page_num]
-            page_captions = [c for c in structure_info.figure_captions if c.page == page_num]
+            page_captions = [c for c in geom_info.figure_captions if c.page == page_num]
 
             if page_figure_regions:
-                filter_figure_text_from_page(page, page_figure_regions, page_captions)
+                filter_figure_text_from_page(page, page_figure_regions, page_captions, page_num)
 
     # Extract with pymupdf4llm (existing code works great)
     markdown = pymupdf4llm.to_markdown(doc)

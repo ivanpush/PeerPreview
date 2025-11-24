@@ -83,6 +83,25 @@ class ParsedDocument:
 # Pipeline stage intermediate data structures
 
 @dataclass
+class Author:
+    """Represents a parsed author with affiliation markers."""
+    name: str
+    affiliation_markers: List[str] = field(default_factory=list)  # ['1', '2', '*']
+    is_corresponding: bool = False
+    email: Optional[str] = None
+
+
+@dataclass
+class AuthorResult:
+    """Result of author detection with confidence scoring."""
+    authors: List[Author]
+    text: str  # Raw text for debugging
+    detection_method: str
+    confidence: float
+    blocks: List['BoldSpan'] = field(default_factory=list)  # Source blocks for debugging
+
+
+@dataclass
 class BoldSpan:
     """Represents a bold text span detected in PDF."""
     text: str
@@ -90,6 +109,8 @@ class BoldSpan:
     font_size: float
     bbox: tuple  # (x0, y0, x1, y1)
     y_position: float
+    x_position: float = 0.0  # x0 from bbox
+    height: float = 0.0  # bbox[3] - bbox[1]
 
 
 @dataclass
@@ -136,6 +157,7 @@ class GeometryInfo:
     bottom_margin: float
     has_columns: bool = False
     column_count: int = 1
+    figure_captions: List[FigureCaption] = field(default_factory=list)
     figure_regions: List[FigureRegion] = field(default_factory=list)
 
 
@@ -146,7 +168,7 @@ class StructureInfo:
     abstract: Optional[str]
     section_headers: List[SectionHeader]
     bold_spans: List[BoldSpan]
-    figure_captions: List[FigureCaption] = field(default_factory=list)
+    authors: Optional['AuthorResult'] = None  # Phase 4: Detected authors
 
 
 @dataclass

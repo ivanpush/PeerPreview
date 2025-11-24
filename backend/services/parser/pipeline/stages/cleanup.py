@@ -207,6 +207,147 @@ def remove_url_lines(text: str) -> str:
     return '\n'.join(filtered)
 
 
+def remove_incomplete_sentence_fragments(text: str) -> str:
+    """Remove consecutive lines that are incomplete sentence fragments.
+
+    Detects chunks of 2+ consecutive lines where EACH line is:
+    - Short to medium length (not full paragraph)
+    - No proper sentence ending punctuation
+    - Not a complete sentence structure
+
+    Preserves:
+    - Long complete sentences (>100 chars or ends with period)
+    - Section headers (bold markdown **text**)
+    - Figure captions (starts with **Fig or **Table)
+    - List markers (a., 1., -, *)
+
+    Args:
+        text: Input text
+
+    Returns:
+        Text with incomplete fragments removed
+    """
+    lines = text.split('\n')
+    filtered = []
+    i = 0
+
+    while i < len(lines):
+        line = lines[i]
+        stripped = line.strip()
+
+        # Always keep empty lines
+        if not stripped:
+            filtered.append(line)
+            i += 1
+            continue
+
+        # Keep markdown section headers
+        if stripped.startswith('#'):
+            filtered.append(line)
+            i += 1
+            continue
+
+        # Keep figure/table captions (they start with **Fig or **Table)
+        if re.match(r'\*\*(Fig|Table|Scheme)', stripped, re.IGNORECASE):
+            filtered.append(line)
+            i += 1
+            continue
+
+        # Keep valid list markers
+        if re.match(r'^[a-z]\.$|^\d+\.$|^[-*]$|^\([a-z0-9]+\)$', stripped):
+            filtered.append(line)
+            i += 1
+            continue
+
+        # Define what makes a line a "fragment" (incomplete sentence)
+        def is_fragment_line(s):
+            if not s:
+                return False
+
+            # Very long lines are likely complete sentences (100+ chars)
+            if len(s) > 100:
+                return False
+
+            # Statistical notation (e.g., "_P_ = 0.321", "_n_ = 324 cells")
+            if re.search(r'_[A-Za-z]_\s*=', s):
+                return True  # Treat as fragment
+
+            # Short lines with just numbers/symbols (e.g., "Histamine 6")
+            word_count = len(s.split())
+            if word_count <= 3 and not s.rstrip()[-1:] in '.!?':
+                return True
+
+            # Has sentence-ending punctuation at end AND reasonable length
+            if s.rstrip()[-1:] in '.!?' and len(s) > 30:
+                return False  # Complete sentence
+
+            # Contains 3+ periods (likely multiple sentences or abbreviations)
+            if s.count('.') >= 3:
+                return False  # Likely real content
+
+            # Check if line has sentence structure (has common words like "the", "is", "are", "has")
+            has_sentence_words = bool(re.search(r'\b(the|is|are|was|were|has|have|had|can|will|would|should)\b', s, re.IGNORECASE))
+            if has_sentence_words and len(s) > 40:
+                return False  # Likely complete sentence
+
+            # Otherwise it's a fragment
+            return True
+
+        # Check if current line is a fragment
+        if is_fragment_line(stripped):
+            # Look ahead and collect all consecutive fragments (skip blank lines and single bold chars)
+            fragment_lines = [stripped]
+            j = i + 1
+            blank_count = 0
+
+            while j < len(lines):
+                next_line = lines[j].strip()
+
+                # Skip over blank lines (up to 3)
+                if not next_line:
+                    blank_count += 1
+                    if blank_count > 3:  # Too many blanks, stop
+                        break
+                    j += 1
+                    continue
+
+                # Skip over single bold characters like **a**, **b**, **c**
+                if re.match(r'^\*\*[a-z0-9]\*\*$', next_line, re.IGNORECASE):
+                    j += 1
+                    continue
+
+                # Stop at section headers
+                if next_line.startswith('#'):
+                    break
+
+                # Stop at figure captions
+                if re.match(r'\*\*(Fig|Table|Scheme)', next_line, re.IGNORECASE):
+                    break
+
+                # Check if this line is also a fragment
+                if is_fragment_line(next_line):
+                    fragment_lines.append(next_line)
+                    blank_count = 0  # Reset blank counter
+                    j += 1
+                else:
+                    # Hit a complete sentence, stop collecting
+                    break
+
+            # If we found 2+ consecutive fragments, remove them all
+            if len(fragment_lines) >= 2:
+                logger.debug(f"Removed {len(fragment_lines)} consecutive fragments:")
+                for frag in fragment_lines[:3]:  # Log first 3
+                    logger.debug(f"  - '{frag[:60]}...'")
+                i = j  # Skip all fragments
+                continue
+
+        # Keep the line
+        filtered.append(line)
+        i += 1
+
+    return '\n'.join(filtered)
+
+
 def cleanup_all(text: str, config: CleanupConfig = None) -> str:
     """Apply minimal cleanup operations.
 
@@ -228,13 +369,16 @@ def cleanup_all(text: str, config: CleanupConfig = None) -> str:
     # 2. Remove scattered characters (figure labels)
     text = remove_scattered_chars(text)
 
-    # 3. Remove table remnants
+    # 3. Remove incomplete sentence fragments
+    text = remove_incomplete_sentence_fragments(text)
+
+    # 4. Remove table remnants
     text = remove_table_remnants(text)
 
-    # 4. Remove URL lines
+    # 5. Remove URL lines
     text = remove_url_lines(text)
 
-    # 5. Normalize whitespace
+    # 6. Normalize whitespace
     text = normalize_whitespace(text)
 
     logger.info(f"Cleanup: {original_length} -> {len(text)} chars ({len(text)/original_length*100:.1f}% retained)")

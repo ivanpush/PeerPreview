@@ -29,6 +29,7 @@ class PipelineBuilder:
         self.config = config or default_config()
         self.capture_stages = capture_stages
         self.stage_outputs = {}  # Store intermediate stage outputs for debug
+        self.structure_info: Optional[StructureInfo] = None  # Store for author access
 
         if self.config.debug_logging:
             logging.basicConfig(level=logging.DEBUG)
@@ -76,28 +77,29 @@ class PipelineBuilder:
 
         # Stage 2: Analyze structure (before cropping)
         structure_info = analysis.analyze_structure(doc, self.config.analysis)
+        self.structure_info = structure_info  # Store for access in main.py
         if self.capture_stages:
             self.stage_outputs['02_analyze_structure'] = (
                 f"Title: {structure_info.title}\n"
                 f"Abstract: {structure_info.abstract[:200] if structure_info.abstract else 'None'}...\n"
-                f"Sections found: {len(structure_info.section_headers)}\n"
-                f"Captions found: {len(structure_info.figure_captions)}"
+                f"Sections found: {len(structure_info.section_headers)}"
             )
 
-        # Stage 3: Geometric cleaning (with figure detection)
+        # Stage 3: Geometric cleaning (crops margins, then detects captions & figures)
         doc, geom_info = geometry.apply_geometric_cleaning(
             doc,
             self.config.geometry,
-            structure_info  # Pass structure info for figure detection
+            structure_info
         )
 
-        # Capture text AFTER cropping
+        # Capture text AFTER cropping + caption/figure detection
         if self.capture_stages:
             cropped_text = ""
             for page in doc:
                 cropped_text += page.get_text() + "\n\n"
-            self.stage_outputs['03_after_crop'] = (
+            self.stage_outputs['03_geometric_cleaning'] = (
                 f"Cropped text:\n{cropped_text}\n\n"
+                f"Captions detected (on cropped pages): {len(geom_info.figure_captions)}\n"
                 f"Figure regions detected: {len(geom_info.figure_regions)}"
             )
 

@@ -1,0 +1,78 @@
+{
+  "timestamp": "20251122_154133",
+  "test_count": 8,
+  "passed": 0,
+  "failed": 0,
+  "errors": 8,
+  "aggregate_metrics": {
+    "total_merged_paragraphs": 0,
+    "total_scattered_artifacts": 0,
+    "total_captions": 0
+  },
+  "results": [
+    {
+      "pdf": "test.pdf",
+      "status": "ERROR",
+      "error": "'ParsedDocument' object has no attribute 'metadata'",
+      "issues": [
+        "Parse error: 'ParsedDocument' object has no attribute 'metadata'"
+      ]
+    },
+    {
+      "pdf": "test2.pdf",
+      "status": "ERROR",
+      "error": "'ParsedDocument' object has no attribute 'metadata'",
+      "issues": [
+        "Parse error: 'ParsedDocument' object has no attribute 'metadata'"
+      ]
+    },
+    {
+      "pdf": "test3.pdf",
+      "status": "ERROR",
+      "error": "'ParsedDocument' object has no attribute 'metadata'",
+      "issues": [
+        "Parse error: 'ParsedDocument' object has no attribute 'metadata'"
+      ]
+    },
+    {
+      "pdf": "test4.pdf",
+      "status": "ERROR",
+      "error": "'ParsedDocument' object has no attribute 'metadata'",
+      "issues": [
+        "Parse error: 'ParsedDocument' object has no attribute 'metadata'"
+      ]
+    },
+    {
+      "pdf": "test5.pdf",
+      "status": "ERROR",
+      "error": "'ParsedDocument' object has no attribute 'metadata'",
+      "issues": [
+        "Parse error: 'ParsedDocument' object has no attribute 'metadata'"
+      ]
+    },
+    {
+      "pdf": "test6.pdf",
+      "status": "ERROR",
+      "error": "'ParsedDocument' object has no attribute 'metadata'",
+      "issues": [
+        "Parse error: 'ParsedDocument' object has no attribute 'metadata'"
+      ]
+    },
+    {
+      "pdf": "test7.pdf",
+      "status": "ERROR",
+      "error": "'ParsedDocument' object has no attribute 'metadata'",
+      "issues": [
+        "Parse error: 'ParsedDocument' object has no attribute 'metadata'"
+      ]
+    },
+    {
+      "pdf": "test_no_abstract_header.pdf",
+      "status": "ERROR",
+      "error": "'ParsedDocument' object has no attribute 'metadata'",
+      "issues": [
+        "Parse error: 'ParsedDocument' object has no attribute 'metadata'"
+      ]
+    }
+  ]
+}

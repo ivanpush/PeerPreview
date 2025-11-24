@@ -51,6 +51,7 @@ class UploadResponse(BaseModel):
     document_id: str
     title: str
     sections: list[str]
+    section_validation: dict[str, bool]  # e.g., {"has_introduction": True, "has_methods": False}
     message: str
 
 
@@ -126,10 +127,23 @@ async def upload_document(file: UploadFile = File(...)):
         if settings.demo_mode and parsed_doc.doc_hash == settings.demo_paper_hash:
             logger.info("Demo paper detected")
 
+        # Validate sections
+        from services.parser.pipeline.stages.formatting import validate_required_sections
+        # Check if we have authors from Phase 4 detection
+        has_authors = bool(builder.structure_info and
+                          builder.structure_info.authors and
+                          len(builder.structure_info.authors.authors) > 0)
+        section_validation = validate_required_sections(
+            parsed_doc.sections,
+            title=parsed_doc.title,
+            has_authors=has_authors
+        )
+
         return UploadResponse(
             document_id=parsed_doc.doc_id,
             title=parsed_doc.title,
             sections=list(parsed_doc.sections.keys()),
+            section_validation=section_validation,
             message="Document uploaded and parsed successfully"
         )
 
@@ -153,6 +167,19 @@ async def get_document(document_id: str):
     citation_index = CitationIndexer().build(doc)
     figure_index = FigureIndexer().build(doc)
 
+    # Validate sections
+    from services.parser.pipeline.stages.formatting import validate_required_sections
+    # Check if we have authors from Phase 4 detection
+    builder = builders_store.get(document_id)
+    has_authors = bool(builder and builder.structure_info and
+                      builder.structure_info.authors and
+                      len(builder.structure_info.authors.authors) > 0)
+    section_validation = validate_required_sections(
+        doc.sections,
+        title=doc.title,
+        has_authors=has_authors
+    )
+
     return {
         "document_id": doc.doc_id,
         "title": doc.title,
@@ -165,6 +192,7 @@ async def get_document(document_id: str):
             }
             for name, section in doc.sections.items()
         },
+        "section_validation": section_validation,
         "statistics": {
             "total_citations": len(doc.citations),
             "total_bibliography": len(doc.bibliography),
@@ -358,19 +386,19 @@ async def get_pipeline_stages(document_id: str):
 
     builder = builders_store[document_id]
 
-    # Return stages with nice labels
+    # Return stages with nice labels (updated for refactored pipeline)
     stage_labels = {
         "01_raw_pdf": "1. Raw PDF Text",
-        "02_analyze_structure": "2. After Structure Analysis",
-        "03_after_crop": "3. After Geometric Crop",
-        "04_extract_markdown": "4. After Extract Markdown",
-        "05_reflow_text": "5. After Reflow Text",
-        "06_cleanup_artifacts": "6. After Cleanup Artifacts",
-        "07_inject_section_labels": "7. After Inject Section Labels",
-        "08_split_sections": "8. After Split Sections",
-        "09_validate_sections": "9. After Validate Sections",
-        "10_index_sentences": "10. After Index Sentences",
-        "11_extract_metadata": "11. After Extract Metadata",
+        "02_analyze_structure": "2. Structure Analysis (Title, Abstract, Sections)",
+        "03_geometric_cleaning": "3. Geometric Cleaning (Crop + Caption Detection + Figure Detection)",
+        "04_extract_markdown": "4. Extract Markdown (with Figure Filtering)",
+        "05_reflow_text": "5. Reflow Text",
+        "06_cleanup_artifacts": "6. Cleanup Artifacts",
+        "07_inject_section_labels": "7. Inject Section Labels",
+        "08_split_sections": "8. Split into Sections",
+        "09_validate_sections": "9. Validate Sections",
+        "10_index_sentences": "10. Index Sentences",
+        "11_extract_metadata": "11. Extract Metadata",
         "12_final_output": "12. Final Output"
     }
 

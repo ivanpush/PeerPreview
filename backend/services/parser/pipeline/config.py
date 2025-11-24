@@ -90,11 +90,15 @@ class SectionConfig:
 
     # Required section groups (at least one from each group must exist)
     required_groups: Dict[str, List[str]] = field(default_factory=lambda: {
+        'title': ['title'],  # Title is always required
+        'abstract': ['abstract'],  # Abstract is required
+        'authors': ['authors'],  # Authors/affiliations required
         'introduction': ['introduction'],
         'methods': ['methods', 'materials_and_methods', 'experimental',
                     'methodology', 'materials and methods'],
-        'results': ['results'],
-        'discussion': ['discussion', 'conclusions', 'results_and_discussion', 'conclusion']
+        'results': ['results', 'results_and_discussion'],  # Results or combined section
+        'discussion': ['discussion', 'conclusions', 'results_and_discussion', 'conclusion'],
+        'references': ['references', 'bibliography']  # References required
     })
 
     # Whether to detect unlabeled sections by keyword analysis

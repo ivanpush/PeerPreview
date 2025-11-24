@@ -1,0 +1,82 @@
+[
+  {
+    "filename": "test.pdf",
+    "needs_cleanup": false,
+    "total_lines": 1755,
+    "short_lines": 11,
+    "scattered_chars": 0,
+    "isolated_numbers": 0,
+    "junk_examples": [],
+    "junk_pct": 0.0
+  },
+  {
+    "filename": "test2.pdf",
+    "needs_cleanup": false,
+    "total_lines": 609,
+    "short_lines": 4,
+    "scattered_chars": 0,
+    "isolated_numbers": 0,
+    "junk_examples": [],
+    "junk_pct": 0.0
+  },
+  {
+    "filename": "test3.pdf",
+    "needs_cleanup": false,
+    "total_lines": 456,
+    "short_lines": 15,
+    "scattered_chars": 0,
+    "isolated_numbers": 0,
+    "junk_examples": [],
+    "junk_pct": 0.0
+  },
+  {
+    "filename": "test4.pdf",
+    "needs_cleanup": false,
+    "total_lines": 1998,
+    "short_lines": 20,
+    "scattered_chars": 0,
+    "isolated_numbers": 0,
+    "junk_examples": [],
+    "junk_pct": 0.0
+  },
+  {
+    "filename": "test5.pdf",
+    "needs_cleanup": false,
+    "total_lines": 269,
+    "short_lines": 0,
+    "scattered_chars": 0,
+    "isolated_numbers": 0,
+    "junk_examples": [],
+    "junk_pct": 0.0
+  },
+  {
+    "filename": "test6.pdf",
+    "needs_cleanup": false,
+    "total_lines": 1365,
+    "short_lines": 11,
+    "scattered_chars": 0,
+    "isolated_numbers": 0,
+    "junk_examples": [],
+    "junk_pct": 0.0
+  },
+  {
+    "filename": "test7.pdf",
+    "needs_cleanup": false,
+    "total_lines": 1225,
+    "short_lines": 6,
+    "scattered_chars": 0,
+    "isolated_numbers": 0,
+    "junk_examples": [],
+    "junk_pct": 0.0
+  },
+  {
+    "filename": "test_no_abstract_header.pdf",
+    "needs_cleanup": false,
+    "total_lines": 4,
+    "short_lines": 1,
+    "scattered_chars": 0,
+    "isolated_numbers": 0,
+    "junk_examples": [],
+    "junk_pct": 0.0
+  }
+]

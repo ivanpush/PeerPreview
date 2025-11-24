@@ -1,0 +1,1093 @@
+[
+  {
+    "filename": "test.pdf",
+    "total_pages": 33,
+    "messy_pages": [
+      {
+        "page": 2,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 6,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 7,
+        "drawing_count": 318,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "vector_explosion (318 drawings)"
+      },
+      {
+        "page": 8,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 10,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 12,
+        "drawing_count": 1,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 17,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 19,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 21,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 23,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      }
+    ],
+    "clean_pages": [
+      {
+        "page": 1,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 3,
+        "drawing_count": 2,
+        "image_count": 1,
+        "has_captions": true
+      },
+      {
+        "page": 4,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 5,
+        "drawing_count": 1,
+        "image_count": 1,
+        "has_captions": true
+      },
+      {
+        "page": 9,
+        "drawing_count": 3,
+        "image_count": 1,
+        "has_captions": true
+      },
+      {
+        "page": 11,
+        "drawing_count": 0,
+        "image_count": 1,
+        "has_captions": false
+      },
+      {
+        "page": 13,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 14,
+        "drawing_count": 2,
+        "image_count": 1,
+        "has_captions": true
+      },
+      {
+        "page": 15,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 16,
+        "drawing_count": 1,
+        "image_count": 1,
+        "has_captions": true
+      },
+      {
+        "page": 18,
+        "drawing_count": 1,
+        "image_count": 1,
+        "has_captions": true
+      },
+      {
+        "page": 20,
+        "drawing_count": 1,
+        "image_count": 1,
+        "has_captions": true
+      },
+      {
+        "page": 22,
+        "drawing_count": 1,
+        "image_count": 1,
+        "has_captions": true
+      },
+      {
+        "page": 24,
+        "drawing_count": 1,
+        "image_count": 1,
+        "has_captions": true
+      },
+      {
+        "page": 25,
+        "drawing_count": 1,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 26,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 27,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 28,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 29,
+        "drawing_count": 17,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 30,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 31,
+        "drawing_count": 5,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 32,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 33,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": false
+      }
+    ],
+    "needs_cleanup": true,
+    "summary": {
+      "messy_count": 10,
+      "clean_count": 23,
+      "messy_percentage": 30.3
+    }
+  },
+  {
+    "filename": "test2.pdf",
+    "total_pages": 16,
+    "messy_pages": [
+      {
+        "page": 1,
+        "drawing_count": 34,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 2,
+        "drawing_count": 2102,
+        "image_count": 105,
+        "has_captions": true,
+        "reason": "vector_explosion (2102 drawings)"
+      },
+      {
+        "page": 4,
+        "drawing_count": 582,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "vector_explosion (582 drawings)"
+      },
+      {
+        "page": 5,
+        "drawing_count": 296,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "vector_explosion (296 drawings)"
+      },
+      {
+        "page": 6,
+        "drawing_count": 13246,
+        "image_count": 12,
+        "has_captions": true,
+        "reason": "vector_explosion (13246 drawings)"
+      },
+      {
+        "page": 7,
+        "drawing_count": 204,
+        "image_count": 12,
+        "has_captions": true,
+        "reason": "vector_explosion (204 drawings)"
+      },
+      {
+        "page": 8,
+        "drawing_count": 2334,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "vector_explosion (2334 drawings)"
+      },
+      {
+        "page": 9,
+        "drawing_count": 26,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 10,
+        "drawing_count": 1,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 11,
+        "drawing_count": 1,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 12,
+        "drawing_count": 1,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 15,
+        "drawing_count": 112,
+        "image_count": 1,
+        "has_captions": true,
+        "reason": "vector_explosion (112 drawings)"
+      }
+    ],
+    "clean_pages": [
+      {
+        "page": 3,
+        "drawing_count": 98,
+        "image_count": 3,
+        "has_captions": true
+      },
+      {
+        "page": 13,
+        "drawing_count": 1,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 14,
+        "drawing_count": 1,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 16,
+        "drawing_count": 76,
+        "image_count": 0,
+        "has_captions": false
+      }
+    ],
+    "needs_cleanup": true,
+    "summary": {
+      "messy_count": 12,
+      "clean_count": 4,
+      "messy_percentage": 75.0
+    }
+  },
+  {
+    "filename": "test3.pdf",
+    "total_pages": 15,
+    "messy_pages": [
+      {
+        "page": 2,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 3,
+        "drawing_count": 350,
+        "image_count": 2,
+        "has_captions": true,
+        "reason": "vector_explosion (350 drawings)"
+      },
+      {
+        "page": 4,
+        "drawing_count": 1319,
+        "image_count": 99,
+        "has_captions": true,
+        "reason": "vector_explosion (1319 drawings)"
+      },
+      {
+        "page": 5,
+        "drawing_count": 508,
+        "image_count": 341,
+        "has_captions": true,
+        "reason": "vector_explosion (508 drawings)"
+      },
+      {
+        "page": 6,
+        "drawing_count": 38947,
+        "image_count": 155,
+        "has_captions": true,
+        "reason": "vector_explosion (38947 drawings)"
+      },
+      {
+        "page": 8,
+        "drawing_count": 3,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 9,
+        "drawing_count": 134,
+        "image_count": 4,
+        "has_captions": true,
+        "reason": "vector_explosion (134 drawings)"
+      },
+      {
+        "page": 10,
+        "drawing_count": 655,
+        "image_count": 9,
+        "has_captions": false,
+        "reason": "vector_explosion (655 drawings)"
+      },
+      {
+        "page": 11,
+        "drawing_count": 3,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 12,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 13,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      }
+    ],
+    "clean_pages": [
+      {
+        "page": 1,
+        "drawing_count": 48,
+        "image_count": 2,
+        "has_captions": false
+      },
+      {
+        "page": 7,
+        "drawing_count": 63,
+        "image_count": 7,
+        "has_captions": true
+      },
+      {
+        "page": 14,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 15,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": false
+      }
+    ],
+    "needs_cleanup": true,
+    "summary": {
+      "messy_count": 11,
+      "clean_count": 4,
+      "messy_percentage": 73.3
+    }
+  },
+  {
+    "filename": "test4.pdf",
+    "total_pages": 33,
+    "messy_pages": [
+      {
+        "page": 4,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 5,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 6,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 7,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 8,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 9,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 10,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 15,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 16,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 21,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 33,
+        "drawing_count": 41,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      }
+    ],
+    "clean_pages": [
+      {
+        "page": 1,
+        "drawing_count": 12,
+        "image_count": 1,
+        "has_captions": false
+      },
+      {
+        "page": 2,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 3,
+        "drawing_count": 3,
+        "image_count": 1,
+        "has_captions": false
+      },
+      {
+        "page": 11,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 12,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 13,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 14,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 17,
+        "drawing_count": 4,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 18,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 19,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 20,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 22,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 23,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 24,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 25,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 26,
+        "drawing_count": 2,
+        "image_count": 1,
+        "has_captions": true
+      },
+      {
+        "page": 27,
+        "drawing_count": 2,
+        "image_count": 1,
+        "has_captions": true
+      },
+      {
+        "page": 28,
+        "drawing_count": 2,
+        "image_count": 1,
+        "has_captions": true
+      },
+      {
+        "page": 29,
+        "drawing_count": 2,
+        "image_count": 1,
+        "has_captions": true
+      },
+      {
+        "page": 30,
+        "drawing_count": 2,
+        "image_count": 1,
+        "has_captions": true
+      },
+      {
+        "page": 31,
+        "drawing_count": 2,
+        "image_count": 1,
+        "has_captions": true
+      },
+      {
+        "page": 32,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": false
+      }
+    ],
+    "needs_cleanup": true,
+    "summary": {
+      "messy_count": 11,
+      "clean_count": 22,
+      "messy_percentage": 33.3
+    }
+  },
+  {
+    "filename": "test5.pdf",
+    "total_pages": 11,
+    "messy_pages": [
+      {
+        "page": 3,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 6,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 8,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      }
+    ],
+    "clean_pages": [
+      {
+        "page": 1,
+        "drawing_count": 39,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 2,
+        "drawing_count": 0,
+        "image_count": 1,
+        "has_captions": true
+      },
+      {
+        "page": 4,
+        "drawing_count": 0,
+        "image_count": 1,
+        "has_captions": true
+      },
+      {
+        "page": 5,
+        "drawing_count": 0,
+        "image_count": 1,
+        "has_captions": true
+      },
+      {
+        "page": 7,
+        "drawing_count": 0,
+        "image_count": 1,
+        "has_captions": true
+      },
+      {
+        "page": 9,
+        "drawing_count": 0,
+        "image_count": 1,
+        "has_captions": true
+      },
+      {
+        "page": 10,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 11,
+        "drawing_count": 1,
+        "image_count": 0,
+        "has_captions": false
+      }
+    ],
+    "needs_cleanup": true,
+    "summary": {
+      "messy_count": 3,
+      "clean_count": 8,
+      "messy_percentage": 27.3
+    }
+  },
+  {
+    "filename": "test6.pdf",
+    "total_pages": 24,
+    "messy_pages": [
+      {
+        "page": 3,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 4,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 8,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 9,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 10,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 11,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 12,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 13,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 24,
+        "drawing_count": 13,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      }
+    ],
+    "clean_pages": [
+      {
+        "page": 1,
+        "drawing_count": 12,
+        "image_count": 1,
+        "has_captions": false
+      },
+      {
+        "page": 2,
+        "drawing_count": 3,
+        "image_count": 1,
+        "has_captions": false
+      },
+      {
+        "page": 5,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 6,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 7,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 14,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 15,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 16,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 17,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 18,
+        "drawing_count": 7,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 19,
+        "drawing_count": 2,
+        "image_count": 1,
+        "has_captions": true
+      },
+      {
+        "page": 20,
+        "drawing_count": 2,
+        "image_count": 1,
+        "has_captions": true
+      },
+      {
+        "page": 21,
+        "drawing_count": 2,
+        "image_count": 1,
+        "has_captions": true
+      },
+      {
+        "page": 22,
+        "drawing_count": 2,
+        "image_count": 1,
+        "has_captions": true
+      },
+      {
+        "page": 23,
+        "drawing_count": 2,
+        "image_count": 1,
+        "has_captions": true
+      }
+    ],
+    "needs_cleanup": true,
+    "summary": {
+      "messy_count": 9,
+      "clean_count": 15,
+      "messy_percentage": 37.5
+    }
+  },
+  {
+    "filename": "test7.pdf",
+    "total_pages": 20,
+    "messy_pages": [
+      {
+        "page": 7,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 8,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 11,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 13,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": true,
+        "reason": "orphaned_caption (caption with no image)"
+      },
+      {
+        "page": 14,
+        "drawing_count": 220,
+        "image_count": 6,
+        "has_captions": true,
+        "reason": "vector_explosion (220 drawings)"
+      },
+      {
+        "page": 15,
+        "drawing_count": 129,
+        "image_count": 5,
+        "has_captions": true,
+        "reason": "vector_explosion (129 drawings)"
+      }
+    ],
+    "clean_pages": [
+      {
+        "page": 1,
+        "drawing_count": 2,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 2,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 3,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 4,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 5,
+        "drawing_count": 64,
+        "image_count": 17,
+        "has_captions": true
+      },
+      {
+        "page": 6,
+        "drawing_count": 22,
+        "image_count": 15,
+        "has_captions": true
+      },
+      {
+        "page": 9,
+        "drawing_count": 10,
+        "image_count": 24,
+        "has_captions": true
+      },
+      {
+        "page": 10,
+        "drawing_count": 1,
+        "image_count": 3,
+        "has_captions": true
+      },
+      {
+        "page": 12,
+        "drawing_count": 81,
+        "image_count": 3,
+        "has_captions": true
+      },
+      {
+        "page": 16,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 17,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 18,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 19,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": false
+      },
+      {
+        "page": 20,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": false
+      }
+    ],
+    "needs_cleanup": true,
+    "summary": {
+      "messy_count": 6,
+      "clean_count": 14,
+      "messy_percentage": 30.0
+    }
+  },
+  {
+    "filename": "test_no_abstract_header.pdf",
+    "total_pages": 1,
+    "messy_pages": [],
+    "clean_pages": [
+      {
+        "page": 1,
+        "drawing_count": 0,
+        "image_count": 0,
+        "has_captions": false
+      }
+    ],
+    "needs_cleanup": false,
+    "summary": {
+      "messy_count": 0,
+      "clean_count": 1,
+      "messy_percentage": 0.0
+    }
+  }
+]

@@ -100,13 +100,17 @@ def normalize_section_name(name: str) -> str:
 
 def validate_required_sections(
     sections: Dict[str, ParsedSection],
-    config: SectionConfig = None
+    config: SectionConfig = None,
+    title: str = None,
+    has_authors: bool = False
 ) -> Dict[str, bool]:
     """Validate that required sections are present.
 
     Args:
         sections: Dictionary of sections
         config: Section configuration with required groups
+        title: Document title (to check has_title)
+        has_authors: Whether document has authors (to check has_authors)
 
     Returns:
         Dictionary with validation results
@@ -117,6 +121,20 @@ def validate_required_sections(
     validation = {}
 
     for group_name, section_names in config.required_groups.items():
+        # Special handling for title - check if title parameter is provided and non-empty
+        if group_name == 'title':
+            validation['has_title'] = bool(title and title.strip() and title != 'Unknown')
+            if not validation['has_title']:
+                logger.warning("Missing title")
+            continue
+
+        # Special handling for authors - use the has_authors parameter
+        if group_name == 'authors':
+            validation['has_authors'] = has_authors
+            if not has_authors:
+                logger.warning("Missing authors information")
+            continue
+
         # Check if any section from this group exists
         has_section = any(
             section_key.lower() in section_names

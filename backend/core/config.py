@@ -26,7 +26,7 @@ class Settings(BaseSettings):
     # Server
     debug: bool = True
     log_level: str = "INFO"
-    cors_origins: list = ["http://localhost:3000", "http://localhost:8000"]
+    cors_origins: list = ["http://localhost:3000", "http://localhost:3001", "http://localhost:8000"]
 
     # File Storage
     upload_dir: str = "uploads"

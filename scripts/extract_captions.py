@@ -12,7 +12,8 @@ from datetime import datetime
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from pipeline import PipelineBuilder, default_config
+sys.path.insert(0, str(Path(__file__).parent.parent / 'backend'))
+from services.parser.pipeline import PipelineBuilder, default_config
 
 
 def extract_captions_from_pdf(pdf_path):
@@ -37,16 +38,19 @@ def extract_captions_from_pdf(pdf_path):
         config = default_config()
         builder = PipelineBuilder(config)
 
-        # Run just the analysis stage to get captions
-        from pipeline.stages import loader, analysis
+        # Run just the analysis and geometry stages to get captions
+        from services.parser.pipeline.stages import loader, analysis, geometry
 
         doc = loader.load_pdf(pdf_bytes)
         page_count = len(doc)  # Get page count before analysis
         structure_info = analysis.analyze_structure(doc, config.analysis)
 
+        # Run geometry stage to get captions (they're detected AFTER cropping now)
+        doc_cleaned, geom_info = geometry.apply_geometric_cleaning(doc, config.geometry, structure_info)
+
         # Extract caption data
         captions = []
-        for cap in structure_info.figure_captions:
+        for cap in geom_info.figure_captions:
             captions.append({
                 'text': cap.text,
                 'type': cap.figure_type,
@@ -143,7 +147,7 @@ def save_captions_markdown(results, output_path):
 
 def main():
     """Extract captions from all test PDFs."""
-    test_dir = Path(__file__).parent.parent.parent / 'docs' / 'testPDFs'
+    test_dir = Path(__file__).parent.parent / 'backend' / 'docs' / 'testPDFs'
     output_dir = test_dir / 'caption_extracts'
     output_dir.mkdir(parents=True, exist_ok=True)
 

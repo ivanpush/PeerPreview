@@ -1,0 +1,581 @@
+{
+  "timestamp": "2025-11-22T17:59:22.890745",
+  "total_pdfs": 8,
+  "pdfs": {
+    "test.pdf": {
+      "filename": "test.pdf",
+      "pages": 33,
+      "captions_found": 11,
+      "captions": [
+        {
+          "page": 3,
+          "type": "figure",
+          "num": "1",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Figure 1: Body map of mechanobiological disease caused in part or in whole by contractile dysfunctio...",
+          "full_text": "Figure 1: Body map of mechanobiological disease caused in part or in whole by contractile dysfunction in cells. Three main classes of disease are represented here: connective tissue such as asthma and spastic or underactive bladder, fibrotic disease such as lung fibrosis, and oncology where tumor microenvironments, metastasis and tumor tension all play key pathological roles. There is a major need to develop therapeutics that modulate the mechanobiological function in cells to treat these classes of diseases.",
+          "text_length": 514
+        },
+        {
+          "page": 5,
+          "type": "figure",
+          "num": "2",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Figure 2: (a) Schematic representation of the FLECS technology: Single cells adhered to adhesive mic...",
+          "full_text": "Figure 2: (a) Schematic representation of the FLECS technology: Single cells adhered to adhesive micropatterns embedded within an elastomeric film exert mechanical force onto the micropatterns resulting in their displacements. Top view demonstrates various pattern shapes, while a magnified image illustrates a contracting cell inwardly displacing its terminals. Overlay of fluorescent patterns and phase contrast images captures contracting cells, with time-lapsed images showcasing the cell's contraction over the underlying micropattern. Scale bars represent 25 \u03bcm. (b) Implementation of FLECS Technology in a 384 well-plate format. (c) Workflow for image analysis: Input includes aligned image sets of the micropatterns (set 1) and stained cell nuclei (set 2). Analysis involves (i) identification and measurement of all micropatterns in image set 1, (ii) cross-referencing the positions of each micropattern in image set 2, and (iii) determining the presence of 0, 1, or >2 nuclei (cells). Output consists of mean center-to-terminal displacements of micropatterns containing a single nucleus (one cell), compared to the median measurement of non-displaced patterns with zero nuclei. The resulting differences are presented as a horizontal histogram. MATLAB code enabling describing original versions of these algorithms are described in a previous work[16]. Figure adapted with permission from",
+          "text_length": 1398
+        },
+        {
+          "page": 7,
+          "type": "table",
+          "num": "1",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Table 1. Summary of the five primary human cell types and their screening conditions. SMC cells (blu...",
+          "full_text": "Table 1. Summary of the five primary human cell types and their screening conditions. SMC cells (blue rows) and MYO cells (orange rows) differ in assay format (acute vs. 24-hour), TGF-\u03b2 activation, time points, and dosing. This table highlights how each cell type was tested under distinct protocols to capture disease-relevant contractile responses. The secondary 24hr screens in SMC were performed at the primary single-point level for cursory comparison to MYO responses, but these hits were not advanced into confirmation and subsequent stages.",
+          "text_length": 548
+        },
+        {
+          "page": 9,
+          "type": "figure",
+          "num": "3",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Figure 3: Results from primary contraction screens across multiple cell types. The data demonstrates...",
+          "full_text": "Figure 3: Results from primary contraction screens across multiple cell types. The data demonstrates the platform's scalability and robustness, with clear separation between controls and hits. Expectedly, most compounds did not elicit significant responses, yet a notable subset of inhibitors was identified across cell types and doses. This underscores the non-random distribution of responses. A \u201cHit upper bound\u201d threshold is marked by the green line, with non-hits below this threshold shaded in dark grey. These non-hits fail to meet normalized contraction constraints (<0.85) despite achieving robust Z-score criteria. (a) Scatter plots of acute SMC screen results. Robust Z-scores of contraction are shown, stratified by dose and cell type. Compounds are ordered by the average Z-score of contraction across all cell types and doses, with the same order maintained across all subplots. (b) Scatter plots of MYO screen results. Normalized percent change in contraction is shown, stratified by dose, timepoint, and cell type. Compounds are ordered by the average normalized percent change in contraction across all cell types, timepoints, and doses, with the same order maintained across all subplots.",
+          "text_length": 1206
+        },
+        {
+          "page": 12,
+          "type": "figure",
+          "num": "4",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Figure 4: Clustering of 24-hour primary screen compounds reveals distinct contractile response types...",
+          "full_text": "Figure 4: Clustering of 24-hour primary screen compounds reveals distinct contractile response types and pathway associations. (a) Dendrogram and pairwise distance matrix showing hierarchical clustering of compounds based on Z-score vectors across five cell types. Clusters highlight compounds with distinct response profiles, with pairwise distances >50 indicating highly divergent responses. (b) Bar graph comparing mean robust Z-scores of contraction (\u00b195% CI) for each cell type within clusters, with the dotted line marking the Z = -3 upper bound for hits. (c) Distribution of compounds by affected pathways within each cluster,",
+          "text_length": 633
+        },
+        {
+          "page": 14,
+          "type": "figure",
+          "num": "5",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Figure 5: Sub-clustering of 24-hour primary screen compounds reveals distinct contractile response t...",
+          "full_text": "Figure 5: Sub-clustering of 24-hour primary screen compounds reveals distinct contractile response types and pathway associations. (a) Dendrogram and pairwise distance matrix showing hierarchical clustering of compounds based on Z-score. (b) Bar graph comparing mean robust Z-scores of contraction (\u00b195% CI) for each cell type within sub- clusters, with the dotted line marking the Z = -3 upper bound for hits. (c) Distribution of compounds by affected pathways within each sub-cluster, emphasizing pathway",
+          "text_length": 506
+        },
+        {
+          "page": 16,
+          "type": "figure",
+          "num": "6",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Figure 6: Screening flow-chart from primary screening to confirmation and dose response. Flowchart i...",
+          "full_text": "Figure 6: Screening flow-chart from primary screening to confirmation and dose response. Flowchart illustrating the screening process and the number of hits identified at each stage. A total of 2,418 compounds were screened at multiple doses in both MYO and SMC cell types, with imaging performed at biologically relevant time points. MYO cells were imaged at a single 24-hour time point to capture their response to TGF-\u03b2, which aligns with the biological timescale of myofibroblast activation. In contrast, SMCs were imaged pre-drug exposure, and at 45 minutes and 2 hours post-drug exposure to capture their acute responses. Hit definitions were established based on these time points. For comparison, SMCs were also screened at 24 hours; however, hits from this time point were not selected for further analysis as the focus remained on acute responses. Confirmation screens were subsequently conducted in triplicate using the same formats as the primary screen. Confirmed hits were defined as compounds which maintained their initial activity levels in all three of the triplicate tests.",
+          "text_length": 1092
+        },
+        {
+          "page": 18,
+          "type": "figure",
+          "num": "7",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Figure 7: Confirmation screen results show strong correlation and cell-specific responses. (a) Scatt...",
+          "full_text": "Figure 7: Confirmation screen results show strong correlation and cell-specific responses. (a) Scatter plot showing comparing robust Z-score of contraction between two replicates in HLF confirmation screen, colored by density. (b) Bar graphs showing correlation in response variables by cell type. Note that the SMC graphs show only the 45-min results. (c) Heatmap showing confirmation index by cell type for each compound. Note that some compounds were picked at different doses in different cell types. For SMC cells, the maximum number of hits across both timepoints is shown.",
+          "text_length": 579
+        },
+        {
+          "page": 20,
+          "type": "figure",
+          "num": "8",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Figure 8: Clustering of confirmation screen results reveals distinct response types with differences...",
+          "full_text": "Figure 8: Clustering of confirmation screen results reveals distinct response types with differences in associated pathways. (a) Dendrogram and pairwise distance matrix showing hierarchical clustering of compounds based on Z-score vectors across five cell types. Selected compound targets are highlighted. (b) Bar graph comparing mean robust Z-scores of contraction (\u00b195% CI) for each cell type within clusters, with the dotted line marking the Z = -3 upper bound for hits. (c) Distribution of compounds by affected pathways within each cluster, emphasizing pathway overrepresentation. Note: only 45-min data was included in activity vectors for SMC",
+          "text_length": 649
+        },
+        {
+          "page": 22,
+          "type": "figure",
+          "num": "9",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Figure 9: Comparing responses in HLF and HHSteC shows both general and selective responses. (a) Scat...",
+          "full_text": "Figure 9: Comparing responses in HLF and HHSteC shows both general and selective responses. (a) Scatter plot of average Z-scores for contraction for compounds tested in both cell types at the same dose at the confirmation screen level. Note: not all hits were tested in both cell types, as in this case molecules were only re-tested in the cell type where they were originally identified as hits. (b) Distribution of compounds by affected pathways for confirmed hits in each cell type, highlighting pathway overrepresentation. (c) Dose response curves for selected compounds demonstrating cell-type selectivity among the MYO cells. Compounds labelled with an asterisk (*) were over 10 times more potent (by IC50) in HHSteC.",
+          "text_length": 723
+        },
+        {
+          "page": 24,
+          "type": "figure",
+          "num": "10",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Figure 10: Comparing responses in HASM and HBSM shows both general and selective responses. (a) Scat...",
+          "full_text": "Figure 10: Comparing responses in HASM and HBSM shows both general and selective responses. (a) Scatter plot of average Z-score of contraction for compounds tested in both cell types at the same dose at the confirmation screen level. (b) Venn diagram showing overlap in confirmed hits. (c) Distribution of compounds by affected pathways for confirmed hits in each cell type, emphasizing pathway overrepresentation. (d) Dose response curves for selected",
+          "text_length": 452
+        }
+      ]
+    },
+    "test2.pdf": {
+      "filename": "test2.pdf",
+      "pages": 16,
+      "captions_found": 8,
+      "captions": [
+        {
+          "page": 2,
+          "type": "fig.",
+          "num": "1",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Fig. 1 | Operational principles of the general-use FLECS force cytometer. a, Top: technology schemat...",
+          "full_text": "Fig. 1 | Operational principles of the general-use FLECS force cytometer. a, Top: technology schematic showing cells adhered to functionalized adhesive micropatterns embedded into a thin glass-supported elastomeric film. Left: top view showing multiple pattern shapes and a blow-up of a cell contracting an 'X' pattern and inwardly displacing its terminals. Middle: overlay of fluorescent patterns and phase contrast images of adhered contracting cells. Right: time-lapsed images of a contracting cell and the underlying micropattern. Scale bars, 25\u2009\u03bc\u200bm. b, Well-plate implementation. c, Image analysis workflow. Input: image sets of the micropatterns (set 1) and stained cell nuclei (set 2). Processing: the algorithm (1) identifies and measures all micropatterns in image set 1, (2) cross-references the positions of each micropattern in image set 2, and (3) determines whether 0, 1 or >\u200b2 nuclei (that is, cells) are present (see Supplementary Fig. 2). Output: mean centre-to-terminal displacements of the micropatterns containing a single nucleus (that is, one cell) are compared with the median of the corresponding measurement of all undisplaced patterns containing zero nuclei (that is, unoccupied patterns) and the differences are plotted as a horizontal histogram.",
+          "text_length": 1273
+        },
+        {
+          "page": 3,
+          "type": "fig.",
+          "num": "2",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Fig. 2 | Whole-cell contractility resolves contractile changes with differentiation and drug treatme...",
+          "full_text": "Fig. 2 | Whole-cell contractility resolves contractile changes with differentiation and drug treatment. a, Primary human adipose- or bone-marrow-derived MSCs exhibited much higher contractile responses than either committed lineage 8\u2009h post-seeding. Non-contractile sub-populations were seen among the MSCs, indicating heterogeneity and potentially low purity that resulted from standard separation methods. n represents the number of cells.  A typical contracted pattern approximately representing the median case from each distribution is shown below. Scale bars, 35\u2009\u00b5\u200bm. b, Overlays of fluorescent images of contracted patterns (green), phalloidin-stained actin (red) and nuclei (blue) of adipose-derived multi-potent MSCs showing three instances of cells fully spread over the patterns and actin stress fibres that route stresses to the vertices of the 'X' patterns. Scale bars, 25\u2009\u03bc\u200bm.  c, Representative distributions of single-cell responses to increasing doses of blebbistatin. Plots comprise pooled data from four technical replicates of each condition. d, Dose-response curve over 3 decades in which we identify an IC50 of 2.61\u2009\u00b5\u200bM. Error bars represent s.e.m. n represents number of cells in each distribution. The Kruskal\u2013Wallis test for non-parametric data was used to perform statistical analyses on the contractile distributions with significance defined as P\u2009<\u200b\u20090.05.",
+          "text_length": 1383
+        },
+        {
+          "page": 4,
+          "type": "fig.",
+          "num": "3",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Fig. 3 | Parallel study of fatal asthma and non-asthma patient-derived airway SMCs.  a, Experimental...",
+          "full_text": "Fig. 3 | Parallel study of fatal asthma and non-asthma patient-derived airway SMCs.  a, Experimental workflow. Patient-derived HASM cell lines (n\u2009=\u200b\u200912) were seeded into 8 wells each in a FLECS well-plate and a baseline image was taken. All cells were then treated with the contractile agonist bradykinin (BK; 10\u2009\u00b5\u200bM final concentration) and imaged for 16\u2009min at 4-min intervals. Half of all cells were treated with 50\u2009\u00b5\u200bM formoterol and the other half were treated with DMSO vehicle. Cells were imaged for an additional 20\u2009min at 4-min intervals and finally 10\u2009min later. b, Distributions of responsive cells from a representative patient. The distribution shifts upwards following BK treatment and is halted by formoterol. c, Median values of the evolving contractile distributions for each of 12 patient cell lines with or without formoterol treatment. Each data point in each trace comprises an average of four separate  well measurements on the well-plate. d, Pair-wise comparison of age-, race- and gender-matched patients with and without asthma. The first age listed  is for the normal patient, while the second is for the asthmatic patient. The letters denote race and gender. The full characteristics for all patient donors  are listed in Supplementary Table 1. In general, HASM cells from asthma patients exhibited greater tone and/or contraction following stimulation.  A one-tailed Student\u2019s t-test was performed on the patient pairs in d. *P\u2009<\u200b\u20090.05; **P <\u200b 0.01; ***P\u2009<\u200b\u20090.001. Error bars represent s.e.m. AA, African American; C, Caucasian; F, female; M, male.",
+          "text_length": 1576
+        },
+        {
+          "page": 5,
+          "type": "fig.",
+          "num": "4",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Fig. 4 | Collective comparisons of all asthma versus non-asthma HASM cells.  a\u2013d, Each data point re...",
+          "full_text": "Fig. 4 | Collective comparisons of all asthma versus non-asthma HASM cells.  a\u2013d, Each data point represents the median value of an individual well measurement. All wells (n\u2009=\u200b\u200996) were compared in a, only wells that received the vehicle (n\u2009=\u200b\u200948) were compared in b and c, and only wells that received formoterol (n\u2009=\u200b\u200948) were compared in d. The tone was statistically greater for asthmatic HASM cells. The initial rate of response to bradykinin (BK) was also greater for asthmatic cells. However, the long-term time response over the course of the experiment and rescue via formoterol were similar for the two groups. A one-tailed Student\u2019s t-test was performed on pooled groups. NS, not significant.",
+          "text_length": 703
+        },
+        {
+          "page": 6,
+          "type": "fig.",
+          "num": "5",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Fig. 5 | Simultaneous measurements of calcium release and contractility in patient-derived HASM sing...",
+          "full_text": "Fig. 5 | Simultaneous measurements of calcium release and contractility in patient-derived HASM single cells.  a, Experimental workflow. Adhered cells labelled with Fluo-8 were imaged in their tonic state. Agonists were then added and the calcium-sensitive dye intensity was recorded for 30\u2009s at 100-ms intervals. The same set of micropatterns was then imaged for 25\u2009min at 1-min intervals. Calcium release and contractility traces were extracted from these image series. The black triangle on the individual calcium trace denotes the addition of the agonist. F/F0 is the ratio of the fluorescent intensity (F) to the initial intensity recorded at the first time point (F0). fps, frames per second. b, All traces obtained from cells treated with bradykinin (BK) (n\u2009=\u200b\u2009503 cells). c, Population-averaged traces for each agonist. Peak values from the two traces do not correlate, indicating that a high-intensity calcium signal does not necessarily translate to robust contraction. Error bars represent s.e.m. d, Correlations between peak calcium release and peak contraction for the same single cells. Histograms displayed horizontally and longitudinally correspond to the isolated contractility and calcium measurements, respectively, and the coloured bar in each distribution identifies the bin containing the median value. While each agonist induced calcium release and contraction to some extent, there were no strong correlations between these measurements.",
+          "text_length": 1461
+        },
+        {
+          "page": 7,
+          "type": "fig.",
+          "num": "6",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Fig. 6 | Measuring phagocytic forces generated by individual human macrophages. a, Representative im...",
+          "full_text": "Fig. 6 | Measuring phagocytic forces generated by individual human macrophages. a, Representative images of hMDMs on hIgG cross patterns showing a range of phagocytic responses. b, Representative image of actin-stained hMDMs spread over circular patterns in an array. High rates of single-cell pattern coverage are achieved. c, Phagocytic contraction of (1) ring, (2) cross and (3) filled hIgG circular patterns. The three distributions of single-cell responses were not significantly different. d, Opsonin dependence in phagocytic contraction. Vitronectin, fibrinogen, BSA and hIgG were patterned in  50\u2009\u03bc\u200bm cross shapes on a stiffer, 67:1 base:crosslinker (top) and softer 71:1 (bottom) substrate. HIgG elicited the most contractile response from the largest fraction of macrophages, consistent with the role and urgency of antibody opsonization in immunity. The left y\u2009axis represents displacement, while the right y\u2009axis represents applied forces. A typical pattern representing each distribution in the 67:1 case is shown below. ***P <\u200b0.001. In c and d, n represents the number of cells in each distribution. e, Finite element method modelling of forces exerted by a phagocytosing macrophage. Forces were modelled as boundary loads on a linear elastic material and exerted between all pairs of adjacent terminals of the cross pattern. The shape of the non-displaced pattern is outlined in white and the 5\u2009\u03bc\u200bm\u2009\u00d7\u200b\u200910\u2009\u03bc\u200bm area over which force was applied is shaded. Left: complete geometry comprising a 150\u2009\u03bc\u200bm\u2009\u00d7\u200b\u2009150\u2009\u03bc\u200bm elastic material with 90\u2009\u03bc\u200bm thickness. Middle: top view showing the direction of applied tangential forces, indicated by arrows. Right: cross-sectional view of  one-quarter of the geometry at 50% opacity, highlighting the response of the material to the boundary load and indicating the direction of net displacement. Internal columns of material are depicted only to emphasize the displaced geometry due to applied forces and do not represent real boundaries in the material. The Kruskal\u2013Wallis test for non-parametric data was used to perform statistical analyses on the contractile distributions for the opsonin dependence experiment, with significance defined as P\u2009<\u200b\u20090.05. For the density dependence experiment, a one-way analysis of variance ruled out any significant differences. Scale bars, 25\u2009\u00b5\u200bm. NS, not significant.",
+          "text_length": 2354
+        },
+        {
+          "page": 8,
+          "type": "fig.",
+          "num": "7",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Fig. 7 | Effects of chloroquine, cytochalasin D and CAL-101 on hMDM contractile force. a, Contractio...",
+          "full_text": "Fig. 7 | Effects of chloroquine, cytochalasin D and CAL-101 on hMDM contractile force. a, Contraction distributions of hMDMs engaging IgG-opsonized micropatterns pre-treated with DMSO or three doses of each drug. b, Contraction distributions of hMDMs engaging IgG-opsonized micropatterns incubated with DMSO or three doses of each drug for 15\u2009min after reaching steady-state contraction. In a and b, the data are pooled from four technical replicates and 'n' represents the number of cells in each distribution. A bimodal distribution was observed reflecting an 'active' phagocytosing population (red curve) and a weakly adhered, inactive population (blue curve). A mixed Gaussian distribution is fitted to each plot to obtain information about the active populations, which is used for quantification. c,d, Median contraction levels of the active populations in a and b, respectively. Bars represent the mean of four measurements (overlayed as dots) and error bars represent the s.e.m. of no treatment and treatment with DMSO control. Measurements were compared using analyses of variance followed by two-tailed Bonferoni-corrected t-tests. *P <\u200b 0.05; **P <\u200b 0.01; ***P <\u200b 0.001. NS, not significant.",
+          "text_length": 1202
+        },
+        {
+          "page": 9,
+          "type": "table",
+          "num": "1",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Table 1 | Comparison between FLECS and existing methodologies for measuring cellular force MethodTFM...",
+          "full_text": "Table 1 | Comparison between FLECS and existing methodologies for measuring cellular force MethodTFMMicropost arraysFLECS FabricationUses particle mixing with ultraviolet-cured gels; micro-contact printing used for uniform single-cell measurements",
+          "text_length": 247
+        }
+      ]
+    },
+    "test3.pdf": {
+      "filename": "test3.pdf",
+      "pages": 15,
+      "captions_found": 7,
+      "captions": [
+        {
+          "page": 3,
+          "type": "fig.",
+          "num": "1",
+          "is_bold": false,
+          "confidence": 0.8,
+          "text_preview": "Fig. 1 | Work\ufb02ow to link IgG secretion to surface markers and transcriptomes atthe single-cell level...",
+          "full_text": "Fig. 1 | Work\ufb02ow to link IgG secretion to surface markers and transcriptomes atthe single-cell level. Human B cells are isolated from donors and expanded in adifferentiation cocktail to promote differentiation into antibody-secreting cells.Cells are then loaded into a slurry of nanovials in a tube where they bind to anti-bodies on the nanovials for cell surface markers (CD27 or CD45). The loadednanovials are incubated to accumulate secreted IgG on the surface via anti-IgGcapture antibodies. Nanovials are then stained with \ufb02uorescent or oligo-barcoded",
+          "text_length": 556
+        },
+        {
+          "page": 4,
+          "type": "fig.",
+          "num": "2",
+          "is_bold": false,
+          "confidence": 0.8,
+          "text_preview": "Fig. 2 | Linking IgG secretion to cell surface markers and intracellularmachinery using \ufb02ow cytometr...",
+          "full_text": "Fig. 2 | Linking IgG secretion to cell surface markers and intracellularmachinery using \ufb02ow cytometry. a Schematic of the staining format used toanalyze single B cell IgG secretion and cell surface markers by \ufb02ow cytometry.Created with BioRender.com. b Representative \ufb02ow cytometry density scatter plotsfor surface markers to identify populations of ASCs from active B cells using CD19and CD38 staining. IgA cells, IgM cells, and ASCs not producing either IgA or IgM(double negative, DN) were gated based on IgA and IgM staining. Fluorescencehistograms of IgG secretion signal for the various identi\ufb01ed gates and emptynanovials containing no cells. c Contour plot for CD38 and CD138 staining in the DNpopulation and \ufb02uorescence histograms of IgG signal from populations withinthese gates. The dot graph presents the % of IgG secretors from each subset (n = 8independent analyses, from four donors). Data were presented as mean \u00b1 SD. Pvalues were calculated using a paired one-way analysis of variance with a Tukey\u2019s",
+          "text_length": 1015
+        },
+        {
+          "page": 5,
+          "type": "fig.",
+          "num": "3",
+          "is_bold": false,
+          "confidence": 0.8,
+          "text_preview": "Fig. 3 | Compatibility of nanovials with single-cell transcriptomic sequencingusing the 10X Genomics...",
+          "full_text": "Fig. 3 | Compatibility of nanovials with single-cell transcriptomic sequencingusing the 10X Genomics Chromium system. a Work\ufb02ow for barcoding and ana-lyzing secretions on nanovials. Captured secreted IgG is labeled witholigonucleotide-modi\ufb01ed anti-IgG antibodies. Nanovials and associated cells areintroduced into the 10X Chromium Next GEM Chip and emulsions are formedcontaining nanovials and Barcoded Gel Beads. Reverse transcription (RT) is per-formed to create cDNA and then ampli\ufb01ed to form separate feature barcode andgene expression libraries. These libraries are sequenced and feature barcode readsare linked to each cell\u2019s transcriptomes. b HumanRaji cells on nanovials (transcriptslinked with a streptavidin feature barcode, Nanovial Barcode) are compared withRaji cells off nanovials based on the number of transcript reads and gene count.",
+          "text_length": 850
+        },
+        {
+          "page": 6,
+          "type": "fig.",
+          "num": "4",
+          "is_bold": false,
+          "confidence": 0.8,
+          "text_preview": "Fig. 4 | SEC-seq: single-cell transcriptomic sequencing associated with IgGsecretion. a Work\ufb02ow for ...",
+          "full_text": "Fig. 4 | SEC-seq: single-cell transcriptomic sequencing associated with IgGsecretion. a Work\ufb02ow for SEC-seq to link IgG secretion to transcriptome at thesingle-cell level. Partially created with BioRender.com. b Transcriptome-basedclustering of single-cell expression pro\ufb01les of human ASCs (right), and the levels ofthe corresponding levels of the anti-IgG barcode projected on the same UMAP plot(left; this data is compiled from 12,892 cells derived from three independentexperiments and three donors). c Distribution of cells from each donor overlaid",
+          "text_length": 552
+        },
+        {
+          "page": 8,
+          "type": "fig.",
+          "num": "5",
+          "is_bold": false,
+          "confidence": 0.8,
+          "text_preview": "Fig. 5 | IgG secretors are associated with different gene expression clusters andpseudotime. a IgM, ...",
+          "full_text": "Fig. 5 | IgG secretors are associated with different gene expression clusters andpseudotime. a IgM, IgA, and IgG expressing populations are gated based on themRNA expression level of IGHA and IGHM. Cells with IGHGx transcripts are high-lighted in green. Each population was projected on the gene expression UMAP plot.b Percentage of the total cellpopulation from each donor following in IgM, IgA, IgG,and activated B cell categories. c Histograms of unique IgG barcode reads in IgA/IgM (top) and IgG (middle, bottom) subsets. Dashed lines on the bottom histogramde\ufb01ne the thresholds for SEC-IgG hi and SEC-IgG lo cells. d Percentage of all cellsand IgG expressing cells that are SEC-IgG hi and SEC-IgG lo. e SEC-IgG hi cells (red)and SEC-IgG lo cells (blue) projected onto the UMAP; Activated B cells, IgG clusters,IgA/M clusters, and light chain clusters are highlighted on the UMAP. Bar graphs",
+          "text_length": 895
+        },
+        {
+          "page": 9,
+          "type": "fig.",
+          "num": "6",
+          "is_bold": false,
+          "confidence": 0.8,
+          "text_preview": "Fig. 6 | Correlation analysis of SEC-seq data to \ufb01nd surrogate PC markers by IgGsecretion ability. a...",
+          "full_text": "Fig. 6 | Correlation analysis of SEC-seq data to \ufb01nd surrogate PC markers by IgGsecretion ability. a Schematic showing how we establish correlation scoresbetween mRNA transcript levels and the SEC-IgG barcode. Created with BioR-ender.com. b Scatter plots showing donor-by-donor correlation scores betweenSEC-IgG and individual mRNA transcripts. The highest correlated genes across alldonors are labeled. c Top ~40 highly consensus correlated genes sorted by mean of",
+          "text_length": 465
+        },
+        {
+          "page": 11,
+          "type": "fig.",
+          "num": "7",
+          "is_bold": false,
+          "confidence": 0.8,
+          "text_preview": "Fig. 7 | Analysis of SEC-seq data from IgG cells to identify enriched genesassociated with IgG secre...",
+          "full_text": "Fig. 7 | Analysis of SEC-seq data from IgG cells to identify enriched genesassociated with IgG secretion. a Bar graphs display the percentage of cells in thethree thresholded regions using thresholds of SEC-IgG lo and SEC-IgG hi from eachsub-isotype of IgG cells. b Scatter plots of IGHG log transcripts and log IgG barcodereads (SEC-IgG). r is the Pearson correlation coef\ufb01cient, and the p value was theresult of a two-tailed t-test relative to the null hypothesis (no correlation). c Topdifferentially expressed genes of SEC-IgG hi. Heatmap represents the subgroup(SEC-IgG lo, SEC-IgG hi from IgG cells) mean of z-score of each gene expressionfrom each donor. Source data are provided as a Source Data \ufb01le. d Gene set",
+          "text_length": 719
+        }
+      ]
+    },
+    "test4.pdf": {
+      "filename": "test4.pdf",
+      "pages": 33,
+      "captions_found": 7,
+      "captions": [
+        {
+          "page": 26,
+          "type": "figure",
+          "num": "1",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Figure 1. Microparticle platform for high-throughput single-cell secretion screening.(A) Individual ...",
+          "full_text": "Figure 1. Microparticle platform for high-throughput single-cell secretion screening.(A) Individual cells are loaded into prefabricated microparticle containers (nanovials) and bound using a variety of binding schemes (i,ii). Particles and associated cells are agitated by pipetting with biocompatible oil and surfactant to generate monodisperse compartments (known as dropicles), which are dictated by the particle size preventing crosstalk between microcontainers. Cells are incubated to accumulate secretions on associated particles and transferred back to a water phase for fluorescent labeling. Particles, cells, and associated secretions are then analyzed and sorted using high-throughput commercial flow sorters. Isolated populations can then be screened downstream for different phenotypic (growth, productivity) and genotypic properties (RNA expression). (B) Photograph of a tube with 2 million dropicles formed using simple pipetting steps in less than 1 minute (left). Fluorescence microscopy image of uniform dropicles formed with fluorescently-stained nanovials and water-soluble dye (right) show distinctly sealed sub-nanoliter volumes. (C) Microscopy image of nanovials with cells and associated secretions after unsealing the nanovials and staining with fluorescent labels. (D) Example of a flow cytometry plot and post-sort images of enriched highly-secreting populations. Scale bars are 100 \u03bcm. de Rutte et al.Page 26",
+          "text_length": 1435
+        },
+        {
+          "page": 27,
+          "type": "figure",
+          "num": "2",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Figure 2. Loading and binding of single cells into nanovials.(A) Particles are loaded into wells and...",
+          "full_text": "Figure 2. Loading and binding of single cells into nanovials.(A) Particles are loaded into wells and settle with their cavities oriented upright due to their asymmetric center of mass. Cells are then seeded into the open cavities and attach to various binding moieties. Unbound cells are washed away using a reversible cell strainer and recovered particles and associated cells are analyzed. (B) Example microscopy images of fluorescently tagged cells bound to nanovials. (C) Comparison of cell binding is plotted below for different cell types and binding moieties. Adherent CHO DP-12 (blue) cells are bound to particle cavities through integrin binding sites (RGD peptide) linked to the particle matrix. Cell retention for suspension adapted ExpiCHO (green) was increased by introduction of positively charged poly-L-lysine (PLL). Biotinylated HEK293 cells bound to streptavidin coated nanovials (purple). Inclusion of surface-marker-specific antibodies on the nanovial surface increased retention of B cells (red). (D) Loading of cells into nanovial cavities follows Poisson statistics. > 500 particles were analyzed for each condition in cell retention experiments. Error bars represent SD of n = 3 samples for loading distribution. de Rutte et al.Page 27",
+          "text_length": 1259
+        },
+        {
+          "page": 28,
+          "type": "figure",
+          "num": "3",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Figure 3. Massively parallel device-free formation of uniform droplets.(A) Biocompatible oil and sur...",
+          "full_text": "Figure 3. Massively parallel device-free formation of uniform droplets.(A) Biocompatible oil and surfactant are added to a tube containing concentrated particles. The suspension is pipetted vigorously for 1 minute to generate smaller and smaller emulsions. (B) Microscopy images of the emulsions show a uniform population of droplets containing particles and smaller background satellite droplets. (C) Histograms of dropicle diameter for different nanovial sizes. Nanovial-containing droplets are highly uniform with comparable size distributions to advanced microfluidic techniques (CV<5%). (D) For both nanovial sizes, nearly all droplets formed have either 0 or 1 particle encapsulated, with only a small fraction (<1% for 85 \u03bcm particles and <5% for 35 \u03bcm particles) containing 2 or more particles per droplet. Scale bars, 200 \u03bcm. de Rutte et al.Page 28",
+          "text_length": 857
+        },
+        {
+          "page": 29,
+          "type": "figure",
+          "num": "4",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Figure 4. Analysis of single-cell secretions using dropicles.(A-B) Characterization of cross-talk wh...",
+          "full_text": "Figure 4. Analysis of single-cell secretions using dropicles.(A-B) Characterization of cross-talk when performing a secretion assay with human IgG producing CHO cells with and without an encapsulation step. (A) Significant cross-talk is observed when cells and particles are left in an aqueous phase during secretion incubation. (B) Minimal cross-talk is observed when cells and associated particles are encapsulated in oil during the secretion incubation step. Thresholds in both (A) and (B) are set at 3 standard deviations above empty particle signal for the encapsulation condition. (C) Measured secretion signal increases with incubation time due to accumulation of more secreted molecules. (D) Averaged secretion measurements across the producing population shows signal increasing proportionally with time across 3 separate samples. Error bars represent standard deviation between samples. (E) A secretion assay was performed on a mixture of human IgG producing CHO cells (magenta) spiked into a non-producing CHO cell population (blue). Samples were sorted based on positive IgG signal using FACS and imaged using fluorescence microscopy to determine purity and enrichment ratio. (F) Spiked target cells were successfully isolated across a range of dilutions (1:5 \u2013 1:1000) at purity up to 99% and nearly 1000-fold enrichment. 100,000 single cells were sorted during the enrichment study. de Rutte et al.Page 29",
+          "text_length": 1419
+        },
+        {
+          "page": 30,
+          "type": "figure",
+          "num": "5",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Figure 5. Selection of highly secreting cell sub-populations using FACS.(A) The secreting population...",
+          "full_text": "Figure 5. Selection of highly secreting cell sub-populations using FACS.(A) The secreting population of cells were gated and sorted based on IgG secretion signal and CellTracker\u2122 (CT) labelling. Both cells with any secretion signal disparate from background as well as the top 20% of secretors were separately sorted. (B) Microscopy images before and after sorting show enrichment of secreting cells with fluorescence intensity proportional to the selection criteria. (C) Example images of cells expanded out of nanovials after encapsulation and release. (D) After expanding isolated cells for 10 days, bulk ELISA was performed to determine the production rate for the different sub-populations. The full experiment was performed with separate cell passages (n = 4). Statistical significance based on standard two-tailed t-test (*p<0.05). Error bars represent s.d. de Rutte et al.Page 30",
+          "text_length": 887
+        },
+        {
+          "page": 31,
+          "type": "figure",
+          "num": "6",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Figure 6. Detection and sorting of antigen-specific antibody secreting cells.(A) Hybridomas or B cel...",
+          "full_text": "Figure 6. Detection and sorting of antigen-specific antibody secreting cells.(A) Hybridomas or B cells loaded into nanovials secrete antibodies which are captured onto the nanovial surface via biotinylated capture antibodies. Captured IgG is then labeled with fluorescent antigen to assess specificity of the secreted IgG. (B) Fluorescence microscopy images reveal specific signal from binding to Alexa Fluor\u2122 647 conjugated hen egg lysozyme (HEL-647) on nanovials containing a hybridoma line (HyHEL-5) secreting IgG HEL while a cell line (9E10) secreting an off-target IgG results in no signal. (C) HyHel-5 hybridomas spiked into 9E10 hybridomas (CellTracker\u2122 Blue) at a 1:25 ratio were assayed by fluorescence microscopy for HEL-specific signal before FACS sorting (Pre-Sort) and after sorting using a high HEL-AF647 gate (Post-Sort). A table showing the Pre-Sort and Post-Sort statistics is shown. (D) Using the index sorting function of the flow cytometer we sorted single hybridomas loaded onto nanovials and (i) demonstrate that RNA can be reverse transcribed and amplified from single cells loaded on nanovials at comparable rates to single cells sorted that were freely suspended. A gel band corresponding to the correct heavy chain amplicon length is observed. (ii) We additionally demonstrate that individual hybridomas can be expanded into a clonal colony directly from the nanovials following sorting. (E) de Rutte et al.Page 31",
+          "text_length": 1440
+        },
+        {
+          "page": 33,
+          "type": "table",
+          "num": "1",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Table 1. Volume of concentrated nanovials to add for different well and nanovial sizes.",
+          "full_text": "Table 1. Volume of concentrated nanovials to add for different well and nanovial sizes.",
+          "text_length": 87
+        }
+      ]
+    },
+    "test5.pdf": {
+      "filename": "test5.pdf",
+      "pages": 11,
+      "captions_found": 5,
+      "captions": [
+        {
+          "page": 2,
+          "type": "fig.",
+          "num": "1",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Fig.\u00a01.\u202f\u202f\u202fOverview of high-\u00adthroughput analysis and isolation of antigen-\u00adspecific T cells followed ...",
+          "full_text": "Fig.\u00a01.\u202f\u202f\u202fOverview of high-\u00adthroughput analysis and isolation of antigen-\u00adspecific T cells followed by recovery of a single-\u00adcell TCR library. (A) Optional pre-\u00adexpansion of PBMCs with target peptides for 7 d. (B) Functionalization of nanovials with secretion capture antibodies, pMHC monomers, and oligonucleotide barcodes via streptavidin-\u00adbiotin chemistry. (C) Loading of cognate T cells into the cavities of nanovials in a well plate and removal of unbound cells using a cell strainer. (D) Activation of T cells for 3 h and secretion capture in the cavity of nanovials. (E) Labeling of captured cytokines and cell surface markers with fluorescent detection antibodies, followed by oligonucleotide barcoded antibodies against secreted markers. (F) Sorting of cells on nanovials based on viability, CD3/CD8 expression, and secretion signal. (G) Compartmentalization of sorted population into droplets with a cell barcode bead in the 10X Chromium system for the construction of matched V(D)J and feature barcode libraries (nanovial-\u00adepitope and secretion barcodes). (H) Annotation of TCR clonotypes with corresponding secretion levels and epitopes by matching feature barcodes. (Scale bars represent 50 \u03bcm.)",
+          "text_length": 1208
+        },
+        {
+          "page": 4,
+          "type": "fig.",
+          "num": "2",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Fig.\u00a02.\u202f\u202f\u202fDetection of antigen-\u00adspecific T cells on HLA-\u00adA*02:01 restricted NY-\u00adESO-\u00ad1 pMHC labeled ...",
+          "full_text": "Fig.\u00a02.\u202f\u202f\u202fDetection of antigen-\u00adspecific T cells on HLA-\u00adA*02:01 restricted NY-\u00adESO-\u00ad1 pMHC labeled nanovials. (A) PBMCs transduced with 1G4 TCRs are captured onto NY-\u00adESO-\u00ad1 pMHC labeled nanovials with ~94% of bound cells staining positive for anti-\u00adNGFR. (Scale bar represents 50 \u03bcm.) (B) The fraction of nanovials containing live cells plotted as a function of pMHC concentration for 1G4-\u00adtransduced (black dots) or untransduced PBMCs (magenta dots). (C) Flow cytometry plots of IFN-\u00ad\u03b3 secretion induced by nanovials at 3 h for 1G4-\u00adtransduced PBMCs loaded onto anti-\u00adCD45 labeled nanovials (red dots) or NY-\u00adESO-\u00ad1 pMHC labeled nanovials (cyan dots). Secreting cells on pMHC-\u00adlabeled nanovials sorted from the gated area are shown. (Scale bar represents 50 \u03bcm.) (D) The purity of recovered cognate T cells with various affinities to HLA-\u00adA*02:01 restricted NY-\u00adESO-\u00ad1 pMHC are shown. Measurements are based on binding to nanovials (black circles), nanovials with IFN-\u00ad\u03b3 secretion (grey squares), or labeling with dual-\u00adcolor tetramers (red diamonds) as a function of TCR.",
+          "text_length": 1075
+        },
+        {
+          "page": 5,
+          "type": "fig.",
+          "num": "3",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Fig.\u00a03.\u202f\u202f\u202fSorting of antigen-\u00adspecific cells and recovery of single-\u00adcell TCR clonotypes using nanov...",
+          "full_text": "Fig.\u00a03.\u202f\u202f\u202fSorting of antigen-\u00adspecific cells and recovery of single-\u00adcell TCR clonotypes using nanovial, tetramer, or CD137 approaches. (A) TCR identification workflow and matching epitope deconvolution using nanovials along with comparison techniques. For nanovials, each TCR was matched with a corresponding oligonucleotide barcode sequence reflecting pMHC information. (B) Summary of single-\u00adcell TCR \u03b1\u03b2 sequencing results. Sorted cells refers to the number of cells gated and sorted as positive (see SI\u00a0Appendix, Fig.\u00a0S6 for detailed gates). (C) A representative Venn diagram of recovered \u03b1\u03b2-\u00adpaired TCR sequences from three approaches with a frequency \u22655 (Left) or \u22652 (Right). (D) The percent of GFP+/CD8+/murineTCR\u03b2+ cells from NFAT-\u00adGFP reporter Jurkat cells transduced with respective TCR and exposed to APCs with exogenously added peptides. CMV1-\u00adreactive TCRs recovered by both nanovial and tetramer approaches (dark blue) and only nanovials (light blue) or EBV-\u00adreactive TCRs recovered by nanovials (red) are plotted. Connecting lines and an asterisk represent TCRs recovered from the same cell clonotype. Venn diagram showing four overlapping and six additional TCRs recovered by nanovials compared to CMV1 pMHC tetramers. (E) IFN-\u00ad\u03b3 secretion measured by ELISA is plotted following exposure of PBMCs transduced with the same 19 reactive TCRs to APCs with added peptide. No secretion was observed from the negative control group, PBMCs transduced with the same vector but without TCRs. TCRs enriched with CDR3s for the same motif are represented by a connecting line and motif nomenclature. (F) Workflow representing direct ex\u00a0vivo analysis without a preactivation expansion and enrichment process. (G) Flow cytometry plots of freshly thawed PBMCs showing gates for CD3+CD8+ cells and IFN-\u00ad\u03b3 secretion signal using nanovials coated with CMV1-\u00adspecific pMHC. (H) Flow cytometry plots of the same PBMC population using tetramer staining. Gates for CD3+CD8+ cells and tetramer positivity are shown. (I) Summary of rare CMV1-\u00adspecific T cells isolated by nanovial or tetramer methods.",
+          "text_length": 2092
+        },
+        {
+          "page": 7,
+          "type": "fig.",
+          "num": "4",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Fig.\u00a04.\u202f\u202f\u202fIdentification of rare functional TCRs using granzyme B secretion-\u00adbased nanovial assay. (...",
+          "full_text": "Fig.\u00a04.\u202f\u202f\u202fIdentification of rare functional TCRs using granzyme B secretion-\u00adbased nanovial assay. (A) Flow cytometry plots of granzyme B secretion specifically induced by pMHC-\u00adlabeled nanovials at 3 h for TCR156 transduced PBMCs loaded onto anti-\u00adCD45 labeled nanovials or PAP22 pMHC labeled nanovials. Secreting cells on pMHC-\u00adlabeled nanovials sorted from the gated area are shown. (Scale bars represent 50 \u03bcm.) (B) Flow cytometry plots of human donor PBMCs loaded onto nanovials and secreting granzyme B. CD3+CD8+ cells on nanovials were sorted as granzyme B secreting (Granzyme B+) or nonsecreting cells (Granzyme B\u2212). (C) Summary of single-\u00adcell TCR \u03b1\u03b2 sequencing results. Sorted cells refer to the number of cells gated and sorted as positive or negative. (D) Anti-\u00adgranzyme B barcode levels for Granzyme B+ and Granzyme B\u2212 populations. Dashed lines represent the secretion barcode level cut-\u00adoff: red Granzyme BHigh (barcode > 2,000), blue Granzyme BMedium (2,000 > barcode > 500). (E) Top 10 differentially expressed genes among Granzyme B+ and Granzyme B\u2212 populations. (F) Secretion phenotype distribution of Granzyme B+ clonotypes classified as Granzyme BHigh, Granzyme BMedium, and Granzyme BLow. (G) Identification of three functional TCRs validated upon re-\u00adexpression in human PBMCs and measurement of IFN-\u00ad\u03b3 secretion following exposure to APCs with added peptides. IFN-\u00ad\u03b3 secretion measurement of all 25 TCRs tested are represented in SI\u00a0Appendix, Fig.\u00a0S8B. Two TCRs from the Granzyme BHigh (red bar) and one TCR from Granzyme BMedium (blue bar) populations were found to be functional. (H) Nanovials accurately recovered the epitope information encoding specific pMHC molecules for the three functional TCRs in G. (I) The highest recovery rate of functional TCRs was observed from TCRs recovered based on the highest granzyme B secretion barcode signal.",
+          "text_length": 1872
+        },
+        {
+          "page": 9,
+          "type": "fig.",
+          "num": "5",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Fig.\u00a05.\u202f\u202f\u202fMultiplexed secretion-\u00adbased profiling of prostate tissue antigen-\u00adspecific T cells. (A) F...",
+          "full_text": "Fig.\u00a05.\u202f\u202f\u202fMultiplexed secretion-\u00adbased profiling of prostate tissue antigen-\u00adspecific T cells. (A) FACS analysis and sorting gates for identifying functional antigen-\u00adspecific T cells transduced with TCR128 loaded on HLA-\u00adA*02:01 restricted PAP21 pMHC labeled nanovials. IFN-\u00ad\u03b3 and TNF-\u00ad\u03b1 secretion signals were analyzed from the CD3+/CD8+/NGFR+ cells. Images of T cells on nanovials that were sorted reflecting each of the four quadrant gates including an IFN-\u00ad\u03b3 and TNF-\u00ad\u03b1 polyfunctional population (Q2). (Scale bars represent 50 \u03bcm.) (B) The population distribution based on secretion phenotype is shown as a pie chart for TCR 128, 218, and 156 transduced cells. CD3+CD8+ cells with secretion signal below the background threshold were considered as nonsecretors. (C) Overview of multiplexed profiling of untransduced human primary T cells based on cytokine secretion and cell phenotype. T cells loaded on nanovials labeled with two cytokine capture antibodies (anti-\u00adIFN-\u00ad\u03b3 and anti-\u00adTNF-\u00ad\u03b1, or anti-\u00adIFN-\u00ad\u03b3 and anti-\u00adIL-\u00ad2) and anti-\u00adCD45 were activated under PMA/ionomycin stimulation. Secreted cytokines and cell surface markers (CD4, CD8) were stained with fluorescent detection antibodies, followed by analysis and sorting with a cell sorter. (D) The distribution of secretion phenotype for CD4+ and CD8+ human primary T cells based on IFN-\u00ad\u03b3 and TNF-\u00ad\u03b1 secretion.",
+          "text_length": 1373
+        }
+      ]
+    },
+    "test6.pdf": {
+      "filename": "test6.pdf",
+      "pages": 24,
+      "captions_found": 6,
+      "captions": [
+        {
+          "page": 19,
+          "type": "figure",
+          "num": "1",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Figure 1 \u2013. Black dots overview, manufacturing, and characterization. (A) Principle of black dots, w...",
+          "full_text": "Figure 1 \u2013. Black dots overview, manufacturing, and characterization. (A) Principle of black dots, where tension from an adhered cell causes the pattern of dots to displace. (B) Manufacturing black dots substrates using microcontact printing and a sacrificial PVA film to transfer an array of fiducial markers from a patterned stamp to a soft substrate. (C) Example of final manufactured substrate that can be made in the desired fluorescent channel using different fluorescent BSA such as BSA-Alexa Fluor 488 (green), BSA-Alexa Fluor 594 (orange), and BSA-Alexa Fluor 647 (red). The black dotted line area is shown on the right, scaled up 4X larger. (D) Characterization of diameter, center-center spacing, and circularity of black dots. \u03bc = mean, \u03c3 = standard deviation. Data from 25,081 individual dots from 2 substrates. Y-axis is Probability Density for all three plots. Normal Gaussian probability density functions are overlayed. Beussman et al.Page 19",
+          "text_length": 959
+        },
+        {
+          "page": 20,
+          "type": "figure",
+          "num": "2",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Figure 2 \u2013. Black dots offer a higher yield way to measure forces. (A) Example of a field of view co...",
+          "full_text": "Figure 2 \u2013. Black dots offer a higher yield way to measure forces. (A) Example of a field of view containing many platelets adhered to and contracting on the black dots. Here, platelets are stained for both F-actin (green) and GPIb (magenta). Note that unspread platelets, platelets too close to their neighbor, or platelets too close to the edge are excluded from analysis, as described in the methods cell exclusion criteria section and as shown in Supplementary Fig. 4A. (B) A fluorescence image of deformed substrate with platelet stained for F-actin (pixel intensity scaled from purple to yellow). (C) The black dots pattern is binarized and the centroid of each dot is found using automated detection. (D) Undeformed dots near the edges (circled) are used to fit horizontal and vertical lines throughout the entire field of view. The intersection of these lines marks the zero-displacement state of each dot. Inset is 2x magnified. (E) Forces are calculated from the displacement of each dot relative to its zero-displacement (undeformed) location. (F) Forces from at least 100 platelets from 6 donors show high variability within each donor and between donors. Lines indicate significant differences in donor forces (p < 0.05 when tested with a one-way ANOVA and Tukey\u2019s post hoc test). Number of cells analyzed for donors 1, 2, 3, 4, 5, and 6 are n = 111, 117, 100, 120, 112, and 100, respectively. Beussman et al.Page 20",
+          "text_length": 1429
+        },
+        {
+          "page": 21,
+          "type": "figure",
+          "num": "3",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Figure 3 \u2013. Platelet size, shape, and structure correlate with force. (A) Two examples of platelets ...",
+          "full_text": "Figure 3 \u2013. Platelet size, shape, and structure correlate with force. (A) Two examples of platelets with small and large areas. (B) Cell boundary and area measured from (A). (C) Platelet forces and area are linearly related. Note that in this panel, the x-axis maximum is zoomed to better view the data. Due to this axis zoom, two points (0.37% of the data) are not shown, but all points are included within all analyses (including the fit line calculation). (D) Two examples of platelets with low and high circularity. (E) Cell boundary and circularity measured from (D). (F) Platelet force and circularity show a moderate positive relationship. (G) Two examples of platelets with low and high F-actin dispersion. Color bar indicates fluorescence intensity which has been normalized to calculate F-actin dispersion. (H) Cell boundary and F-actin dispersion measured from (G). (I) F-actin dispersion is moderately positively correlated with platelet force. Shaded regions of fit lines indicate 95% prediction interval for the data. Beussman et al.Page 21",
+          "text_length": 1054
+        },
+        {
+          "page": 22,
+          "type": "figure",
+          "num": "4",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Figure 4 \u2013. Platelet size, shape, and structure do not strongly correlate with each other, but incre...",
+          "full_text": "Figure 4 \u2013. Platelet size, shape, and structure do not strongly correlate with each other, but increase together with force. (A) Area and circularity moderately correlate (R2 = 0.26) when plotting platelets of all forces (n = 540). (B) To examine the relationship of circularity and area with increasing force, platelets are split into four quartiles (n = 135 in each quartile) by force, where the lowest force quartile (quartile #1) includes platelets generating less than 14.0 nN force, quartile #2 contains platelets generating 14.0\u201320.6 nN force, quartile #3 contains platelets generating 20.6\u201329.6 nN force, and the highest force quartile (quartile #4) contains platelets generating greater than 29.6 nN force. Contour density plots and histograms of area and circularity at each force quartile show that quartile #1 (low-force platelets) have low area and a large range of circularity, while quartile #4 (high-force platelets) tend to have both higher area and high circularity. (C) The median and median standard deviation show that circularity and area increase together with each force quartile. (D) F-actin dispersion and area do not correlate (R2 = 0.0074), (E-F) but show a similar trend when examining force quartiles. (H) F-actin dispersion and circularity moderately correlate (R2 = 0.21) and (I-J) show a shift from low-force platelets having large ranges of circularity and F-actin dispersion to high-force platelets have high circularity and high F-actin dispersion. Note that in A-F, the x-axis maximum is zoomed to better view the data. Due to this axis zoom, two points (0.37% of the data) are not shown, but all points are included within all analyses. Beussman et al.Page 22",
+          "text_length": 1697
+        },
+        {
+          "page": 23,
+          "type": "figure",
+          "num": "5",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Figure 5 \u2013. K-means clustering of platelet size, shape, and structure predict differences in force. ...",
+          "full_text": "Figure 5 \u2013. K-means clustering of platelet size, shape, and structure predict differences in force. An unbiased K-means clustering approach based on platelet area, circularity, and F-actin dispersion separated the population of platelets into 2 clusters. The two clusters are shown for (A) F-actin dispersion and circularity, (B) F-actin dispersion and area, and (C) circularity and area. (D) The most representative platelet from each cluster is shown. Platelets from cluster 1 have smaller area, lower circularity, and lower F-actin dispersion than cluster 2. (E) Forces from cluster 2 are significantly higher than cluster 1, even though force was not used to determine the clusters. Beussman et al.Page 23",
+          "text_length": 709
+        },
+        {
+          "page": 24,
+          "type": "table",
+          "num": "1",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Table 1",
+          "full_text": "Table 1",
+          "text_length": 7
+        }
+      ]
+    },
+    "test7.pdf": {
+      "filename": "test7.pdf",
+      "pages": 20,
+      "captions_found": 8,
+      "captions": [
+        {
+          "page": 5,
+          "type": "figure",
+          "num": "1",
+          "is_bold": false,
+          "confidence": 0.8,
+          "text_preview": "Figure 1- A. Cartridge, B. mCytoCounter device, C. Assay protocol",
+          "full_text": "Figure 1- A. Cartridge, B. mCytoCounter device, C. Assay protocol",
+          "text_length": 65
+        },
+        {
+          "page": 6,
+          "type": "figure",
+          "num": "2",
+          "is_bold": false,
+          "confidence": 0.8,
+          "text_preview": "Figure 2- Components of mCytoCounter. A. 3D view of mCytoCounter, B. Flow diagram of mCytoCounter wo...",
+          "full_text": "Figure 2- Components of mCytoCounter. A. 3D view of mCytoCounter, B. Flow diagram of mCytoCounter working. C1= Cartridge no 1 and W1= Well 1",
+          "text_length": 140
+        },
+        {
+          "page": 9,
+          "type": "figure",
+          "num": "3",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Figure 3\u2013 Evaluation of membranes and dyes. A. Different filters (used for capturing somatic cells) ...",
+          "full_text": "Figure 3\u2013 Evaluation of membranes and dyes. A. Different filters (used for capturing somatic cells) under a fluorescence microscope, blank (top) and with somatic cells (bottom). a= Glass Fibre B (GF/B), b= GF/D, c= GF/CP, and d= GF/F and e= Polycarbonate track-etched (PCTE). B. Evaluation of different labeling dyes. a= Acridine orange, b= CFSE, c= Eva Green and d= FDA. Sample is somatic cells spiked in milk. The cells were observed in a fluorescence microscope (Olympus IX71)",
+          "text_length": 479
+        },
+        {
+          "page": 10,
+          "type": "figure",
+          "num": "4",
+          "is_bold": false,
+          "confidence": 0.8,
+          "text_preview": "Figure 4- GF/B membrane evaluation; n = 3",
+          "full_text": "Figure 4- GF/B membrane evaluation; n = 3",
+          "text_length": 41
+        },
+        {
+          "page": 12,
+          "type": "figure",
+          "num": "5",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Figure 5- Calibration curves. A- Calibration curve from microscope. The experiment was repeated 4 ti...",
+          "full_text": "Figure 5- Calibration curves. A- Calibration curve from microscope. The experiment was repeated 4 times. B- Results in the column. The experiment was repeated 5 times.  C- Results in the cartridge. The experiment was repeated 5 times. The somatic cells were isolated and spiked in the depleted milk (1:5). Error bars represent standard deviation",
+          "text_length": 345
+        },
+        {
+          "page": 14,
+          "type": "figure",
+          "num": "6",
+          "is_bold": true,
+          "confidence": 1.0,
+          "text_preview": "Figure 6- A- Calibration plot with mCytoCounter. The experiment was repeated 3 times. B- Comparison ...",
+          "full_text": "Figure 6- A- Calibration plot with mCytoCounter. The experiment was repeated 3 times. B- Comparison between mCytoCounter and microscope count. The whole milk was diluted with 1XPBS (1:5).",
+          "text_length": 187
+        },
+        {
+          "page": 14,
+          "type": "table",
+          "num": "1",
+          "is_bold": false,
+          "confidence": 0.8,
+          "text_preview": "Table 1- Comparison between commercial somatic cell counters",
+          "full_text": "Table 1- Comparison between commercial somatic cell counters",
+          "text_length": 60
+        },
+        {
+          "page": 15,
+          "type": "table",
+          "num": "1",
+          "is_bold": false,
+          "confidence": 0.8,
+          "text_preview": "Table 1- Comparison between commercial somatic cell counters a Pre-processing is the steps required ...",
+          "full_text": "Table 1- Comparison between commercial somatic cell counters a Pre-processing is the steps required to process the samples before it could be added into the device/cartridge b Analysis time considers the time taken by the device to produce results (this doesn\u2019t include the pre-processing time) c Deployability parameter considers the weight and size of the equipment. Whether it can be easily moved to the farms and used when required d Device costs of these systems were obtained from various e-commerce websites. Actual cost may vary.",
+          "text_length": 537
+        }
+      ]
+    },
+    "test_no_abstract_header.pdf": {
+      "filename": "test_no_abstract_header.pdf",
+      "pages": 1,
+      "captions_found": 0,
+      "captions": []
+    }
+  }
+}

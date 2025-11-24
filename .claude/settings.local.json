@@ -25,7 +25,15 @@
       "Bash(python3:*)",
       "Bash(cat:*)",
       "Bash(mkdir:*)",
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "Bash(tee:*)",
+      "Bash(awk:*)",
+      "Bash(/dev/null)",
+      "Bash(for:*)",
+      "Bash(do)",
+      "Bash(done)",
+      "Bash(docs/testPDFs/test_outputs/FINAL_TEST_RESULTS.md)",
+      "Bash(npx tailwindcss:*)"
     ],
     "deny": [],
     "ask": []

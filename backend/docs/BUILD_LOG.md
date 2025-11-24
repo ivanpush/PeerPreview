@@ -1,6 +1,142 @@
 # Build Log
 
-## 2025-11-22: Enhanced Figure Caption Detection
+## 2025-11-22 (Evening): 12-Phase Analysis System - Phase 3 & 4 Implementation
+
+### Feature: Multi-line Title Detection & Author Extraction
+
+Implemented Phase 3 (Multi-line Title Detection) and Phase 4 (Author Detection with Superscript Parsing) from the core analysis implementation plan. These phases dramatically improve title detection and add author extraction capability.
+
+### Changes Made:
+
+#### Phase 3: Multi-line Title Detection
+
+**File:** `backend/services/parser/pipeline/stages/analysis.py`
+
+1. **Enhanced `detect_title()` with multi-line assembly:**
+   - Assembles titles spanning multiple BoldSpan blocks
+   - Precise thresholds for continuation detection:
+     - Font size difference < 1.5pt
+     - Horizontal alignment < 15px (x_position)
+     - Vertical gap < 1.5 × font_size
+   - Stops at affiliation keywords (university, department, @, .edu)
+   - Stops at author name patterns
+   - Uses font median for baseline comparison
+
+2. **Added `should_add_to_title()` helper:**
+   - Validates if next span should be appended to title
+   - Checks font similarity, alignment, vertical proximity
+   - Pattern-based stop detection
+
+**Results:**
+- ✅ 7/8 test PDFs now have titles detected (huge improvement)
+- ✅ Multi-line titles correctly assembled (e.g., test.pdf's 100+ char title)
+- ✅ test3.pdf went from 0/8 sections detected → 6/8 sections (rescued!)
+
+#### Phase 4: Author Detection with Superscript Parsing
+
+**Files:** `backend/services/parser/pipeline/models.py`, `backend/services/parser/pipeline/stages/analysis.py`
+
+1. **New data models in `models.py`:**
+   - `Author`: Represents parsed author with name, affiliation markers, is_corresponding, email
+   - `AuthorResult`: Contains authors list, text, detection method, confidence score
+   - Enhanced `BoldSpan`: Added `x_position` and `height` properties
+   - Updated `StructureInfo`: Added `authors` field
+
+2. **Author detection functions in `analysis.py`:**
+   - `detect_authors()`: Main detection logic
+     - Finds bold text after title within 100pt gap
+     - Multi-line author assembly
+     - Returns AuthorResult with confidence scoring
+   - `is_author_block()`: Validates if text contains author information
+     - Checks for commas, superscripts (¹²³*†‡§¶), numbers
+     - Name pattern matching (First Last, F. Last, FL Last)
+     - Stops at affiliation keywords
+   - `parse_author_names()`: Extracts individual authors
+     - Splits on commas, semicolons, 'and'
+     - Parses superscript affiliation markers
+     - Detects corresponding author markers
+   - `calculate_author_confidence()`: Scores detection quality (0.6-1.0)
+     - Base: 0.8 for heuristic location
+     - +0.1 for superscript presence
+     - +0.05 for multiple authors
+     - +0.05 for strong name patterns
+
+3. **Updated `extract_bold_spans()`:**
+   - Now populates `x_position` (bbox[0]) and `height` (bbox[3] - bbox[1])
+   - Required for Phase 4 geometric analysis
+
+4. **Integration:**
+   - Integrated into `analyze_structure()` after title detection
+   - Stored in `StructureInfo.authors`
+
+**Files:** `backend/services/parser/pipeline/builder.py`
+
+5. **Builder updates:**
+   - Added `structure_info` property to store for external access
+   - Stores after Stage 2 analysis
+
+**Files:** `backend/main.py`
+
+6. **Validation updates:**
+   - Updated `/upload` endpoint to use Phase 4 author detection
+   - Updated `/document/{id}` endpoint to use Phase 4 author detection
+   - Replaced preamble heuristic with: `bool(builder.structure_info.authors and len(builder.structure_info.authors.authors) > 0)`
+   - Fixed type error with explicit `bool()` conversion
+
+**Results:**
+- ✅ test2.pdf: Authors successfully detected
+- ✅ Clean integration with existing validation system
+- ✅ Confidence scoring working (0.95 for test2.pdf)
+- ⚠️ Most PDFs don't have bold authors after title (expected - will need Phase 5 for full coverage)
+
+### Test Results Summary:
+
+**Title Detection (Phase 3):**
+- test.pdf: ✅ Full multi-line title
+- test2.pdf: ✅ Title detected
+- test3.pdf: ✅ Title detected (major rescue: 0/8 → 6/8 sections)
+- test4.pdf: ✅ Title detected
+- test5.pdf: ✅ Title detected
+- test6.pdf: ✅ Title detected
+- test7.pdf: ✅ Title detected
+- **Overall: 7/8 PDFs with titles**
+
+**Author Detection (Phase 4):**
+- test2.pdf: ✅ Authors detected (1/8)
+- Others: ⚠️ No bold authors after title (expected)
+
+**Section Detection (Overall Impact):**
+- test.pdf: 7/8 sections (missing: authors)
+- test2.pdf: 7/8 sections (missing: abstract)
+- test3.pdf: 6/8 sections (missing: abstract, authors) - **rescued from 0/8!**
+- test4.pdf: 6/8 sections (missing: authors, results)
+- test5.pdf: 4/8 sections (missing: abstract, authors, discussion, references)
+- test6.pdf: 7/8 sections (missing: authors)
+- test7.pdf: 7/8 sections (missing: authors)
+
+### Frontend Integration:
+
+No changes required - validation automatically uses new detection methods via `section_validation` API field.
+
+### Next Steps:
+
+Remaining phases from core_analysis_implementation.md:
+- **Phase 5:** Affiliations detection with institution matching
+- **Phase 7:** Introduction detection (first body section heuristic)
+- **Phase 9:** Section content extraction with column awareness
+- **Phase 10-12:** Figures, edge cases, unparsed content tracking
+
+### Technical Notes:
+
+- Phase 3 uses geometric analysis (font size, position, spacing)
+- Phase 4 uses pattern matching + heuristics for robust author detection
+- Both phases integrated seamlessly into existing pipeline
+- Zero performance degradation observed
+- All existing tests pass
+
+---
+
+## 2025-11-22 (Afternoon): Enhanced Figure Caption Detection
 
 ### Feature: Comprehensive Caption Detection with Multi-line Support
 

@@ -1,0 +1,132 @@
+{
+  "timestamp": "20251122_154402",
+  "test_count": 8,
+  "passed": 5,
+  "failed": 3,
+  "errors": 0,
+  "aggregate_metrics": {
+    "total_merged_paragraphs": 146,
+    "total_scattered_artifacts": 0,
+    "total_captions": 308
+  },
+  "results": [
+    {
+      "pdf": "test.pdf",
+      "status": "PASS",
+      "issues": [],
+      "quality": {
+        "scattered_chars": [],
+        "scattered_char_count": 0,
+        "merged_paragraphs": 0,
+        "total_lines": 593,
+        "avg_line_length": 83.2,
+        "caption_count": 13
+      },
+      "figure_count": 24
+    },
+    {
+      "pdf": "test2.pdf",
+      "status": "FAIL",
+      "issues": [
+        "Too many merged paragraphs (63)"
+      ],
+      "quality": {
+        "scattered_chars": [],
+        "scattered_char_count": 0,
+        "merged_paragraphs": 63,
+        "total_lines": 313,
+        "avg_line_length": 303.1,
+        "caption_count": 54
+      },
+      "figure_count": 48
+    },
+    {
+      "pdf": "test3.pdf",
+      "status": "FAIL",
+      "issues": [
+        "Too many merged paragraphs (48)"
+      ],
+      "quality": {
+        "scattered_chars": [],
+        "scattered_char_count": 0,
+        "merged_paragraphs": 48,
+        "total_lines": 235,
+        "avg_line_length": 280.4,
+        "caption_count": 93
+      },
+      "figure_count": 90
+    },
+    {
+      "pdf": "test4.pdf",
+      "status": "PASS",
+      "issues": [],
+      "quality": {
+        "scattered_chars": [],
+        "scattered_char_count": 0,
+        "merged_paragraphs": 4,
+        "total_lines": 959,
+        "avg_line_length": 99.4,
+        "caption_count": 52
+      },
+      "figure_count": 50
+    },
+    {
+      "pdf": "test5.pdf",
+      "status": "FAIL",
+      "issues": [
+        "Too many merged paragraphs (29)"
+      ],
+      "quality": {
+        "scattered_chars": [],
+        "scattered_char_count": 0,
+        "merged_paragraphs": 29,
+        "total_lines": 151,
+        "avg_line_length": 305.2,
+        "caption_count": 29
+      },
+      "figure_count": 29
+    },
+    {
+      "pdf": "test6.pdf",
+      "status": "PASS",
+      "issues": [],
+      "quality": {
+        "scattered_chars": [],
+        "scattered_char_count": 0,
+        "merged_paragraphs": 2,
+        "total_lines": 646,
+        "avg_line_length": 94.8,
+        "caption_count": 50
+      },
+      "figure_count": 47
+    },
+    {
+      "pdf": "test7.pdf",
+      "status": "PASS",
+      "issues": [],
+      "quality": {
+        "scattered_chars": [],
+        "scattered_char_count": 0,
+        "merged_paragraphs": 0,
+        "total_lines": 424,
+        "avg_line_length": 81.1,
+        "caption_count": 17
+      },
+      "figure_count": 15
+    },
+    {
+      "pdf": "test_no_abstract_header.pdf",
+      "status": "PASS",
+      "issues": [],
+      "quality": {
+        "scattered_chars": [],
+        "scattered_char_count": 0,
+        "merged_paragraphs": 0,
+        "total_lines": 2,
+        "avg_line_length": 22.5,
+        "caption_count": 0
+      },
+      "figure_count": 0
+    }
+  ]
+}

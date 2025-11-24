@@ -1,5 +1,3 @@
-# Author manuscript
-
 Acta Biomater. Author manuscript; available in PMC 2024 June 01.
 
 
@@ -10,49 +8,10 @@ Acta Biomater. 2023 June ; 163: 302–311. doi:10.1016/j.actbio.2021.11.013.
 # **Black Dots: High-Yield Traction Force Microscopy Reveals** **Structural Factors Contributing to Platelet Forces**
 
 
-**Kevin M. Beussman** [1,#], **Molly Y. Mollica** [2,#], **Andrea Leonard** [1], **Jeffrey Miles** [3], **John Hocter** [4],
-**Zizhen Song** [5], **Moritz Stolla** [3,6], **Sangyoon J. Han** [7], **Ashley Emery** [1], **Wendy E. Thomas** [2],
-**Nathan J. Sniadecki** [1,2,8,9,10,*]
-
-
-1Department of Mechanical Engineering, University of Washington, Seattle, WA
-
-
-2Department of Bioengineering, University of Washington, Seattle, WA
-
-
-3Bloodworks Northwest Research Institute, Seattle, WA
-
-
-4Department of Biostatistics, University of Washington, Seattle, WA
-
-
-5School of Computer Science & Engineering, University of Washington, Seattle, WA
-
-
-6Division of Hematology, Department of Medicine, University of Washington, Seattle, WA
-
-
-7Department of Biomedical Engineering, Michigan Technological University, Houghton, MI
-
-
-8Institute for Stem Cell and Regenerative Medicine, University of Washington, Seattle, WA
-
-
-9Department of Laboratory Medicine & Pathology, University of Washington, Seattle, WA
-
-
-10Resuscitation Engineering Science Unit (RESCU), University of Washington, Seattle, WA
-
-
-**Abstract**
+**Kevin M. Beussman** [1,#], **Molly Y. Mollica** [2,#], **Andrea Leonard** [1], **Jeffrey Miles** [3], **John Hocter** [4], **Zizhen Song** [5], **Moritz Stolla** [3,6], **Sangyoon J. Han** [7], **Ashley Emery** [1], **Wendy E. Thomas** [2], **Nathan J. Sniadecki** [1,2,8,9,10,*]
 
 
 Measuring the traction forces produced by cells provides insight into their behavior and
-
-physiological function. Here, we developed a technique (dubbed ‘black dots’) that microcontact
-
-prints a fluorescent micropattern onto a flexible substrate to measure cellular traction forces
 
 without constraining cell shape or needing to detach the cells. To demonstrate our technique, we
 
@@ -61,53 +20,23 @@ assessed human platelets, which can generate a large range of forces within a po
 platelets that exert more force have more spread area, are more circular, and have more uniformly
 
 
-- corresponding author: nsniadec@uw.edu.
 #co-authorship
 AUTHOR CONTRIBUTIONS
-K.M.B. and M.Y.M. contributed equally to this study. K.M.B., A.L., and N.J.S. conceived of the black dot method. K.M.B., M.Y.M.,
-and A.L. optimized the black dot method. J.M. recruited blood donors, collected, and washed platelets. M.Y.M. performed the platelet
-force assay. K.M.B., S.J.H., A.H., and N.J.S. determined the model to calculate force from black dot displacement. K.M.B. primarily
-wrote the analysis code, with contributions from M.Y.M. and Z.S. M.Y.M. and K.M.B. analyzed the images, plotted the data, and
-made the figures. J.H., M.Y.M., and K.M.B. conducted the statistical analyses. K.M.B, M.Y.M., W.E.T., and N.J.S. designed the
-experiments, interpreted the data, and wrote the manuscript. All authors reviewed and edited the manuscript.
+K.M.B. and M.Y.M. contributed equally to this study. K.M.B., A.L., and N.J.S. conceived of the black dot method. K.M.B., M.Y.M., and A.L. optimized the black dot method. J.M. recruited blood donors, collected, and washed platelets. M.Y.M. performed the platelet force assay. K.M.B., S.J.H., A.H., and N.J.S. determined the model to calculate force from black dot displacement. K.M.B. primarily wrote the analysis code, with contributions from M.Y.M. and Z.S. M.Y.M. and K.M.B. analyzed the images, plotted the data, and made the figures. J.H., M.Y.M., and K.M.B. conducted the statistical analyses. K.M.B, M.Y.M., W.E.T., and N.J.S. designed the experiments, interpreted the data, and wrote the manuscript. All authors reviewed and edited the manuscript.
 
 
-**Publisher's Disclaimer:** This is a PDF file of an unedited manuscript that has been accepted for publication. As a service to our
-customers we are providing this early version of the manuscript. The manuscript will undergo copyediting, typesetting, and review
-of the resulting proof before it is published in its final form. Please note that during the production process errors may be discovered
-which could affect the content, and all legal disclaimers that apply to the journal pertain.
+**Publisher's Disclaimer:** This is a PDF file of an unedited manuscript that has been accepted for publication. As a service to our customers we are providing this early version of the manuscript. The manuscript will undergo copyediting, typesetting, and review of the resulting proof before it is published in its final form. Please note that during the production process errors may be discovered which could affect the content, and all legal disclaimers that apply to the journal pertain.
 
 
-Declaration of Competing Interest
-N.J.S is a co-founder, board member, and has equity in Stasys Medical Corporation. He is also a scientific advisor and has equity in
-Curi Bio, Inc.
+Declaration of Competing Interest N.J.S is a co-founder, board member, and has equity in Stasys Medical Corporation. He is also a scientific advisor and has equity in
 
 
 distributed F-actin filaments. As a result of the high yield of data obtainable by this technique,
 
 we were able to evaluate multivariate mixed effects models with interaction terms and conduct a
 
-clustering analysis to identify clusters within our data. These statistical techniques demonstrated
-
-a complex relationship between spread area, circularity, F-actin dispersion, and platelet force,
-
 including cooperative effects that significantly associate with platelet traction forces.
 
-
-**Graphical Abstract**
-
-
-**Keywords**
-
-
-Microcontact printing; Traction force microscopy; Cell mechanics; Platelets;
-Polydimethylsiloxane (PDMS)
-
-
-**1. INTRODUCTION**
-
-
-Cells use forces to migrate, contract, and probe their physical environment [1,2]. These
 
 forces arise from interactions of cytoskeletal proteins, which transmit cellular forces to the
 
@@ -152,15 +81,7 @@ increase the number of cells that can be efficiently analyzed, many of the exist
 provide a large degree of constraint on the adhesion and spreading of a cell, impacting
 
 
-Acta Biomater. Author manuscript; available in PMC 2024 June 01.
-
-
 their physiological significance [11–14], or are low-yield likely due to manufacturing
-
-considerations [10].
-
-
-Platelets use their traction forces to adhere and form a hemostatic plug that stops bleeding
 
 [15–17]. During this process, the actin cytoskeleton of a platelet drives its shape change,
 
@@ -180,8 +101,7 @@ impact traction forces in platelets. Moreover, these factors may be interrelated
 
 actin cytoskeleton underlies changes in shape and spreading. Previous measurements of
 
-platelet forces have used atomic force microscopy [25], classical TFM [19,21,22], reference
-free TFM [12], and nanoposts [26] to elucidate properties of single platelets such as their
+platelet forces have used atomic force microscopy [25], classical TFM [19,21,22], reference free TFM [12], and nanoposts [26] to elucidate properties of single platelets such as their
 
 temporal and directional contraction dynamics, the function of platelet mechanoreceptors,
 
@@ -193,14 +113,6 @@ platelets, they have been hampered by constraints on the shape or spreading of p
 
 and/or their low yield, often analyzing fewer than thirty platelets per condition.
 
-
-Here, we present a microcontact-printed, reference-free TFM technique for measuring
-
-single-cell forces without constraining cell shape and size. Our method relies on
-
-microcontact printing to deposit a grid of fluorescently labeled bovine serum albumin
-
-(BSA) onto a flexible polydimethylsiloxane (PDMS) substrate. This procedure results
 
 in a fluorescent surface with a pattern of circular islands that are non-fluorescent (Fig.
 
@@ -214,22 +126,7 @@ staining so that traction forces can be measured alongside analysis of structure
 
 localization, and 3) it does not constrain cell shape and size due to the substrate containing
 
-a contiguous adhesive protein. With this approach, we characterized forces, cytoskeletal
-
-structures, and geometric properties of more than five hundred human platelets for linear
-
-mixed-effects modeling and K-means clustering, from which we identified that platelet size,
-
 shape, and cytoskeletal structure have both independent and cooperative contributions to
-
-platelet force.
-
-
-**2. MATERIALS AND METHODS**
-
-
-**2.1. Microfabrication of patterned stamp**
-
 
 First, a silicon master mold with an array of vertical pillars was created with the desired
 
@@ -238,14 +135,6 @@ pattern size by photolithography as described previously [26]. Briefly, photores
 onto a silicon wafer and an e-beam lithography system was used to pattern circles of
 
 the desired diameter and center-to-center spacing. The photoresist was then developed and
-
-etched to create a master containing an array of vertical silicon pillars. For cells as small as
-
-platelets, we used a pattern with a diameter of 850 nm and center-to-center spacing of 2 μm,
-
-
-Acta Biomater. Author manuscript; available in PMC 2024 June 01.
-
 
 and the final etched pattern had a height of 3.5 μm. Larger cell types are amenable to larger
 
@@ -296,10 +185,6 @@ PDMS was used in this study because its stiffness can be tuned within a biologic
 
 range, it is amenable to microcontact printing, and it can be coated with proteins of interest
 
-relevant to numerous cell types [29–31]. Soft PDMS (Sylgard 527, 1:1 ratio of parts A
-
-and B, Dow Corning) and normal PDMS (Sylgard 184, 10:1 ratio of base to curing agent)
-
 were first prepared separately and allowed to degas for at least 20 minutes under vacuum.
 
 The two types of PDMS were then mixed to form a mixture of 5% Sylgard 184 and 95%
@@ -322,14 +207,6 @@ PDMS substrates were removed from the oven and cooled at room temperature. To ex
 
 unpolymerized monomers, the PDMS substrates were submerged in 100% ethanol for at
 
-least 3 hours, followed by multiple rinses with DI water before drying in a 65 °C oven
-
-overnight.
-
-
-**2.4. Microcontact printing and functionalization of black dots**
-
-
 The patterned PDMS stamps and PVA film were used to deposit a layer of fluorescent
 
 protein onto the flexible PDMS substrates similar to previously published techniques [27,28]
@@ -337,13 +214,9 @@ protein onto the flexible PDMS substrates similar to previously published techni
 (Fig. 1B). All steps were performed at room temperature and preferably in a standard
 
 
-Acta Biomater. Author manuscript; available in PMC 2024 June 01.
-
-
 tissue culture hood. First, Alexa-Fluor 488, 594, or 647-conjugated-BSA (5 mg/mL,
 
-Life Technologies) was diluted 1:2000 in PBS (1X without calcium or magnesium, Life
-Technologies), and a 400 μL droplet was gently placed onto a patterned stamp (about 1 cm [2 ]
+Life Technologies) was diluted 1:2000 in PBS (1X without calcium or magnesium, Life Technologies), and a 400 μL droplet was gently placed onto a patterned stamp (about 1 cm [2 ]
 
 
 area) within a petri dish. The droplet was left on the stamp for 30 minutes to allow the
@@ -430,32 +303,16 @@ were healthy and not taking any platelet inhibiting medications. Platelets were 
 plasma by platelet centrifugation washing modified from previously described protocols
 
 
-Acta Biomater. Author manuscript; available in PMC 2024 June 01.
-
-
 [20]. Platelets were pelleted at 1000 g and resuspended in HEN Buffer, pH 6.5 containing
 
 10 mM HEPES (Sigma), 1 mM EDTA (Corning), and 150 mM NaCl (Fisher Scientific) and
 
 supplemented with 0.5 μM prostacyclin (PGI2) (Sigma). To prevent activation, platelets were
 
-incubated for 10 minutes at room-temperature and then repeat treated with 0.5 μM PGI2
-and pelleted via centrifugation at 800 g. Platelets were resuspended and diluted to 3·10 [8 ]
+incubated for 10 minutes at room-temperature and then repeat treated with 0.5 μM PGI2 and pelleted via centrifugation at 800 g. Platelets were resuspended and diluted to 3·10 [8 ]
 
 
-platelets/mL with modified Tyrode’s buffer, pH 7.3 containing 5 mM HEPES (Sigma), 137
-
-mM NaCl (Fisher Scientific), 5.5 mM glucose (Fisher Scientific), 12 mM NaHCO3 (Sigma),
-
-0.3 mM NaH2PO4 (Sigma), 2 mM KCl (JT Baker), 1 mM MgCl2 (Sigma), and 2 mM CaCl2
-
-(Macron Fine Chemicals) and supplemented with 0.35% (w/v) human serum albumin and
-
-0.02 U/mL apyrase.
-
-
-Immediately before seeding the washed, isolated platelets onto the black dots, the platelets
-were further diluted to 2.5·10 [7] /mL in Tyrode’s Buffer, pH 7.5 containing 10 mM HEPES
+Immediately before seeding the washed, isolated platelets onto the black dots, the platelets were further diluted to 2.5·10 [7] /mL in Tyrode’s Buffer, pH 7.5 containing 10 mM HEPES
 
 (Fisher Scientific), 138 mM NaCl (JT Baker), 5.5 mM glucose (ACROS Organics), 12
 
@@ -511,17 +368,9 @@ Fixed and stained platelets were imaged on a Nikon A1R or a Leica SP8 confocal
 
 microscope with a 60x oil objective (NA = 1.4). Images of platelets were taken with a
 
-large enough field of view to ensure several black dots with no deformation surrounded each
-
-platelet.
-
-
 To quantify the deformation of the black dots, we modified a previously existing method for
 
 tracking objects [32]. The fluorescent image of the black dots was first run through a spatial
-
-
-Acta Biomater. Author manuscript; available in PMC 2024 June 01.
 
 
 bandpass filter with a characteristic noise length scale of 1 pixel. The dots were identified
@@ -558,11 +407,9 @@ displacements which is obtained trivially by our black dots pattern without requ
 
 any interpolation which may introduce inaccuracies. Any missing data locations near the
 
-periphery or corners of the image are filled in with imaginary data points assigned with zero
-displacement. A regularization parameter of λ [2] = 5·10 [−8] was used to smooth out noise in the
+periphery or corners of the image are filled in with imaginary data points assigned with zero displacement. A regularization parameter of λ [2] = 5·10 [−8] was used to smooth out noise in the
 
-traction forces. Traction stresses, which are the output from FTTC, were converted to force
-by multiplying each stress by the area it is applied over, which is assumed to be a 4 μm [2 ]
+traction forces. Traction stresses, which are the output from FTTC, were converted to force by multiplying each stress by the area it is applied over, which is assumed to be a 4 μm [2 ]
 
 
 square encompassing the dot.
@@ -612,9 +459,6 @@ calculation, a cell with well-dispersed or uniform F-actin stain will receive a 
 while a cell with localized F-actin intensity will receive a value closer to 0. The threshold
 
 
-Acta Biomater. Author manuscript; available in PMC 2024 June 01.
-
-
 value of 0.1 was chosen because it resulted in both the largest spread of F-actin dispersion
 
 between cells and yielded a quantification most consistent with qualitative measures.
@@ -642,14 +486,6 @@ the lowest number of clusters such that the mean Gap value for the next highest 
 clusters falls within the standard error of the previous one. Silhouette and Gap values were
 
 evaluated for up to 6 clusters, and both criteria suggest that 2 clusters is optimal for our data
-
-set (Supplementary Fig. 10).
-
-
-**2.12. Statistics**
-
-
-To compare donor to donor variability, a one-way ANOVA and Tukey’s post hoc test
 
 was used to determine whether differences in the means between donors were statistically
 
@@ -701,18 +537,9 @@ was observed to be highly variable in some cells; we tuned the exposure time to 
 of our abilities but for some cells it was difficult to completely eliminate image saturation.
 
 
-Acta Biomater. Author manuscript; available in PMC 2024 June 01.
-
-
 Therefore, we excluded cells that had greater than 1% saturated pixels within the cell
 
 boundary from the analysis shown in Figures 3, 4, and 5.
-
-
-**3. RESULTS**
-
-
-**3.1. Microcontact printing of black dots with uniformity in size, spacing, and shape**
 
 
 Black dots were manufactured, coated with extracellular matrix protein (ECM), and seeded
@@ -791,9 +618,6 @@ additional 30 minutes to allow the platelets to spread and contract before fixin
 This timing for platelet binding and contraction was selected based on dynamics of platelet
 
 
-Acta Biomater. Author manuscript; available in PMC 2024 June 01.
-
-
 force generation [12,19,21,24]. With immunofluorescence staining and confocal microscopy,
 
 many platelets can be captured in a single image (Fig. 2A and Supplementary Fig. 4). We
@@ -834,12 +658,6 @@ The mean force measured by black dots was 24.1 nN, which is similar to other met
 
 that have reported forces between 19 and 200 nN for individual platelets [12,21,25,26]. We
 
-also noted a wide range of forces, from 3.5 to 98.7 nN (28-fold difference) with a standard
-
-deviation of 14.7 nN. This observation agrees with other studies; atomic force microscopy
-
-found that platelet forces varied from 1.5 to 79 nN [25] (more than 50-fold difference),
-
 and subsequent work using TFM and nanoposts have also observed heterogeneity in platelet
 
 forces [21,26]. We observed heterogeneity both within and between donors, including a
@@ -850,19 +668,7 @@ significant differences between mean platelet force from different donors (lines
 
 Our results show that platelet forces measured with black dots are similar in magnitude to
 
-previous measurements and indicate that populations of platelets produce a wide range of
-
-forces.
-
-
-**3.3. Platelet forces correlate with spread area, circularity, and F-actin dispersion**
-
-
 We questioned whether the heterogeneity in total platelet forces could be attributed to their
-
-size, shape, and/or cytoskeletal structure. Platelets typically bind to a surface, increase their
-
-spread area approximately 5-fold over about 10 minutes, and then sustain their maximum
 
 spread area [21,23,24]. In our experiments, platelets were allowed to adhere and spread for
 
@@ -870,20 +676,10 @@ spread area [21,23,24]. In our experiments, platelets were allowed to adhere and
 
 spread area as a factor influencing the overall magnitude of traction forces in platelets as it
 
-has been observed previously [21,22] as well as in many other cell types [39–42]. We find
-that the spread area of platelets ranged from 8.7 to 205.5 μm [2], with a mean and standard
-deviation of 43.5 ± 22.4 μm [2] . We observed a positive relationship between force and area,
-having a best-fit slope of 0.53 nN/μm [2] (R [2] = 0.49) (Fig. 3A–C). This force-area relationship
+has been observed previously [21,22] as well as in many other cell types [39–42]. We find that the spread area of platelets ranged from 8.7 to 205.5 μm [2], with a mean and standard deviation of 43.5 ± 22.4 μm [2] . We observed a positive relationship between force and area, having a best-fit slope of 0.53 nN/μm [2] (R [2] = 0.49) (Fig. 3A–C). This force-area relationship
 
 is maintained in all six donors, with some minor differences between them (Supplementary
 
-Fig. 5). While our results indicate a strong force-area relationship in platelets, we do find a
-
-
-Acta Biomater. Author manuscript; available in PMC 2024 June 01.
-
-
-degree of heterogeneity in our results. For example, platelets with a spread area of 50–55
 μm [2] exerted forces from 14.3 to 71.0 nN, with a mean and standard deviation of 31.8 ±
 
 13.3 nN. Although spread area has a strong correlation with platelet forces, it does not fully
@@ -903,12 +699,7 @@ forces [42], we investigated whether platelet shape correlates with force. We ob
 
 that adherent platelets on the black dots adopt a variety of different shapes, ranging from
 
-stellate to circular. We used an image analysis metric of circularity to quantitatively assess
-
-these different shapes (Fig. 3D–E). We find that more circular platelets generate larger
-
-forces than ones that are stellate and less circular (Fig. 3F). However, the best-fit slope
-of this relationship is 0.33 nN/0.01 circularity units (R [2] = 0.20) so it is not as correlative
+forces than ones that are stellate and less circular (Fig. 3F). However, the best-fit slope of this relationship is 0.33 nN/0.01 circularity units (R [2] = 0.20) so it is not as correlative
 
 as the force-area relationship. All six donors showed similar force-circularity behavior
 
@@ -931,26 +722,13 @@ interior, ranging from punctate to dispersed (Fig. 3G–H). The amount of F-acti
 
 was quantified and plotted against force. We found that platelets with more dispersed F-actin
 
-structure typically generated higher forces and the best-fit slope of this relationship is 0.21
-nN/0.01 F-actin dispersion units (R [2] = 0.10) (Fig. 3I). All six donors exhibited a similar
+structure typically generated higher forces and the best-fit slope of this relationship is 0.21 nN/0.01 F-actin dispersion units (R [2] = 0.10) (Fig. 3I). All six donors exhibited a similar
 
 force-F-actin dispersion relationship (Supplementary Fig. 7). Collectively, we find that area
 
 has a strong correlation with force, and that circularity and F-actin dispersion moderately
 
-correlate with force.
-
-
-**3.4. Multivariate mixed effects modeling reveals cooperative effects between F-actin**
-**dispersion and circularity and between F-actin dispersion and spread area**
-
-
-Because platelet size, shape, and cytoskeletal organization change concurrently during
-
-platelet adhesion [23], we also investigated whether area, circularity, F-actin dispersion
-
-correlate with each other (Fig. 4A, D, H). For area and circularity, we observed a moderate
-correlation (R [2] = 0.26) (Fig. 4A). To visualize the combined relationship of circularity and
+correlate with each other (Fig. 4A, D, H). For area and circularity, we observed a moderate correlation (R [2] = 0.26) (Fig. 4A). To visualize the combined relationship of circularity and
 
 area with increasing force, platelets were split into four equally sized groups by force,
 
@@ -967,9 +745,6 @@ increasing force (Fig. 4C). Similarly, area and F-actin dispersion (Fig. 4D–F)
 F-actin dispersion and circularity (Fig. 4G–I) increase together with each force quartile. The
 
 
-Acta Biomater. Author manuscript; available in PMC 2024 June 01.
-
-
 particularly extreme shift observed in the circularity versus F-actin dispersion contour plots
 
 is somewhat surprising, given that each of these factors only moderately correlate with force.
@@ -981,14 +756,9 @@ F-actin dispersion and that together, they have strong effects on force. We next
 more robust approach to assess interaction effects between these structural factors.
 
 
-To further investigate how F-actin dispersion, circularity, and area affect force in different
-
-but overlapping ways, we used R Studio to create a multivariate mixed effects model
-
 allowing for 2-way interactions between each of the structural factors (Table 1). The mixed
 
-effects model shows that across donors, the difference in force between two platelets that
-differ in area by 1 μm [2] (while other factors remain constant) is 0.41 nN (95% CI: 0.37,
+effects model shows that across donors, the difference in force between two platelets that differ in area by 1 μm [2] (while other factors remain constant) is 0.41 nN (95% CI: 0.37,
 
 0.45) on average, with the larger platelet generating more force (Table 1). Similarly, when
 
@@ -1030,12 +800,7 @@ supports the contribution of area, circularity, and F-actin dispersion to force 
 
 a complex relationship between these structural factors. Additionally, this analysis reveals
 
-significant cooperative effects between F-actin dispersion and circularity and between F
-actin dispersion and area.
-
-
-**3.5. Unbiased clustering supports relationship between spread area, circularity, F-actin**
-**dispersion, and platelet force**
+significant cooperative effects between F-actin dispersion and circularity and between F actin dispersion and area.
 
 
 Big data analyses are powerful tools that can help extract significant information in data
@@ -1044,10 +809,6 @@ sets that are large and unwieldy. In our population of platelets, we observed a 
 
 of shapes, sizes, and structures, so we wanted to investigate whether there are clusters or
 
-subpopulations of platelets in our data set. We performed an unbiased K-means clustering
-
-analysis on platelet area, circularity, and F-actin dispersion to locate possible clusters, and
-
 to see if the relationships we observed between these structural factors and force could be
 
 explained by distinct clusters or subpopulations of platelets. Two clusters arose from this
@@ -1055,9 +816,6 @@ explained by distinct clusters or subpopulations of platelets. Two clusters aros
 analysis: cluster 1 is generally characterized by low spread area, circularity, and F-actin
 
 dispersion while cluster 2 is high spread area, circularity, and F-actin dispersion (Fig. 5A–
-
-
-Acta Biomater. Author manuscript; available in PMC 2024 June 01.
 
 
 D and Supplementary Fig. 10A–D). We also performed the clustering analysis on each
@@ -1090,9 +848,7 @@ physiological origin and significance of these clusters will be further investig
 studies. Ultimately, this clustering analysis serves as a demonstration of big data analyses
 
 that are made possible by data from hundreds of cells collected with a high-yield method.
-
-
-**4. DISCUSSION**
+### **DISCUSSION**
 
 
 Here, we showed how the black dots approach is used to measure traction forces in platelets.
@@ -1149,9 +905,6 @@ contractile forces and provide new insight into the large heterogeneity of obser
 forces.
 
 
-Acta Biomater. Author manuscript; available in PMC 2024 June 01.
-
-
 Beyond the measures of area, circularity, and F-actin dispersion, the amount of contractile
 
 force a cell can generate likely depends on several factors that we have not measured
@@ -1165,9 +918,7 @@ states. We anticipate that the black dots platform may be used in conjunction wi
 detailed fluorescent staining, western-blotting, or genetic screening to further enhance the
 
 understanding of force generation of platelets and other cells.
-
-
-**5. CONCLUSION**
+### **CONCLUSION**
 
 
 The black dots approach is a high-yield single-cell force measurement platform that
@@ -1193,25 +944,14 @@ approach may be useful to measure the forces in many cell types beyond platelets
 
 
 Refer to Web version on PubMed Central for supplementary material.
+### **Acknowledgements**
 
 
-**Acknowledgements**
+This work was supported by the National Science Foundation (CMMI-1661730, CMMI-1824792), the National Institutes of Health (EB001650, HL147462, HL149734, GM135806, AR074990, TR003519, DE029827), and the Institute for Stem Cell and Regenerative Medicine Fellows Program. Imaging in this study was completed in the Lynn & Mike Garvey Imaging Core with the helpful guidance of Dale Hailey. The Department of Biostatistics Statistical Consulting Services and Prof. Megan Othus assisted with the statistical analysis for this study. We would also like to thank Robin Zhexuan Yan, Kenia Diaz, Francisco Morales, and Anabela Soto for their assistance testing the robustness of black dot manufacturing and/or the usability of the black dot analysis code.
+### **References**
 
 
-This work was supported by the National Science Foundation (CMMI-1661730, CMMI-1824792), the National
-Institutes of Health (EB001650, HL147462, HL149734, GM135806, AR074990, TR003519, DE029827), and the
-Institute for Stem Cell and Regenerative Medicine Fellows Program. Imaging in this study was completed in the
-Lynn & Mike Garvey Imaging Core with the helpful guidance of Dale Hailey. The Department of Biostatistics
-Statistical Consulting Services and Prof. Megan Othus assisted with the statistical analysis for this study. We would
-also like to thank Robin Zhexuan Yan, Kenia Diaz, Francisco Morales, and Anabela Soto for their assistance testing
-the robustness of black dot manufacturing and/or the usability of the black dot analysis code.
-
-
-**References**
-
-
-[1]. Fletcher DA, Mullins RD, Cell mechanics and the cytoskeleton, Nature. 463 (2010) 485–492.
-10.1038/nature08908. [PubMed: 20110992]
+[1]. Fletcher DA, Mullins RD, Cell mechanics and the cytoskeleton, Nature. 463 (2010) 485–492. 10.1038/nature08908. [PubMed: 20110992]
 
 [2]. Zemel A, De R, Safran SA, Mechanical consequences of cellular force generation, Curr. Opin.
 Solid State Mater. Sci 15 (2011) 169–176. 10.1016/j.cossms.2011.04.001.
@@ -1219,8 +959,7 @@ Solid State Mater. Sci 15 (2011) 169–176. 10.1016/j.cossms.2011.04.001.
 [3]. Polacheck WJ, Chen CS, Measuring cell-generated forces: A guide to the available tools, Nat.
 Methods 13 (2016) 415–423. 10.1038/nmeth.3834. [PubMed: 27123817]
 
-[4]. Roca-Cusachs P, Conte V, Trepat X, Quantifying forces in cell biology, Nat. Cell Biol 19 (2017)
-742–751. 10.1038/ncb3564. [PubMed: 28628082]
+[4]. Roca-Cusachs P, Conte V, Trepat X, Quantifying forces in cell biology, Nat. Cell Biol 19 (2017) 742–751. 10.1038/ncb3564. [PubMed: 28628082]
 
 [5]. Obenaus AM, Mollica MY, Sniadecki NJ, (De)form and Function: Measuring Cellular Forces with
 Deformable Materials and Deformable Structures, Adv. Healthc. Mater 9 (2020) 1–16. 10.1002/
@@ -1233,177 +972,97 @@ devices for measuring traction forces, Methods. 94 (2016) 51–64. 10.1016/j.yme
 [PubMed: 26265073]
 
 
-Acta Biomater. Author manuscript; available in PMC 2024 June 01.
+[7]. Lee J, Leonard M, Oliver T, Ishihara A, Jacobson K, Traction forces generated by locomoting keratocytes, J. Cell Biol 127 (1994) 1957–1964. 10.1083/jcb.127.6.1957. [PubMed: 7806573]
 
+[8]. Dembo M, Wang Y-LL, Stresses at the cell-to-substrate interface during locomotion of fibroblasts, Biophys. J 76 (1999) 2307–2316. 10.1016/S0006-3495(99)77386-8. [PubMed: 10096925]
 
-[7]. Lee J, Leonard M, Oliver T, Ishihara A, Jacobson K, Traction forces generated by locomoting
-keratocytes, J. Cell Biol 127 (1994) 1957–1964. 10.1083/jcb.127.6.1957. [PubMed: 7806573]
+[9]. Schwarz US, Soiné JRD, Traction force microscopy on soft elastic substrates: A guide to recent computational advances, Biochim. Biophys. Acta - Mol. Cell Res 1853 (2015) 3095–3104. 10.1016/j.bbamcr.2015.05.028.
 
-[8]. Dembo M, Wang Y-LL, Stresses at the cell-to-substrate interface during locomotion of fibroblasts,
-Biophys. J 76 (1999) 2307–2316. 10.1016/S0006-3495(99)77386-8. [PubMed: 10096925]
+[10]. Bergert M, Lendenmann T, Zündel M, Ehret AE, Panozzo D, Richner P, Kim DK, Kress SJP, Norris DJ, Sorkine-Hornung O, Mazza E, Poulikakos D, Ferrari A, Confocal reference free traction force microscopy, Nat. Commun 7 (2016) 12814. 10.1038/ncomms12814. [PubMed: 27681958]
 
-[9]. Schwarz US, Soiné JRD, Traction force microscopy on soft elastic substrates: A guide to recent
-computational advances, Biochim. Biophys. Acta - Mol. Cell Res 1853 (2015) 3095–3104.
-10.1016/j.bbamcr.2015.05.028.
+[11]. Polio SR, Rothenberg KE, Stamenović D, Smith ML, A micropatterning and image processing approach to simplify measurement of cellular traction forces, Acta Biomater. 8 (2012) 82–88. 10.1016/j.actbio.2011.08.013. [PubMed: 21884832]
 
-[10]. Bergert M, Lendenmann T, Zündel M, Ehret AE, Panozzo D, Richner P, Kim DK, Kress SJP,
-Norris DJ, Sorkine-Hornung O, Mazza E, Poulikakos D, Ferrari A, Confocal reference free
-traction force microscopy, Nat. Commun 7 (2016) 12814. 10.1038/ncomms12814. [PubMed:
-27681958]
+[12]. Myers DR, Qiu Y, Fay ME, Tennenbaum M, Chester D, Cuadrado J, Sakurai Y, Baek J, Tran R, Ciciliano JC, Ahn B, Mannino RG, Bunting ST, Bennett C, Briones M, Fernandez-Nieves A, Smith ML, Brown AC, Sulchek T, Lam WA, Single-platelet nanomechanics measured by highthroughput cytometry, Nat. Mater 16 (2017) 230–235. 10.1038/nmat4772. [PubMed: 27723740]
 
-[11]. Polio SR, Rothenberg KE, Stamenović D, Smith ML, A micropatterning and image processing
-approach to simplify measurement of cellular traction forces, Acta Biomater. 8 (2012) 82–88.
-10.1016/j.actbio.2011.08.013. [PubMed: 21884832]
+[13]. Pushkarsky I, Tseng P, Black D, France B, Warfe L, Koziol-White CJ, Jester WF, Trinh RK, Lin J, Scumpia PO, Morrison SL, Panettieri RA, Damoiseaux R, Di Carlo D, Elastomeric sensor surfaces for high-throughput single-cell force cytometry, Nat. Biomed. Eng 2 (2018) 1. 10.1038/ s41551-018-0207-0. [PubMed: 31015659]
 
-[12]. Myers DR, Qiu Y, Fay ME, Tennenbaum M, Chester D, Cuadrado J, Sakurai Y, Baek J, Tran
-R, Ciciliano JC, Ahn B, Mannino RG, Bunting ST, Bennett C, Briones M, Fernandez-Nieves A,
-Smith ML, Brown AC, Sulchek T, Lam WA, Single-platelet nanomechanics measured by highthroughput cytometry, Nat. Mater 16 (2017) 230–235. 10.1038/nmat4772. [PubMed: 27723740]
-
-[13]. Pushkarsky I, Tseng P, Black D, France B, Warfe L, Koziol-White CJ, Jester WF, Trinh RK,
-Lin J, Scumpia PO, Morrison SL, Panettieri RA, Damoiseaux R, Di Carlo D, Elastomeric sensor
-surfaces for high-throughput single-cell force cytometry, Nat. Biomed. Eng 2 (2018) 1. 10.1038/
-s41551-018-0207-0. [PubMed: 31015659]
-
-[14]. Griffin BP, Largaespada CJ, Rinaldi NA, Lemmon CA, A novel method for quantifying traction
-forces on hexagonal micropatterned protein features on deformable poly-dimethyl siloxane
+[14]. Griffin BP, Largaespada CJ, Rinaldi NA, Lemmon CA, A novel method for quantifying traction forces on hexagonal micropatterned protein features on deformable poly-dimethyl siloxane
 sheets, MethodsX. 6 (2019) 1343–1352. 10.1016/j.mex.2019.05.011. [PubMed: 31417850]
 
-[15]. Ono A, Westein E, Hsiao S, Nesbitt WS, Hamilton JR, Schoenwaelder SM, Jackson
-SP, Identification of a fibrin-independent platelet contractile mechanism regulating primary
-hemostasis and thrombus growth, Blood. 112 (2008) 90–99. 10.1182/blood-2007-12-127001.
+[15]. Ono A, Westein E, Hsiao S, Nesbitt WS, Hamilton JR, Schoenwaelder SM, Jackson SP, Identification of a fibrin-independent platelet contractile mechanism regulating primary hemostasis and thrombus growth, Blood. 112 (2008) 90–99. 10.1182/blood-2007-12-127001.
 
 [PubMed: 18310501]
 
-[16]. Tutwiler V, Litvinov RI, Lozhkin AP, Peshkova AD, Lebedeva T, Ataullakhanov FI, Spiller
-KL, Cines DB, Weisel JW, Kinetics and mechanics of clot contraction are governed by
-the molecular and cellular composition of the blood, Blood. 127 (2016) 149–159. 10.1182/
-blood-2015-05-647560. [PubMed: 26603837]
+[16]. Tutwiler V, Litvinov RI, Lozhkin AP, Peshkova AD, Lebedeva T, Ataullakhanov FI, Spiller KL, Cines DB, Weisel JW, Kinetics and mechanics of clot contraction are governed by the molecular and cellular composition of the blood, Blood. 127 (2016) 149–159. 10.1182/ blood-2015-05-647560. [PubMed: 26603837]
 
-[17]. Williams E, Oshinowo O, Ravindran A, Lam W, Myers D, Feeling the Force: Measurements
-of Platelet Contraction and Their Diagnostic Implications, Semin. Thromb. Hemost (2018).
-10.1055/s-0038-1676315.
+[17]. Williams E, Oshinowo O, Ravindran A, Lam W, Myers D, Feeling the Force: Measurements of Platelet Contraction and Their Diagnostic Implications, Semin. Thromb. Hemost (2018). 10.1055/s-0038-1676315.
 
 [18]. White JG, Platelet structure, in: Platelets, 2nd ed., Academic Press, 2007: pp. 45–73. 10.1016/
 B978-012369367-9/50765-5.
 
-[19]. Henriques SS, Sandmann R, Strate A, Köster S, Force field evolution during human blood
-platelet activation, J. Cell Sci 125 (2012) 3914–3920. 10.1242/jcs.108126. [PubMed: 22582082]
+[19]. Henriques SS, Sandmann R, Strate A, Köster S, Force field evolution during human blood platelet activation, J. Cell Sci 125 (2012) 3914–3920. 10.1242/jcs.108126. [PubMed: 22582082]
 
-[20]. Hechler B, Dupuis A, Mangin PH, Gachet C, Platelet preparation for function testing in the
-laboratory and clinic: Historical and practical aspects, Res. Pract. Thromb. Haemost 3 (2019)
-615–625. 10.1002/rth2.12240. [PubMed: 31624781]
+[20]. Hechler B, Dupuis A, Mangin PH, Gachet C, Platelet preparation for function testing in the laboratory and clinic: Historical and practical aspects, Res. Pract. Thromb. Haemost 3 (2019) 615–625. 10.1002/rth2.12240. [PubMed: 31624781]
 
-[21]. Hanke J, Probst D, Zemel A, Schwarz US, Köster S, Dynamics of force generation by spreading
-platelets, Soft Matter. 14 (2018) 6571–6581. 10.1039/c8sm00895g. [PubMed: 30052252]
+[21]. Hanke J, Probst D, Zemel A, Schwarz US, Köster S, Dynamics of force generation by spreading platelets, Soft Matter. 14 (2018) 6571–6581. 10.1039/c8sm00895g. [PubMed: 30052252]
 
-[22]. Hanke J, Ranke C, Perego E, Köster S, Human blood platelets contract in perpendicular direction
-to shear flow, Soft Matter. 15 (2019) 2009–2019. 10.1039/c8sm02136h. [PubMed: 30724316]
+[22]. Hanke J, Ranke C, Perego E, Köster S, Human blood platelets contract in perpendicular direction to shear flow, Soft Matter. 15 (2019) 2009–2019. 10.1039/c8sm02136h. [PubMed: 30724316]
 
-[23]. Thomas SG, The structure of resting and activated platelets, in: Platelets, 4th ed., Academic
-Press, London, United Kingdom, 2019: pp. 47–77. 10.1016/B978-0-12-813456-6.00003-5.
+[23]. Thomas SG, The structure of resting and activated platelets, in: Platelets, 4th ed., Academic Press, London, United Kingdom, 2019: pp. 47–77. 10.1016/B978-0-12-813456-6.00003-5.
 
-[24]. Paknikar AK, Eltzner B, Köster S, Direct characterization of cytoskeletal reorganization
-during blood platelet spreading, Prog. Biophys. Mol. Biol 144 (2019) 166–176. 10.1016/
-j.pbiomolbio.2018.05.001. [PubMed: 29843920]
+[24]. Paknikar AK, Eltzner B, Köster S, Direct characterization of cytoskeletal reorganization during blood platelet spreading, Prog. Biophys. Mol. Biol 144 (2019) 166–176. 10.1016/ j.pbiomolbio.2018.05.001. [PubMed: 29843920]
 
 
-Acta Biomater. Author manuscript; available in PMC 2024 June 01.
-
-
-[25]. Lam WA, Chaudhuri O, Crow A, Webster KD, De Li T, Kita A, Huang J, Fletcher DA,
-Mechanics and contraction dynamics of single platelets and implications for clot stiffening, Nat.
+[25]. Lam WA, Chaudhuri O, Crow A, Webster KD, De Li T, Kita A, Huang J, Fletcher DA, Mechanics and contraction dynamics of single platelets and implications for clot stiffening, Nat.
 Mater 10 (2011) 61–66. 10.1038/nmat2903. [PubMed: 21131961]
 
-[26]. Feghhi S, Munday AD, Tooley WW, Rajsekar S, Fura AM, Kulman JD, López JA, Sniadecki NJ,
-Glycoprotein Ib-IX-V Complex Transmits Cytoskeletal Forces That Enhance Platelet Adhesion,
-Biophys. J 111 (2016) 601–608. 10.1016/j.bpj.2016.06.023. [PubMed: 27508443]
+[26]. Feghhi S, Munday AD, Tooley WW, Rajsekar S, Fura AM, Kulman JD, López JA, Sniadecki NJ, Glycoprotein Ib-IX-V Complex Transmits Cytoskeletal Forces That Enhance Platelet Adhesion, Biophys. J 111 (2016) 601–608. 10.1016/j.bpj.2016.06.023. [PubMed: 27508443]
 
-[27]. Yu H, Xiong S, Tay CY, Leong WS, Tan LP, A novel and simple microcontact printing technique
-for tacky, soft substrates and/or complex surfaces in soft tissue engineering, Acta Biomater. 8
-(2012) 1267–1272. 10.1016/j.actbio.2011.09.006. [PubMed: 21945825]
+[27]. Yu H, Xiong S, Tay CY, Leong WS, Tan LP, A novel and simple microcontact printing technique for tacky, soft substrates and/or complex surfaces in soft tissue engineering, Acta Biomater. 8 (2012) 1267–1272. 10.1016/j.actbio.2011.09.006. [PubMed: 21945825]
 
-[28]. MacNearney D, Mak B, Ongo G, Kennedy TE, Juncker D, Nanocontact Printing of Proteins on
-Physiologically Soft Substrates to Study Cell Haptotaxis, Langmuir. 32 (2016) 13525–13533.
-10.1021/acs.langmuir.6b03246. [PubMed: 27993028]
+[28]. MacNearney D, Mak B, Ongo G, Kennedy TE, Juncker D, Nanocontact Printing of Proteins on Physiologically Soft Substrates to Study Cell Haptotaxis, Langmuir. 32 (2016) 13525–13533. 10.1021/acs.langmuir.6b03246. [PubMed: 27993028]
 
-[29]. Palchesko RN, Zhang L, Sun Y, Feinberg AW, Development of Polydimethylsiloxane Substrates
-with Tunable Elastic Modulus to Study Cell Mechanobiology in Muscle and Nerve, PLoS One. 7
-(2012) e51499. 10.1371/journal.pone.0051499. [PubMed: 23240031]
+[29]. Palchesko RN, Zhang L, Sun Y, Feinberg AW, Development of Polydimethylsiloxane Substrates with Tunable Elastic Modulus to Study Cell Mechanobiology in Muscle and Nerve, PLoS One. 7 (2012) e51499. 10.1371/journal.pone.0051499. [PubMed: 23240031]
 
-[30]. Rodriguez ML, Beussman KM, Chun KS, Walzer MS, Yang X, Murry CE, Sniadecki NJ,
-Substrate Stiffness, Cell Anisotropy, and Cell–Cell Contact Contribute to Enhanced Structural
-and Calcium Handling Properties of Human Embryonic Stem Cell-Derived Cardiomyocytes,
+[30]. Rodriguez ML, Beussman KM, Chun KS, Walzer MS, Yang X, Murry CE, Sniadecki NJ, Substrate Stiffness, Cell Anisotropy, and Cell–Cell Contact Contribute to Enhanced Structural and Calcium Handling Properties of Human Embryonic Stem Cell-Derived Cardiomyocytes,
 ACS Biomater. Sci. Eng (2019) acsbiomaterials.8b01256. 10.1021/acsbiomaterials.8b01256.
 
-[31]. Wang L, Sun B, Ziemer KS, Barabino GA, Carrier RL, Chemical and physical modifications to
-poly(dimethylsiloxane) surfaces affect adhesion of Caco-2 cells, J. Biomed. Mater. Res. - Part A
-93 (2010) 1260–1271. 10.1002/jbm.a.32621.
+[31]. Wang L, Sun B, Ziemer KS, Barabino GA, Carrier RL, Chemical and physical modifications to poly(dimethylsiloxane) surfaces affect adhesion of Caco-2 cells, J. Biomed. Mater. Res. - Part A 93 (2010) 1260–1271. 10.1002/jbm.a.32621.
 
-[32]. Blair D, Dufresne E, The matlab particle tracking code repository, Part. Code Available Http//
-[Physics. Georg. Edu/Matlab (2008). http://physics.georgetown.edu/matlab.](http://physics.georgetown.edu/matlab)
 
-[33]. Sabass B, Gardel ML, Waterman CM, Schwarz US, High Resolution Traction Force Microscopy
-Based on Experimental and Computational Advances, Biophys. J 94 (2008) 207–220. 10.1529/
-biophysj.107.113670. [PubMed: 17827246]
+[33]. Sabass B, Gardel ML, Waterman CM, Schwarz US, High Resolution Traction Force Microscopy Based on Experimental and Computational Advances, Biophys. J 94 (2008) 207–220. 10.1529/ biophysj.107.113670. [PubMed: 17827246]
 
 [34]. Han SJ, Oak Y, Groisman A, Danuser G, Traction microscopy to identify force modulation
 in subresolution adhesions, Nat. Methods 12 (2015) 653–656. 10.1038/nmeth.3430. [PubMed:
 26030446]
 
-[35]. Pike JA, Simms VA, Smith CW, Morgan NV, Khan AO, Poulter NS, Styles IB, Thomas SG, An
-adaptable analysis workflow for characterization of platelet spreading and morphology, Platelets.
-(2020). 10.1080/09537104.2020.1748588.
+[35]. Pike JA, Simms VA, Smith CW, Morgan NV, Khan AO, Poulter NS, Styles IB, Thomas SG, An adaptable analysis workflow for characterization of platelet spreading and morphology, Platelets. (2020). 10.1080/09537104.2020.1748588.
 
-[36]. Carr ME, Carr SL, Fibrin structure and concentration alter clot elastic modulus but do
-not alter platelet mediated force development, Blood Coagul. Fibrinolysis 6 (1995) 79–86.
-10.1097/00001721-199502000-00013. [PubMed: 7795157]
+[36]. Carr ME, Carr SL, Fibrin structure and concentration alter clot elastic modulus but do not alter platelet mediated force development, Blood Coagul. Fibrinolysis 6 (1995) 79–86. 10.1097/00001721-199502000-00013. [PubMed: 7795157]
 
-[37]. Chen Z, Lu J, Zhang C, Hsia I, Yu X, Marecki L, Marecki E, Asmani M, Jain S, Neelamegham S,
-Zhao R, Microclot array elastometry for integrated measurement of thrombus formation and clot
-biomechanics under fluid shear, Nat. Commun 10 (2019) 1–13. 10.1038/s41467-019-10067-6.
+[37]. Chen Z, Lu J, Zhang C, Hsia I, Yu X, Marecki L, Marecki E, Asmani M, Jain S, Neelamegham S, Zhao R, Microclot array elastometry for integrated measurement of thrombus formation and clot biomechanics under fluid shear, Nat. Commun 10 (2019) 1–13. 10.1038/s41467-019-10067-6.
 
 [PubMed: 30602773]
 
-[38]. Lickert S, Sorrentino S, Studt JD, Medalia O, Vogel V, Schoen I, Morphometric analysis of
-spread platelets identifies integrin α iIb β 3-specific contractile phenotype, Sci. Rep 8 (2018) 5428.
-10.1038/s41598-018-23684-w. [PubMed: 29615672]
+[38]. Lickert S, Sorrentino S, Studt JD, Medalia O, Vogel V, Schoen I, Morphometric analysis of spread platelets identifies integrin α iIb β 3-specific contractile phenotype, Sci. Rep 8 (2018) 5428. 10.1038/s41598-018-23684-w. [PubMed: 29615672]
 
-[39]. Califano JP, Reinhart-King CA, Substrate stiffness and cell area predict cellular traction
-stresses in single cells and cells in contact, Cell. Mol. Bioeng 3 (2010) 68–75. 10.1007/
-s12195-010-0102-6. [PubMed: 21116436]
+[39]. Califano JP, Reinhart-King CA, Substrate stiffness and cell area predict cellular traction stresses in single cells and cells in contact, Cell. Mol. Bioeng 3 (2010) 68–75. 10.1007/ s12195-010-0102-6. [PubMed: 21116436]
 
 [40]. Tolić-Nørrelykke IM, Wang N, Traction in smooth muscle cells varies with cell spreading, J.
 Biomech 38 (2005) 1405–1412. 10.1016/j.jbiomech.2004.06.027. [PubMed: 15922751]
 
-[41]. Tan JL, Tien J, Pirone DM, Gray DS, Bhadriraju K, Chen CS, Cells lying on a bed of
-microneedles: An approach to isolate mechanical force, Proc. Natl. Acad. Sci 100 (2003) 1484–
-1489. 10.1073/pnas.0235407100. [PubMed: 12552122]
+[41]. Tan JL, Tien J, Pirone DM, Gray DS, Bhadriraju K, Chen CS, Cells lying on a bed of microneedles: An approach to isolate mechanical force, Proc. Natl. Acad. Sci 100 (2003) 1484– 1489. 10.1073/pnas.0235407100. [PubMed: 12552122]
 
-[42]. Oakes PW, Banerjee S, Marchetti MC, Gardel ML, Geometry regulates traction stresses in
-adherent cells, Biophys. J 107 (2014) 825–833. 10.1016/j.bpj.2014.06.045. [PubMed: 25140417]
+[42]. Oakes PW, Banerjee S, Marchetti MC, Gardel ML, Geometry regulates traction stresses in adherent cells, Biophys. J 107 (2014) 825–833. 10.1016/j.bpj.2014.06.045. [PubMed: 25140417]
 
 
-Acta Biomater. Author manuscript; available in PMC 2024 June 01.
-
-
-[43]. Bender M, Palankar R, Platelet Shape Changes during Thrombus Formation: Role of Actin-Based
-Protrusions, Hamostaseologie. 41 (2021) 14–21. 10.1055/a-1325-0993. [PubMed: 33588449]
-
-
-Acta Biomater. Author manuscript; available in PMC 2024 June 01.
-
-
-Acta Biomater. Author manuscript; available in PMC 2024 June 01.
+[43]. Bender M, Palankar R, Platelet Shape Changes during Thrombus Formation: Role of Actin-Based Protrusions, Hamostaseologie. 41 (2021) 14–21. 10.1055/a-1325-0993. [PubMed: 33588449]
 
 
 **Figure 1 –.**
 Black dots overview, manufacturing, and characterization. (A) Principle of black dots, where
 
 tension from an adhered cell causes the pattern of dots to displace. (B) Manufacturing
-
-black dots substrates using microcontact printing and a sacrificial PVA film to transfer an
-
-array of fiducial markers from a patterned stamp to a soft substrate. (C) Example of final
 
 manufactured substrate that can be made in the desired fluorescent channel using different
 
@@ -1418,9 +1077,6 @@ larger. (D) Characterization of diameter, center-center spacing, and circularity
 is Probability Density for all three plots. Normal Gaussian probability density functions are
 
 overlayed.
-
-
-Acta Biomater. Author manuscript; available in PMC 2024 June 01.
 
 
 **Figure 2 –.**
@@ -1446,25 +1102,12 @@ view. The intersection of these lines marks the zero-displacement state of each 
 
 is 2x magnified. (E) Forces are calculated from the displacement of each dot relative to
 
-its zero-displacement (undeformed) location. (F) Forces from at least 100 platelets from
-
-6 donors show high variability within each donor and between donors. Lines indicate
-
-significant differences in donor forces (p < 0.05 when tested with a one-way ANOVA and
-
 Tukey’s post hoc test). Number of cells analyzed for donors 1, 2, 3, 4, 5, and 6 are n = 111,
 
 117, 100, 120, 112, and 100, respectively.
 
 
-Acta Biomater. Author manuscript; available in PMC 2024 June 01.
-
-
 **Figure 3 –.**
-Platelet size, shape, and structure correlate with force. (A) Two examples of platelets with
-
-small and large areas. (B) Cell boundary and area measured from (A). (C) Platelet forces
-
 and area are linearly related. Note that in this panel, the x-axis maximum is zoomed to
 
 better view the data. Due to this axis zoom, two points (0.37% of the data) are not shown,
@@ -1481,17 +1124,8 @@ fluorescence intensity which has been normalized to calculate F-actin dispersion
 
 boundary and F-actin dispersion measured from (G). (I) F-actin dispersion is moderately
 
-positively correlated with platelet force. Shaded regions of fit lines indicate 95% prediction
-
-interval for the data.
-
-
-Acta Biomater. Author manuscript; available in PMC 2024 June 01.
-
-
 **Figure 4 –.**
-Platelet size, shape, and structure do not strongly correlate with each other, but increase
-together with force. (A) Area and circularity moderately correlate (R [2] = 0.26) when plotting
+Platelet size, shape, and structure do not strongly correlate with each other, but increase together with force. (A) Area and circularity moderately correlate (R [2] = 0.26) when plotting
 
 platelets of all forces (n = 540). (B) To examine the relationship of circularity and area with
 
@@ -1511,9 +1145,7 @@ area and a large range of circularity, while quartile #4 (high-force platelets) 
 
 both higher area and high circularity. (C) The median and median standard deviation show
 
-that circularity and area increase together with each force quartile. (D) F-actin dispersion
-and area do not correlate (R [2] = 0.0074), (E-F) but show a similar trend when examining
-force quartiles. (H) F-actin dispersion and circularity moderately correlate (R [2] = 0.21) and
+that circularity and area increase together with each force quartile. (D) F-actin dispersion and area do not correlate (R [2] = 0.0074), (E-F) but show a similar trend when examining force quartiles. (H) F-actin dispersion and circularity moderately correlate (R [2] = 0.21) and
 
 (I-J) show a shift from low-force platelets having large ranges of circularity and F-actin
 
@@ -1524,14 +1156,7 @@ in A-F, the x-axis maximum is zoomed to better view the data. Due to this axis z
 points (0.37% of the data) are not shown, but all points are included within all analyses.
 
 
-Acta Biomater. Author manuscript; available in PMC 2024 June 01.
-
-
 **Figure 5 –.**
-K-means clustering of platelet size, shape, and structure predict differences in force. An
-
-unbiased K-means clustering approach based on platelet area, circularity, and F-actin
-
 dispersion separated the population of platelets into 2 clusters. The two clusters are shown
 
 for (A) F-actin dispersion and circularity, (B) F-actin dispersion and area, and (C) circularity
@@ -1543,11 +1168,3 @@ cluster 1 have smaller area, lower circularity, and lower F-actin dispersion tha
 Forces from cluster 2 are significantly higher than cluster 1, even though force was not used
 
 to determine the clusters.
-
-
-Acta Biomater. Author manuscript; available in PMC 2024 June 01.
-
-
-Acta Biomater. Author manuscript; available in PMC 2024 June 01.
-
-
