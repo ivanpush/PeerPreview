@@ -17,6 +17,7 @@ function ReviewScreen() {
   const [biasedReviewModalIssue, setBiasedReviewModalIssue] = useState(null);
   const [selectedFigureId, setSelectedFigureId] = useState(null);
   const [figuresPanelExpanded, setFiguresPanelExpanded] = useState(false);
+  const selectIssueRef = React.useRef(null);
 
   // Load mock data if manuscript is not already loaded (for direct navigation/refresh)
   useEffect(() => {
@@ -99,7 +100,7 @@ function ReviewScreen() {
         <div className="flex-1 flex overflow-hidden justify-center">
           {/* Manuscript view (left - flexible with max width) */}
           <div className="flex-1 max-w-5xl overflow-hidden">
-            <ManuscriptView onFigureClick={handleFigureClick} />
+            <ManuscriptView onFigureClick={handleFigureClick} selectIssueRef={selectIssueRef} />
           </div>
 
           {/* Issues panel (right - fixed width) */}
@@ -108,6 +109,7 @@ function ReviewScreen() {
               onOpenRewriteModal={setRewriteModalIssue}
               onOpenOutlineModal={setOutlineModalIssue}
               onOpenBiasedReviewModal={setBiasedReviewModalIssue}
+              onSelectIssue={selectIssueRef}
             />
           </div>
         </div>

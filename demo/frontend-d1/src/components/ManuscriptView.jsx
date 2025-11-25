@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useManuscript } from '../context/ManuscriptContext';
 import * as Diff from 'diff';
 
-function ManuscriptView({ onFigureClick }) {
-  const { manuscript, selectedIssue, updateParagraph, restoreDeleted } = useManuscript();
+function ManuscriptView({ onFigureClick, selectIssueRef }) {
+  const { manuscript, selectedIssue, issues, setSelectedIssue, updateParagraph, restoreDeleted, dismissedIssues } = useManuscript();
   const paragraphRefs = useRef({});
   const sectionRefs = useRef({});
   const [activeSection, setActiveSection] = useState(null);
@@ -128,11 +128,56 @@ function ManuscriptView({ onFigureClick }) {
     );
   }
 
+  // Get issues for a specific paragraph (filter out dismissed)
+  const getParagraphIssues = (paragraphId) => {
+    if (!issues || !Array.isArray(issues)) return [];
+    return issues.filter(issue =>
+      issue.paragraph_id === paragraphId && !dismissedIssues.has(issue.id)
+    );
+  };
+
+  // Get track color helper
+  const getTrackColor = (track) => {
+    const trackMap = {
+      'A': '#3E63DD',
+      'B': '#8E4EC6',
+      'C': '#C75A7A'
+    };
+    return trackMap[track] || '#A0A0A0';
+  };
+
+  // Get severity color helper
+  const getSeverityColor = (severity) => {
+    const severityMap = {
+      'major': '#E5484D',
+      'high': '#E5484D',
+      'minor': '#FFBE3C',
+      'medium': '#FFBE3C',
+      'low': '#65B2E8'
+    };
+    return severityMap[severity] || '#A0A0A0';
+  };
+
+  // Get track name helper
+  const getTrackName = (track) => {
+    const names = { 'A': 'Rigor', 'B': 'Clarity', 'C': 'Counterpoint' };
+    return names[track] || 'Track ' + track;
+  };
+
+  // Get track abbreviation for flags
+  const getTrackAbbrev = (track) => {
+    const abbrevs = { 'A': 'R', 'B': 'C', 'C': 'CP' };
+    return abbrevs[track] || track;
+  };
+
   const renderParagraph = (paragraphId) => {
     const paragraph = manuscript.paragraphs?.find(p => p.paragraph_id === paragraphId);
     if (!paragraph) return null;
 
+    const paragraphIssues = getParagraphIssues(paragraphId);
     const isHighlighted = selectedIssue?.paragraph_id === paragraphId;
+    const isSentenceLevel = isHighlighted && selectedIssue?.sentence_ids && selectedIssue.sentence_ids.length > 0;
+    const highlightedSentenceIds = isSentenceLevel ? selectedIssue.sentence_ids : [];
     const isRewritten = paragraph.isRewritten === true;
     const isEdited = paragraph.isEdited === true;
     const isDeleted = paragraph.isDeleted === true;
@@ -198,7 +243,7 @@ function ManuscriptView({ onFigureClick }) {
         id={paragraphId}
         ref={el => paragraphRefs.current[paragraphId] = el}
         className={`group mb-4 p-4 rounded-lg border transition-all duration-300 relative ${
-          isHighlighted
+          isHighlighted && !isSentenceLevel
             ? 'bg-[#1A2E2D] shadow-xl'
             : isDeleted
             ? 'bg-transparent border-red-900/30 hover:border-red-800/40'
@@ -211,13 +256,73 @@ function ManuscriptView({ onFigureClick }) {
         style={isHighlighted ? {
           borderWidth: '2px',
           borderColor: '#5BAEB8',
-          boxShadow: '0 0 20px rgba(91, 174, 184, 0.2)'
+          boxShadow: isSentenceLevel ? '0 0 10px rgba(91, 174, 184, 0.15)' : '0 0 20px rgba(91, 174, 184, 0.2)'
         } : {}}
       >
-        {/* Top right controls - Edit button only */}
-        <div className="absolute top-2 right-2 flex items-center gap-2">
-          {/* Edit button - show on hover */}
-          {!isEditing && !isDeleted && (
+        {/* Issue flags - positioned outside right boundary */}
+        {paragraphIssues.length > 0 && (
+          <div className="absolute top-2 -right-10 flex flex-col items-start gap-1">
+            {paragraphIssues.map((issue, idx) => {
+              const trackColor = getTrackColor(issue.track);
+              const severityColor = getSeverityColor(issue.severity);
+              const isSelected = selectedIssue?.id === issue.id;
+              const trackName = getTrackName(issue.track);
+
+              return (
+                <button
+                  key={issue.id}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    // Use the ref to navigate to issue in sidebar
+                    if (selectIssueRef?.current) {
+                      selectIssueRef.current(issue);
+                    } else {
+                      // Fallback if ref not available
+                      setSelectedIssue(isSelected ? null : issue);
+                    }
+                  }}
+                  className="relative group/flag transition-all flex items-center gap-1.5 px-2 py-1 rounded-full"
+                  title={`${trackName} - ${issue.severity}\n${issue.title}`}
+                  style={{
+                    backgroundColor: isSelected ? trackColor : `${trackColor}22`,
+                    border: `1px solid ${trackColor}`,
+                    boxShadow: isSelected
+                      ? `0 0 10px ${trackColor}66, inset 0 1px 2px rgba(255,255,255,0.15)`
+                      : '0 1px 2px rgba(0,0,0,0.15)',
+                    opacity: isSelected ? 1 : 0.8
+                  }}
+                >
+                  {/* Severity indicator dot */}
+                  <div
+                    className="rounded-full transition-all"
+                    style={{
+                      width: '6px',
+                      height: '6px',
+                      backgroundColor: severityColor,
+                      boxShadow: `0 0 3px ${severityColor}`,
+                      border: '1px solid rgba(0,0,0,0.2)'
+                    }}
+                  />
+
+                  {/* Track abbreviation */}
+                  <span
+                    className="text-[10px] font-bold tracking-tight transition-all whitespace-nowrap"
+                    style={{
+                      color: isSelected ? 'white' : trackColor,
+                      textShadow: isSelected ? '0 1px 1px rgba(0,0,0,0.3)' : 'none'
+                    }}
+                  >
+                    {getTrackAbbrev(issue.track)}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Edit button - show on hover, top right corner */}
+        {!isEditing && !isDeleted && (
+          <div className="absolute top-2 right-2">
             <button
               onClick={handleEdit}
               className="opacity-0 group-hover:opacity-100 transition-opacity text-[10px] text-gray-500 hover:text-blue-400 px-2 py-1 rounded bg-[#2A2A2A] hover:bg-[#333333] border border-[#3A3A3A] hover:border-blue-800/50"
@@ -225,8 +330,8 @@ function ManuscriptView({ onFigureClick }) {
             >
               Edit
             </button>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Paragraph number - inside block, bottom right, only on hover */}
         <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -351,11 +456,36 @@ function ManuscriptView({ onFigureClick }) {
         ) : (
           /* Normal display */
           <>
-            <p className={`text-[15px] leading-[1.7] font-normal ${
-              isRewritten ? 'text-green-300' : isEdited ? 'text-yellow-300' : 'text-gray-200'
-            }`}>
-              {paragraph.text}
-            </p>
+            {/* Render with sentence-level highlighting if applicable */}
+            {isSentenceLevel && paragraph.sentences ? (
+              <p className={`text-[15px] leading-[1.7] font-normal ${
+                isRewritten ? 'text-green-300' : isEdited ? 'text-yellow-300' : 'text-gray-200'
+              }`}>
+                {paragraph.sentences.map((sentence, idx) => {
+                  const isSentenceHighlighted = highlightedSentenceIds.includes(sentence.sentence_id);
+                  return (
+                    <span
+                      key={sentence.sentence_id || idx}
+                      className={isSentenceHighlighted ? 'px-1.5 py-0.5 rounded' : ''}
+                      style={isSentenceHighlighted ? {
+                        backgroundColor: 'rgba(91, 174, 184, 0.25)',
+                        boxShadow: '0 0 0 2px rgba(91, 174, 184, 0.5), inset 0 0 0 1px rgba(91, 174, 184, 0.3)',
+                        border: '1px solid rgba(91, 174, 184, 0.4)'
+                      } : {}}
+                    >
+                      {sentence.text}
+                      {idx < paragraph.sentences.length - 1 ? ' ' : ''}
+                    </span>
+                  );
+                })}
+              </p>
+            ) : (
+              <p className={`text-[15px] leading-[1.7] font-normal ${
+                isRewritten ? 'text-green-300' : isEdited ? 'text-yellow-300' : 'text-gray-200'
+              }`}>
+                {paragraph.text}
+              </p>
+            )}
 
             {/* Status badge - below text */}
             {(isRewritten || isEdited) && (

@@ -17,6 +17,7 @@ export const ManuscriptProvider = ({ children }) => {
   const [lastRewrite, setLastRewrite] = useState(null);
   const [selectedIssue, setSelectedIssue] = useState(null);
   const [activeFigureId, setActiveFigureId] = useState(null);
+  const [dismissedIssues, setDismissedIssues] = useState(new Set());
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -197,6 +198,7 @@ export const ManuscriptProvider = ({ children }) => {
     lastRewrite,
     selectedIssue,
     activeFigureId,
+    dismissedIssues,
     loading,
     error,
 
@@ -206,6 +208,7 @@ export const ManuscriptProvider = ({ children }) => {
     restoreDeleted,
     setSelectedIssue,
     setActiveFigureId,
+    setDismissedIssues,
     loadMockData,
 
     // Helpers
