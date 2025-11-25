@@ -74,8 +74,11 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
             e.stopPropagation();
             onOpenRewriteModal(issue);
           }}
-          className="mt-3 px-3 py-1.5 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition w-full"
+          className="mt-3 px-3 py-1.5 bg-blue-500/20 text-blue-400 text-xs rounded border border-blue-500/40 hover:bg-blue-500/30 hover:border-blue-500/60 transition inline-flex items-center gap-1.5"
         >
+          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+          </svg>
           View Rewrite
         </button>
       );
@@ -88,8 +91,11 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
             e.stopPropagation();
             onOpenOutlineModal(issue);
           }}
-          className="mt-3 px-3 py-1.5 bg-purple-600 text-white text-xs rounded hover:bg-purple-700 transition w-full"
+          className="mt-3 px-3 py-1.5 bg-purple-500/20 text-purple-400 text-xs rounded border border-purple-500/40 hover:bg-purple-500/30 hover:border-purple-500/60 transition inline-flex items-center gap-1.5"
         >
+          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+          </svg>
           View Outline
         </button>
       );
@@ -102,8 +108,12 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
             e.stopPropagation();
             onOpenBiasedReviewModal(issue);
           }}
-          className="mt-3 px-3 py-1.5 bg-amber-600 text-white text-xs rounded hover:bg-amber-700 transition w-full"
+          className="mt-3 px-3 py-1.5 bg-amber-500/20 text-amber-400 text-xs rounded border border-amber-500/40 hover:bg-amber-500/30 hover:border-amber-500/60 transition inline-flex items-center gap-1.5"
         >
+          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+          </svg>
           View Review
         </button>
       );
@@ -120,58 +130,58 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
           Issues ({filteredIssues.length})
         </h2>
 
-        <div className="flex gap-1">
+        <div className="flex gap-1.5">
           <button
             onClick={() => setFilterTrack('all')}
-            className={`relative px-3 py-2 rounded text-xs font-medium transition flex flex-col items-center ${
+            className={`relative px-4 py-2.5 rounded text-sm font-medium transition flex flex-col items-center ${
               filterTrack === 'all'
                 ? 'bg-[#2A2A2A] text-white'
                 : 'bg-transparent text-gray-400 hover:text-gray-200'
             }`}
           >
-            <span>All</span>
+            <span className="font-semibold">All</span>
             {filterTrack === 'all' && (
               <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-400 rounded-full"></div>
             )}
           </button>
           <button
             onClick={() => setFilterTrack('A')}
-            className={`relative px-3 py-2 rounded text-xs font-medium transition flex flex-col items-center ${
+            className={`relative px-4 py-2.5 rounded text-sm font-medium transition flex flex-col items-center ${
               filterTrack === 'A'
                 ? 'bg-blue-500/20 text-blue-400'
                 : 'bg-transparent text-gray-400 hover:text-gray-200'
             }`}
           >
             <span className="font-semibold">Rigor</span>
-            <span className="text-[9px] opacity-70 whitespace-nowrap">Structure & reasoning</span>
+            <span className="text-[10px] opacity-80 whitespace-nowrap mt-0.5">Structure & reasoning</span>
             {filterTrack === 'A' && (
               <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500 rounded-full"></div>
             )}
           </button>
           <button
             onClick={() => setFilterTrack('B')}
-            className={`relative px-3 py-2 rounded text-xs font-medium transition flex flex-col items-center ${
+            className={`relative px-4 py-2.5 rounded text-sm font-medium transition flex flex-col items-center ${
               filterTrack === 'B'
                 ? 'bg-purple-500/20 text-purple-400'
                 : 'bg-transparent text-gray-400 hover:text-gray-200'
             }`}
           >
             <span className="font-semibold">Clarity</span>
-            <span className="text-[9px] opacity-70 whitespace-nowrap">Language & style</span>
+            <span className="text-[10px] opacity-80 whitespace-nowrap mt-0.5">Language & style</span>
             {filterTrack === 'B' && (
               <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-purple-500 rounded-full"></div>
             )}
           </button>
           <button
             onClick={() => setFilterTrack('C')}
-            className={`relative px-3 py-2 rounded text-xs font-medium transition flex flex-col items-center ${
+            className={`relative px-4 py-2.5 rounded text-sm font-medium transition flex flex-col items-center ${
               filterTrack === 'C'
                 ? 'bg-amber-500/20 text-amber-400'
                 : 'bg-transparent text-gray-400 hover:text-gray-200'
             }`}
           >
             <span className="font-semibold">Counterpoint</span>
-            <span className="text-[9px] opacity-70 whitespace-nowrap">Reviewer-style critique</span>
+            <span className="text-[10px] opacity-80 whitespace-nowrap mt-0.5">Reviewer-style critique</span>
             {filterTrack === 'C' && (
               <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-500 rounded-full"></div>
             )}
@@ -193,12 +203,12 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
               <div
                 key={issue.id}
                 onClick={() => handleIssueClick(issue)}
-                className={`relative bg-[#252525] rounded-lg border cursor-pointer transition-all overflow-hidden ${
+                className={`relative rounded-lg border cursor-pointer transition-all overflow-hidden ${
                   isDismissed ? 'opacity-40' : ''
                 } ${
                   selectedIssue?.id === issue.id
-                    ? 'border-blue-500/50 shadow-lg shadow-blue-500/10'
-                    : 'border-[#2E2E2E] hover:border-gray-600'
+                    ? 'bg-blue-500/10 border-blue-500/60 shadow-lg shadow-blue-500/20'
+                    : 'bg-[#252525] border-[#2E2E2E] hover:border-gray-600'
                 }`}
               >
                 {/* Left severity bar */}

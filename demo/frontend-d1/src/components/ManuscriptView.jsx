@@ -10,6 +10,7 @@ function ManuscriptView({ onFigureClick }) {
   const [editingParagraph, setEditingParagraph] = useState(null);
   const [editText, setEditText] = useState('');
   const [showOriginal, setShowOriginal] = useState(null);
+  const [collapsedDeleted, setCollapsedDeleted] = useState(new Set());
 
   // Extract paragraph number from paragraph_id (e.g., "p_res_5" -> "5")
   const getParagraphNumber = (paragraphId) => {
@@ -45,7 +46,7 @@ function ManuscriptView({ onFigureClick }) {
     return id.toUpperCase();
   };
 
-  // Track active section based on scroll position (75% threshold)
+  // Track active section based on scroll position (80% threshold), only show after abstract
   useEffect(() => {
     const handleScroll = () => {
       const scrollContainer = document.querySelector('.manuscript-scroll-container');
@@ -53,7 +54,24 @@ function ManuscriptView({ onFigureClick }) {
 
       const scrollTop = scrollContainer.scrollTop;
       const containerHeight = scrollContainer.clientHeight;
-      const threshold = scrollTop + (containerHeight * 0.25); // 75% from top = 25% from bottom
+      const threshold = scrollTop + (containerHeight * 0.2); // 80% from top = 20% from bottom
+
+      // Check if abstract has scrolled past top of viewport
+      const abstractElement = document.querySelector('.abstract-section');
+      let abstractScrolledPast = false;
+
+      if (abstractElement) {
+        const rect = abstractElement.getBoundingClientRect();
+        const containerRect = scrollContainer.getBoundingClientRect();
+        // Abstract is past if its bottom is above the container top
+        abstractScrolledPast = rect.bottom < containerRect.top + 20; // 20px buffer
+      }
+
+      // Only show section indicator if abstract has scrolled past
+      if (!abstractScrolledPast) {
+        setActiveSection(null);
+        return;
+      }
 
       let currentSection = null;
 
@@ -120,6 +138,13 @@ function ManuscriptView({ onFigureClick }) {
       setEditText(paragraph.text);
     };
 
+    // Calculate textarea rows based on text length
+    const calculateRows = (text) => {
+      const lines = text.split('\n').length;
+      const estimatedWrappedLines = Math.ceil(text.length / 80); // Estimate ~80 chars per line
+      return Math.max(lines, estimatedWrappedLines, 5); // Minimum 5 rows
+    };
+
     const handleSaveEdit = () => {
       if (editText.trim() && editText !== paragraph.text) {
         updateParagraph(paragraphId, editText, false);
@@ -146,6 +171,20 @@ function ManuscriptView({ onFigureClick }) {
     const handleRestoreDeleted = () => {
       restoreDeleted(paragraphId);
     };
+
+    const toggleDeletedCollapse = () => {
+      setCollapsedDeleted(prev => {
+        const newSet = new Set(prev);
+        if (newSet.has(paragraphId)) {
+          newSet.delete(paragraphId);
+        } else {
+          newSet.add(paragraphId);
+        }
+        return newSet;
+      });
+    };
+
+    const isCollapsed = collapsedDeleted.has(paragraphId);
 
     return (
       <div
@@ -185,13 +224,29 @@ function ManuscriptView({ onFigureClick }) {
           </span>
         </div>
 
-        {/* Deleted state - strikethrough with badge */}
+        {/* Deleted state - strikethrough with badge, collapsible */}
         {isDeleted ? (
           <>
-            <p className="text-[15px] leading-[1.7] font-normal text-gray-400 opacity-50 line-through">
-              {paragraph.text}
-            </p>
-            <div className="mt-3 flex items-center">
+            {!isCollapsed && (
+              <p className="text-[15px] leading-[1.7] font-normal text-gray-400 opacity-50 line-through mb-3">
+                {paragraph.text}
+              </p>
+            )}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={toggleDeletedCollapse}
+                className="inline-flex items-center gap-1 text-gray-500 hover:text-gray-400 transition"
+                title={isCollapsed ? "Expand deleted text" : "Collapse deleted text"}
+              >
+                <svg
+                  className={`w-3 h-3 transition-transform ${isCollapsed ? 'rotate-0' : 'rotate-90'}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
               <button
                 onClick={handleRestoreDeleted}
                 className="inline-flex items-center gap-1.5 text-[9px] font-semibold px-2 py-1 rounded border bg-red-900/30 text-red-400 border-red-800/50 hover:bg-red-900/50 transition cursor-pointer"
@@ -210,8 +265,8 @@ function ManuscriptView({ onFigureClick }) {
             <textarea
               value={editText}
               onChange={(e) => setEditText(e.target.value)}
-              className="w-full text-[15px] text-gray-200 leading-[1.7] bg-[#1A1A1A] border border-blue-500/50 rounded p-3 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[100px]"
-              rows={5}
+              className="w-full text-[15px] text-gray-200 leading-[1.7] bg-[#1A1A1A] border border-blue-500/50 rounded p-3 resize-y focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[100px]"
+              rows={calculateRows(editText)}
             />
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-2">
@@ -358,11 +413,11 @@ function ManuscriptView({ onFigureClick }) {
 
   return (
     <div className="h-full overflow-y-auto bg-[#1D1D1D] manuscript-scroll-container relative">
-      {/* Active section indicator - fixed on left */}
+      {/* Active section indicator - fixed upper right */}
       {activeSection && (
-        <div className="fixed left-4 top-20 z-10">
-          <div className="bg-[#2A2A2A] border border-[#3A3A3A] rounded px-3 py-1.5 shadow-lg">
-            <span className="text-[11px] text-gray-300 font-semibold tracking-wide">
+        <div className="fixed right-8 top-4 z-50">
+          <div className="bg-[#2A2A2A] border border-[#3A3A3A] rounded px-4 py-2 shadow-lg">
+            <span className="text-[13px] text-gray-300 font-semibold tracking-wide">
               {getFullSectionName(activeSection)}
             </span>
           </div>
@@ -377,7 +432,7 @@ function ManuscriptView({ onFigureClick }) {
 
         {/* Abstract */}
         {manuscript.abstract && (
-          <div className="mb-8 p-6 bg-[#232323] rounded-lg border border-[#2E2E2E]">
+          <div className="abstract-section mb-8 p-6 bg-[#232323] rounded-lg border border-[#2E2E2E]">
             <h2 className="text-[15px] font-semibold text-gray-300 mb-3 tracking-wide">ABSTRACT</h2>
             <p className="text-[15px] text-gray-200 leading-[1.7]">
               {manuscript.abstract}
