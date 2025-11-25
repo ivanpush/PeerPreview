@@ -20,7 +20,7 @@ export const ManuscriptProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const updateParagraph = useCallback((paragraphId, newText, isRewrite = false) => {
+  const updateParagraph = useCallback((paragraphId, newText, isRewrite = false, isRevert = false, isDelete = false) => {
     if (!manuscript) return;
 
     // Find the paragraph to store previous state
@@ -33,6 +33,47 @@ export const ManuscriptProvider = ({ children }) => {
       newText,
       timestamp: Date.now()
     });
+
+    // If deleting, mark as deleted and preserve previous state
+    if (isDelete) {
+      const originalText = paragraph.originalText || paragraph.text;
+      setManuscript(prev => ({
+        ...prev,
+        paragraphs: prev.paragraphs.map(p =>
+          p.paragraph_id === paragraphId
+            ? {
+                ...p,
+                isDeleted: true,
+                originalText: originalText,
+                // Store previous flags to restore later
+                wasRewritten: p.isRewritten,
+                wasEdited: p.isEdited
+              }
+            : p
+        )
+      }));
+      return;
+    }
+
+    // If reverting, clear all flags and restore original
+    if (isRevert) {
+      setManuscript(prev => ({
+        ...prev,
+        paragraphs: prev.paragraphs.map(p =>
+          p.paragraph_id === paragraphId
+            ? {
+                ...p,
+                text: newText,
+                isRewritten: false,
+                isEdited: false,
+                isDeleted: false,
+                originalText: undefined // Clear original since we're back to it
+              }
+            : p
+        )
+      }));
+      return;
+    }
 
     // Store original text if this is the first edit
     const originalText = paragraph.originalText || paragraph.text;
@@ -48,6 +89,7 @@ export const ManuscriptProvider = ({ children }) => {
               text: newText,
               isRewritten: isRewrite,
               isEdited: isEdited,
+              isDeleted: false,
               originalText: originalText
             }
           : p
@@ -69,6 +111,29 @@ export const ManuscriptProvider = ({ children }) => {
 
     setLastRewrite(null);
   }, [lastRewrite, manuscript]);
+
+  const restoreDeleted = useCallback((paragraphId) => {
+    if (!manuscript) return;
+
+    const paragraph = manuscript.paragraphs.find(p => p.paragraph_id === paragraphId);
+    if (!paragraph) return;
+
+    setManuscript(prev => ({
+      ...prev,
+      paragraphs: prev.paragraphs.map(p =>
+        p.paragraph_id === paragraphId
+          ? {
+              ...p,
+              isDeleted: false,
+              isRewritten: p.wasRewritten || false,
+              isEdited: p.wasEdited || false,
+              wasRewritten: undefined,
+              wasEdited: undefined
+            }
+          : p
+      )
+    }));
+  }, [manuscript]);
 
   const loadMockData = useCallback(async () => {
     setLoading(true);
@@ -138,6 +203,7 @@ export const ManuscriptProvider = ({ children }) => {
     // Actions
     updateParagraph,
     undoLastRewrite,
+    restoreDeleted,
     setSelectedIssue,
     setActiveFigureId,
     loadMockData,

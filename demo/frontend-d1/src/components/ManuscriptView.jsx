@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useManuscript } from '../context/ManuscriptContext';
+import * as Diff from 'diff';
 
 function ManuscriptView({ onFigureClick }) {
-  const { manuscript, selectedIssue, updateParagraph } = useManuscript();
+  const { manuscript, selectedIssue, updateParagraph, restoreDeleted } = useManuscript();
   const paragraphRefs = useRef({});
   const sectionRefs = useRef({});
   const [activeSection, setActiveSection] = useState(null);
@@ -110,6 +111,7 @@ function ManuscriptView({ onFigureClick }) {
     const isHighlighted = selectedIssue?.paragraph_id === paragraphId;
     const isRewritten = paragraph.isRewritten === true;
     const isEdited = paragraph.isEdited === true;
+    const isDeleted = paragraph.isDeleted === true;
     const isEditing = editingParagraph === paragraphId;
     const isShowingOriginal = showOriginal === paragraphId;
 
@@ -132,9 +134,17 @@ function ManuscriptView({ onFigureClick }) {
 
     const handleRevert = () => {
       if (paragraph.originalText) {
-        updateParagraph(paragraphId, paragraph.originalText, false);
+        updateParagraph(paragraphId, paragraph.originalText, false, true); // Pass isRevert=true
       }
       setShowOriginal(null);
+    };
+
+    const handleDelete = () => {
+      updateParagraph(paragraphId, '', false, false, true); // Pass isDelete=true
+    };
+
+    const handleRestoreDeleted = () => {
+      restoreDeleted(paragraphId);
     };
 
     return (
@@ -145,6 +155,8 @@ function ManuscriptView({ onFigureClick }) {
         className={`group mb-4 p-4 rounded-lg border transition-all duration-300 relative ${
           isHighlighted
             ? 'bg-[#1E1E1E] border-blue-500/60 shadow-lg shadow-blue-500/10'
+            : isDeleted
+            ? 'bg-transparent border-red-900/30 hover:border-red-800/40'
             : isRewritten
             ? 'bg-[#1A2B1A] border-green-900/50 hover:bg-[#1E331E] hover:border-green-800/50'
             : isEdited
@@ -155,7 +167,7 @@ function ManuscriptView({ onFigureClick }) {
         {/* Top right controls - Edit button only */}
         <div className="absolute top-2 right-2 flex items-center gap-2">
           {/* Edit button - show on hover */}
-          {!isEditing && (
+          {!isEditing && !isDeleted && (
             <button
               onClick={handleEdit}
               className="opacity-0 group-hover:opacity-100 transition-opacity text-[10px] text-gray-500 hover:text-blue-400 px-2 py-1 rounded bg-[#2A2A2A] hover:bg-[#333333] border border-[#3A3A3A] hover:border-blue-800/50"
@@ -173,8 +185,27 @@ function ManuscriptView({ onFigureClick }) {
           </span>
         </div>
 
-        {/* Editing mode */}
-        {isEditing ? (
+        {/* Deleted state - strikethrough with badge */}
+        {isDeleted ? (
+          <>
+            <p className="text-[15px] leading-[1.7] font-normal text-gray-400 opacity-50 line-through">
+              {paragraph.text}
+            </p>
+            <div className="mt-3 flex items-center">
+              <button
+                onClick={handleRestoreDeleted}
+                className="inline-flex items-center gap-1.5 text-[9px] font-semibold px-2 py-1 rounded border bg-red-900/30 text-red-400 border-red-800/50 hover:bg-red-900/50 transition cursor-pointer"
+                title="Click to restore"
+              >
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                DELETED
+              </button>
+            </div>
+          </>
+        ) : isEditing ? (
+          /* Editing mode */
           <div className="space-y-2">
             <textarea
               value={editText}
@@ -182,44 +213,74 @@ function ManuscriptView({ onFigureClick }) {
               className="w-full text-[15px] text-gray-200 leading-[1.7] bg-[#1A1A1A] border border-blue-500/50 rounded p-3 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[100px]"
               rows={5}
             />
-            <div className="flex items-center gap-2">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleSaveEdit}
+                  className="px-3 py-1.5 text-xs bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                >
+                  Save
+                </button>
+                <button
+                  onClick={handleCancelEdit}
+                  className="px-3 py-1.5 text-xs bg-gray-700 text-gray-300 rounded hover:bg-gray-600 transition"
+                >
+                  Cancel
+                </button>
+              </div>
               <button
-                onClick={handleSaveEdit}
-                className="px-3 py-1.5 text-xs bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                onClick={handleDelete}
+                className="px-3 py-1.5 text-xs bg-red-600 text-white rounded hover:bg-red-700 transition"
+                title="Delete this paragraph"
               >
-                Save
-              </button>
-              <button
-                onClick={handleCancelEdit}
-                className="px-3 py-1.5 text-xs bg-gray-700 text-gray-300 rounded hover:bg-gray-600 transition"
-              >
-                Cancel
+                Delete
               </button>
             </div>
           </div>
         ) : isShowingOriginal && paragraph.originalText ? (
-          /* Show original text with revert option */
+          /* Show diff view with word-level highlighting */
           <div className="space-y-3">
-            <div className="p-3 bg-[#2A2A2A] rounded border border-gray-700">
-              <p className="text-[13px] text-gray-400 mb-2 font-semibold">Original:</p>
-              <p className="text-[15px] text-gray-300 leading-[1.7]">
-                {paragraph.originalText}
+            <div className="p-3 bg-[#1A1A1A] rounded border border-gray-700">
+              <p className="text-[11px] text-gray-500 mb-3 font-semibold uppercase tracking-wider">
+                Changes (red = removed, green = added)
               </p>
+              <div className="text-[15px] leading-[1.7] font-normal">
+                {Diff.diffWords(paragraph.originalText, paragraph.text).map((part, index) => (
+                  <span
+                    key={index}
+                    className={
+                      part.added
+                        ? 'bg-green-900/40 text-green-300'
+                        : part.removed
+                        ? 'bg-red-900/40 text-red-300 line-through'
+                        : 'text-gray-300'
+                    }
+                  >
+                    {part.value}
+                  </span>
+                ))}
+              </div>
             </div>
-            <div className="p-3 bg-[#1E1E1E] rounded border border-gray-700">
-              <p className="text-[13px] text-gray-400 mb-2 font-semibold">Current:</p>
-              <p className={`text-[15px] leading-[1.7] ${
-                isRewritten ? 'text-green-300' : isEdited ? 'text-yellow-300' : 'text-gray-200'
-              }`}>
-                {paragraph.text}
-              </p>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleRevert}
+                className="px-3 py-1.5 text-xs bg-red-600 text-white rounded hover:bg-red-700 transition"
+              >
+                Revert to Original
+              </button>
+              <button
+                onClick={handleEdit}
+                className="px-3 py-1.5 text-xs bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+              >
+                Edit Current
+              </button>
+              <button
+                onClick={() => setShowOriginal(null)}
+                className="px-3 py-1.5 text-xs bg-gray-700 text-gray-300 rounded hover:bg-gray-600 transition"
+              >
+                Close Diff
+              </button>
             </div>
-            <button
-              onClick={handleRevert}
-              className="px-3 py-1.5 text-xs bg-red-600 text-white rounded hover:bg-red-700 transition"
-            >
-              Revert to Original
-            </button>
           </div>
         ) : (
           /* Normal display */

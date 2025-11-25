@@ -170,8 +170,8 @@ class ManuscriptIndexer:
                 if self.is_section_header(buffer_line):
                     merged_lines.append(buffer_line)
                     buffer_line = line
-                # Priority 1a: If next line starts with closing paren/bracket, always merge
-                elif line and line[0] in (')', ']'):
+                # Priority 1a: If next line starts with paren/bracket/comma/period, always merge
+                elif line and line[0] in ('(', ')', '[', ']', ',', '.', ';', ':'):
                     buffer_line += " " + line
                 # Priority 1b: If buffer ends with opening parenthesis/bracket, always merge
                 elif buffer_line.endswith(("(", "[")):
@@ -180,6 +180,15 @@ class ManuscriptIndexer:
                         buffer_line += " " + line
                     else:
                         buffer_line += line
+                # Priority 1c: If next line starts with "- " (list item), merge with newline
+                elif line.startswith("- "):
+                    buffer_line += "\n" + line
+                # Priority 1d: If buffer ends with incomplete phrase (prepositions, articles, conjunctions), always merge
+                elif buffer_line.endswith((" the", " a", " an", " in", " of", " to", " for", " with", " from", " by", " at", " on", " and", " or", " but", " not", " as")):
+                    buffer_line += " " + line
+                # Priority 1e: If buffer is a single short word (article/preposition/conjunction), merge with next
+                elif buffer_line in ("The", "A", "An", "In", "Of", "To", "For", "With", "From", "By", "At", "On", "And", "Or", "But", "Not", "As"):
+                    buffer_line += " " + line
                 # Priority 2: If buffer ends in hyphen, merge without space
                 elif buffer_line.endswith("-"):
                     buffer_line = buffer_line[:-1] + line

@@ -74,7 +74,7 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
             e.stopPropagation();
             onOpenRewriteModal(issue);
           }}
-          className="mt-3 px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 transition w-full"
+          className="mt-3 px-3 py-1.5 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition w-full"
         >
           View Rewrite
         </button>
@@ -88,7 +88,7 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
             e.stopPropagation();
             onOpenOutlineModal(issue);
           }}
-          className="mt-3 px-4 py-2 bg-purple-600 text-white text-sm rounded-md hover:bg-purple-700 transition w-full"
+          className="mt-3 px-3 py-1.5 bg-purple-600 text-white text-xs rounded hover:bg-purple-700 transition w-full"
         >
           View Outline
         </button>
@@ -102,7 +102,7 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
             e.stopPropagation();
             onOpenBiasedReviewModal(issue);
           }}
-          className="mt-3 px-4 py-2 bg-amber-600 text-white text-sm rounded-md hover:bg-amber-700 transition w-full"
+          className="mt-3 px-3 py-1.5 bg-amber-600 text-white text-xs rounded hover:bg-amber-700 transition w-full"
         >
           View Review
         </button>
@@ -123,52 +123,55 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
         <div className="flex gap-1">
           <button
             onClick={() => setFilterTrack('all')}
-            className={`relative px-3 py-1.5 rounded text-xs font-medium transition ${
+            className={`relative px-3 py-2 rounded text-xs font-medium transition flex flex-col items-center ${
               filterTrack === 'all'
                 ? 'bg-[#2A2A2A] text-white'
                 : 'bg-transparent text-gray-400 hover:text-gray-200'
             }`}
           >
-            All
+            <span>All</span>
             {filterTrack === 'all' && (
               <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-400 rounded-full"></div>
             )}
           </button>
           <button
             onClick={() => setFilterTrack('A')}
-            className={`relative px-3 py-1.5 rounded text-xs font-medium transition ${
+            className={`relative px-3 py-2 rounded text-xs font-medium transition flex flex-col items-center ${
               filterTrack === 'A'
                 ? 'bg-blue-500/20 text-blue-400'
                 : 'bg-transparent text-gray-400 hover:text-gray-200'
             }`}
           >
-            Track A
+            <span className="font-semibold">Rigor</span>
+            <span className="text-[9px] opacity-70 whitespace-nowrap">Structure & reasoning</span>
             {filterTrack === 'A' && (
               <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500 rounded-full"></div>
             )}
           </button>
           <button
             onClick={() => setFilterTrack('B')}
-            className={`relative px-3 py-1.5 rounded text-xs font-medium transition ${
+            className={`relative px-3 py-2 rounded text-xs font-medium transition flex flex-col items-center ${
               filterTrack === 'B'
                 ? 'bg-purple-500/20 text-purple-400'
                 : 'bg-transparent text-gray-400 hover:text-gray-200'
             }`}
           >
-            Track B
+            <span className="font-semibold">Clarity</span>
+            <span className="text-[9px] opacity-70 whitespace-nowrap">Language & style</span>
             {filterTrack === 'B' && (
               <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-purple-500 rounded-full"></div>
             )}
           </button>
           <button
             onClick={() => setFilterTrack('C')}
-            className={`relative px-3 py-1.5 rounded text-xs font-medium transition ${
+            className={`relative px-3 py-2 rounded text-xs font-medium transition flex flex-col items-center ${
               filterTrack === 'C'
                 ? 'bg-amber-500/20 text-amber-400'
                 : 'bg-transparent text-gray-400 hover:text-gray-200'
             }`}
           >
-            Track C
+            <span className="font-semibold">Counterpoint</span>
+            <span className="text-[9px] opacity-70 whitespace-nowrap">Reviewer-style critique</span>
             {filterTrack === 'C' && (
               <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-500 rounded-full"></div>
             )}
@@ -228,7 +231,7 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
                   </div>
 
                   {/* Title - PROMINENT */}
-                  <h3 className="text-[15px] font-semibold text-gray-100 mb-2 leading-snug">
+                  <h3 className="text-[17px] font-semibold text-gray-100 mb-2 leading-snug">
                     {issue.title || issue.message}
                   </h3>
 
