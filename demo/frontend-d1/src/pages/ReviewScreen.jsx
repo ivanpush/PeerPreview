@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useManuscript } from '../context/ManuscriptContext';
+import ManuscriptView from '../components/ManuscriptView';
+import IssuesPanel from '../components/IssuesPanel';
 
 function ReviewScreen() {
   const navigate = useNavigate();
   const { manuscript, issues, loading } = useManuscript();
+  const [rewriteModalIssue, setRewriteModalIssue] = useState(null);
+  const [outlineModalIssue, setOutlineModalIssue] = useState(null);
+  const [biasedReviewModalIssue, setBiasedReviewModalIssue] = useState(null);
 
   if (loading || !manuscript) {
     return (
@@ -46,50 +51,25 @@ function ReviewScreen() {
 
       {/* Main content */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Manuscript view (left) - Placeholder */}
-        <div className="flex-1 overflow-auto p-6 bg-white">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">
-            {manuscript.title}
-          </h1>
-          <p className="text-gray-600 mb-8 italic">
-            Manuscript loaded successfully. {manuscript.sections?.length || 0} sections, {manuscript.paragraphs?.length || 0} paragraphs.
-          </p>
-          <div className="p-8 bg-blue-50 rounded-lg border border-blue-200">
-            <p className="text-blue-800">
-              Full manuscript view with sections will be implemented in the next phase.
-              This placeholder confirms that data is loaded correctly.
-            </p>
-          </div>
+        {/* Manuscript view (left) */}
+        <div className="flex-1 overflow-hidden">
+          <ManuscriptView />
         </div>
 
-        {/* Issues panel (right) - Placeholder */}
-        <div className="w-96 border-l bg-gray-50 p-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">
-            Issues ({issues.length})
-          </h2>
-          <div className="space-y-2">
-            {issues.slice(0, 5).map((issue, idx) => (
-              <div key={idx} className="p-3 bg-white rounded-lg border border-gray-200 shadow-sm">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className={`
-                    w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white
-                    ${issue.track === 'A' ? 'bg-blue-500' : issue.track === 'B' ? 'bg-purple-500' : 'bg-amber-500'}
-                  `}>
-                    {issue.track}
-                  </span>
-                  <span className="text-xs font-medium text-gray-500">{issue.severity}</span>
-                </div>
-                <p className="text-sm text-gray-700">{issue.title || issue.message}</p>
-              </div>
-            ))}
-          </div>
-          {issues.length > 5 && (
-            <p className="text-sm text-gray-500 mt-4">
-              +{issues.length - 5} more issues
-            </p>
-          )}
+        {/* Issues panel (right) */}
+        <div className="w-96 border-l overflow-hidden">
+          <IssuesPanel
+            onOpenRewriteModal={setRewriteModalIssue}
+            onOpenOutlineModal={setOutlineModalIssue}
+            onOpenBiasedReviewModal={setBiasedReviewModalIssue}
+          />
         </div>
       </div>
+
+      {/* Modals - TODO: Implement in Phase 5 */}
+      {/* {rewriteModalIssue && <RewriteModal issue={rewriteModalIssue} onClose={() => setRewriteModalIssue(null)} />} */}
+      {/* {outlineModalIssue && <OutlineModal issue={outlineModalIssue} onClose={() => setOutlineModalIssue(null)} />} */}
+      {/* {biasedReviewModalIssue && <BiasedReviewModal issue={biasedReviewModalIssue} onClose={() => setBiasedReviewModalIssue(null)} />} */}
     </div>
   );
 }
