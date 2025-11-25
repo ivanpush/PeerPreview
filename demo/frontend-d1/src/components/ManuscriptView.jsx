@@ -152,23 +152,8 @@ function ManuscriptView({ onFigureClick }) {
             : 'bg-transparent border-[#2E2E2E] hover:bg-[#1E1E1E]/50 hover:border-[#3A3A3A]'
         }`}
       >
-        {/* Top right controls */}
+        {/* Top right controls - Edit button only */}
         <div className="absolute top-2 right-2 flex items-center gap-2">
-          {/* Status badge */}
-          {(isRewritten || isEdited) && (
-            <button
-              onClick={() => setShowOriginal(isShowingOriginal ? null : paragraphId)}
-              className={`text-[9px] font-semibold px-2 py-1 rounded border transition cursor-pointer ${
-                isRewritten
-                  ? 'text-green-400 bg-green-900/30 border-green-800/50 hover:bg-green-900/50'
-                  : 'text-yellow-400 bg-yellow-900/30 border-yellow-800/50 hover:bg-yellow-900/50'
-              }`}
-              title="Click to view original"
-            >
-              {isRewritten ? 'REWRITTEN' : 'EDITED'}
-            </button>
-          )}
-
           {/* Edit button - show on hover */}
           {!isEditing && (
             <button
@@ -238,11 +223,34 @@ function ManuscriptView({ onFigureClick }) {
           </div>
         ) : (
           /* Normal display */
-          <p className={`text-[15px] leading-[1.7] font-normal ${
-            isRewritten ? 'text-green-300' : isEdited ? 'text-yellow-300' : 'text-gray-200'
-          }`}>
-            {paragraph.text}
-          </p>
+          <>
+            <p className={`text-[15px] leading-[1.7] font-normal ${
+              isRewritten ? 'text-green-300' : isEdited ? 'text-yellow-300' : 'text-gray-200'
+            }`}>
+              {paragraph.text}
+            </p>
+
+            {/* Status badge - below text */}
+            {(isRewritten || isEdited) && (
+              <div className="mt-3 flex items-center">
+                <button
+                  onClick={() => setShowOriginal(isShowingOriginal ? null : paragraphId)}
+                  className={`inline-flex items-center gap-1.5 text-[9px] font-semibold px-2 py-1 rounded border transition cursor-pointer ${
+                    isRewritten
+                      ? 'text-green-400 bg-green-900/30 border-green-800/50 hover:bg-green-900/50'
+                      : 'text-yellow-400 bg-yellow-900/30 border-yellow-800/50 hover:bg-yellow-900/50'
+                  }`}
+                  title="Click to view original"
+                >
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                  {isRewritten ? 'REWRITTEN' : 'EDITED'}
+                </button>
+              </div>
+            )}
+          </>
         )}
 
         {/* Metadata indicators */}
