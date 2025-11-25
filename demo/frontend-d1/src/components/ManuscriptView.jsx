@@ -519,24 +519,43 @@ function ManuscriptView({ onFigureClick }) {
                 {manuscript.authors && (
                   <div className="mb-3">
                     <h3 className="text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wide">Authors</h3>
-                    <p className={`text-sm text-gray-300 leading-relaxed ${
-                      manuscript.authors.includes('.') ? 'whitespace-pre-line' : ''
-                    }`}>
-                      {manuscript.authors.includes('.')
-                        ? manuscript.authors
-                        : manuscript.authors.replace(/\n/g, ', ')}
+                    <p className="text-sm text-gray-300 leading-relaxed">
+                      {(() => {
+                        // Split by lines and process each
+                        const lines = manuscript.authors.split('\n');
+                        const nameLines = [];
+                        const footnoteLines = [];
+
+                        lines.forEach(line => {
+                          const trimmed = line.trim();
+                          // Footnotes typically start with *, a, b, c or contain words like "Corresponding" or "listed"
+                          if (trimmed.match(/^[\*a-c]/) || trimmed.toLowerCase().includes('corresponding') ||
+                              trimmed.toLowerCase().includes('listed') || trimmed.toLowerCase().includes('affiliations')) {
+                            footnoteLines.push(trimmed);
+                          } else if (trimmed) {
+                            nameLines.push(trimmed);
+                          }
+                        });
+
+                        return (
+                          <>
+                            <span>{nameLines.join(', ')}</span>
+                            {footnoteLines.length > 0 && (
+                              <span className="block mt-2 text-xs text-gray-500 italic">
+                                {footnoteLines.join(' ')}
+                              </span>
+                            )}
+                          </>
+                        );
+                      })()}
                     </p>
                   </div>
                 )}
                 {manuscript.affiliations && (
                   <div>
                     <h3 className="text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wide">Affiliations</h3>
-                    <p className={`text-sm text-gray-300 leading-relaxed ${
-                      manuscript.affiliations.includes('.') ? 'whitespace-pre-line' : ''
-                    }`}>
-                      {manuscript.affiliations.includes('.')
-                        ? manuscript.affiliations
-                        : manuscript.affiliations.replace(/\n/g, ', ')}
+                    <p className="text-sm text-gray-300 leading-relaxed whitespace-pre-line">
+                      {manuscript.affiliations}
                     </p>
                   </div>
                 )}
