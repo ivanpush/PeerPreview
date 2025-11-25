@@ -33,7 +33,8 @@
       "Bash(do)",
       "Bash(done)",
       "Bash(docs/testPDFs/test_outputs/FINAL_TEST_RESULTS.md)",
-      "Bash(npx tailwindcss:*)"
+      "Bash(npx tailwindcss:*)",
+      "Bash(npm uninstall:*)"
     ],
     "deny": [],
     "ask": []
