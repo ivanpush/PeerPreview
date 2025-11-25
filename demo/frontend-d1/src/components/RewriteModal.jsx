@@ -1,17 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useManuscript } from '../context/ManuscriptContext';
 
 function RewriteModal({ issue, onClose }) {
   const { manuscript, updateParagraph } = useManuscript();
+  const [editedText, setEditedText] = useState(issue.suggested_rewrite || '');
 
   if (!issue) return null;
 
   const paragraph = manuscript?.paragraphs?.find(p => p.paragraph_id === issue.paragraph_id);
   const originalText = paragraph?.text || '';
-  const suggestedText = issue.suggested_rewrite || '';
 
   const handleAccept = () => {
-    updateParagraph(issue.paragraph_id, suggestedText);
+    updateParagraph(issue.paragraph_id, editedText, true); // Pass flag indicating this is a rewrite
     onClose();
   };
 
@@ -60,18 +60,22 @@ function RewriteModal({ issue, onClose }) {
             </div>
           </div>
 
-          {/* Suggested rewrite */}
+          {/* Suggested rewrite - editable */}
           <div className="mb-6">
             <h3 className="text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
               <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
               Suggested Rewrite
+              <span className="text-xs text-gray-500 font-normal ml-2">(editable)</span>
             </h3>
             <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-              <p className="text-gray-700 leading-relaxed text-justify">
-                {suggestedText}
-              </p>
+              <textarea
+                value={editedText}
+                onChange={(e) => setEditedText(e.target.value)}
+                className="w-full text-gray-700 leading-relaxed bg-transparent border-none resize-none focus:outline-none focus:ring-2 focus:ring-green-300 rounded p-2 min-h-[120px]"
+                rows={6}
+              />
             </div>
           </div>
 

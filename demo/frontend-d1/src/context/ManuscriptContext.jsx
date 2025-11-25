@@ -20,7 +20,7 @@ export const ManuscriptProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const updateParagraph = useCallback((paragraphId, newText) => {
+  const updateParagraph = useCallback((paragraphId, newText, isRewrite = false) => {
     if (!manuscript) return;
 
     // Find the paragraph to store previous state
@@ -34,12 +34,22 @@ export const ManuscriptProvider = ({ children }) => {
       timestamp: Date.now()
     });
 
-    // Update paragraph text while preserving metadata
+    // Store original text if this is the first edit
+    const originalText = paragraph.originalText || paragraph.text;
+    const isEdited = !isRewrite; // Manual edits are marked as "edited", rewrites as "rewritten"
+
+    // Update paragraph text while preserving metadata and marking status
     setManuscript(prev => ({
       ...prev,
       paragraphs: prev.paragraphs.map(p =>
         p.paragraph_id === paragraphId
-          ? { ...p, text: newText }
+          ? {
+              ...p,
+              text: newText,
+              isRewritten: isRewrite,
+              isEdited: isEdited,
+              originalText: originalText
+            }
           : p
       )
     }));
@@ -52,7 +62,7 @@ export const ManuscriptProvider = ({ children }) => {
       ...prev,
       paragraphs: prev.paragraphs.map(p =>
         p.paragraph_id === lastRewrite.paragraphId
-          ? { ...p, text: lastRewrite.previousText }
+          ? { ...p, text: lastRewrite.previousText, isRewritten: false, isEdited: false }
           : p
       )
     }));
