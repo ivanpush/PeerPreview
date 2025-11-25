@@ -519,16 +519,24 @@ function ManuscriptView({ onFigureClick }) {
                 {manuscript.authors && (
                   <div className="mb-3">
                     <h3 className="text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wide">Authors</h3>
-                    <p className="text-sm text-gray-300 leading-relaxed whitespace-pre-line">
-                      {manuscript.authors}
+                    <p className={`text-sm text-gray-300 leading-relaxed ${
+                      manuscript.authors.includes('.') ? 'whitespace-pre-line' : ''
+                    }`}>
+                      {manuscript.authors.includes('.')
+                        ? manuscript.authors
+                        : manuscript.authors.replace(/\n/g, ', ')}
                     </p>
                   </div>
                 )}
                 {manuscript.affiliations && (
                   <div>
                     <h3 className="text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wide">Affiliations</h3>
-                    <p className="text-sm text-gray-300 leading-relaxed whitespace-pre-line">
-                      {manuscript.affiliations}
+                    <p className={`text-sm text-gray-300 leading-relaxed ${
+                      manuscript.affiliations.includes('.') ? 'whitespace-pre-line' : ''
+                    }`}>
+                      {manuscript.affiliations.includes('.')
+                        ? manuscript.affiliations
+                        : manuscript.affiliations.replace(/\n/g, ', ')}
                     </p>
                   </div>
                 )}
