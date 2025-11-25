@@ -11,6 +11,8 @@ function ManuscriptView({ onFigureClick }) {
   const [editText, setEditText] = useState('');
   const [showOriginal, setShowOriginal] = useState(null);
   const [collapsedDeleted, setCollapsedDeleted] = useState(new Set());
+  const [authorsExpanded, setAuthorsExpanded] = useState(false);
+  const [expandedMetaSections, setExpandedMetaSections] = useState(new Set());
 
   // Extract paragraph number from paragraph_id (e.g., "p_res_5" -> "5")
   const getParagraphNumber = (paragraphId) => {
@@ -46,7 +48,7 @@ function ManuscriptView({ onFigureClick }) {
     return id.toUpperCase();
   };
 
-  // Track active section based on scroll position (80% threshold), only show after abstract
+  // Track active section based on scroll position (80% threshold), only show for actual sections (skip abstract)
   useEffect(() => {
     const handleScroll = () => {
       const scrollContainer = document.querySelector('.manuscript-scroll-container');
@@ -56,21 +58,25 @@ function ManuscriptView({ onFigureClick }) {
       const containerHeight = scrollContainer.clientHeight;
       const threshold = scrollTop + (containerHeight * 0.2); // 80% from top = 20% from bottom
 
-      // Check if abstract has scrolled past top of viewport
-      const abstractElement = document.querySelector('.abstract-section');
-      let abstractScrolledPast = false;
+      // Find the first real section (introduction or first body section)
+      const firstSection = Object.entries(sectionRefs.current).find(([sectionId]) => {
+        return sectionId.includes('int') || sectionId.includes('res') || sectionId.includes('met') || sectionId.includes('disc');
+      });
 
-      if (abstractElement) {
-        const rect = abstractElement.getBoundingClientRect();
-        const containerRect = scrollContainer.getBoundingClientRect();
-        // Abstract is past if its bottom is above the container top
-        abstractScrolledPast = rect.bottom < containerRect.top + 20; // 20px buffer
-      }
+      // Only show section indicator after scrolling to the first real section
+      if (firstSection) {
+        const [, firstElement] = firstSection;
+        if (firstElement) {
+          const rect = firstElement.getBoundingClientRect();
+          const containerRect = scrollContainer.getBoundingClientRect();
+          const firstElementTop = rect.top - containerRect.top + scrollTop;
 
-      // Only show section indicator if abstract has scrolled past
-      if (!abstractScrolledPast) {
-        setActiveSection(null);
-        return;
+          // Don't show until we reach the first real section
+          if (scrollTop < firstElementTop - 100) {
+            setActiveSection(null);
+            return;
+          }
+        }
       }
 
       let currentSection = null;
@@ -413,10 +419,10 @@ function ManuscriptView({ onFigureClick }) {
 
   return (
     <div className="h-full overflow-y-auto bg-[#1D1D1D] manuscript-scroll-container relative">
-      {/* Active section indicator - fixed upper right */}
-      {activeSection && (
-        <div className="fixed right-8 top-4 z-50">
-          <div className="bg-[#2A2A2A] border border-[#3A3A3A] rounded px-4 py-2 shadow-lg">
+      {/* Active section indicator - fixed left side, semi-transparent */}
+      {activeSection && activeSection !== 'front' && (
+        <div className="fixed left-8 top-20 z-50">
+          <div className="bg-[#2A2A2A]/80 backdrop-blur-sm border border-[#3A3A3A]/60 rounded px-4 py-2 shadow-lg">
             <span className="text-[13px] text-gray-300 font-semibold tracking-wide">
               {getFullSectionName(activeSection)}
             </span>
@@ -426,9 +432,110 @@ function ManuscriptView({ onFigureClick }) {
 
       <div className="max-w-4xl mx-auto p-8">
         {/* Title */}
-        <h1 className="text-2xl font-semibold text-white mb-6 leading-tight tracking-tight">
+        <h1 className="text-xl font-semibold text-white mb-3 leading-tight tracking-tight">
           {manuscript.title}
         </h1>
+
+        {/* Section Pills - Canonical + Other Sections */}
+        <div className="flex items-center flex-wrap gap-2 mb-8">
+          {/* Canonical sections (required) */}
+          {['abstract', 'introduction', 'methods', 'results', 'discussion', 'references'].map((required) => {
+            const hasSection = required === 'abstract'
+              ? manuscript.abstract
+              : manuscript.sections?.some(
+                  s => s.section_id?.includes(required) ||
+                       s.section_title?.toLowerCase().includes(required) ||
+                       s.heading?.toLowerCase().includes(required) ||
+                       (required === 'methods' && (
+                         s.section_id?.includes('materials') ||
+                         s.section_title?.toLowerCase().includes('materials') ||
+                         s.section_title?.toLowerCase().includes('experimental')
+                       ))
+                );
+
+            return (
+              <span
+                key={required}
+                className={`px-2 py-1 rounded text-xs font-medium flex items-center gap-1 ${
+                  hasSection
+                    ? 'bg-blue-500/20 text-blue-400 border border-blue-500/40'
+                    : 'bg-red-500/20 text-red-400 border border-red-500/40'
+                }`}
+              >
+                {hasSection ? (
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                ) : (
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                )}
+                {required}
+              </span>
+            );
+          })}
+
+          {/* Other sections present but not canonical (gray) */}
+          {manuscript.sections
+            ?.filter(s => {
+              const sectionName = (s.section_id || s.section_title || s.heading || '').toLowerCase();
+              const isCanonical = ['abstract', 'introduction', 'methods', 'results', 'discussion', 'references',
+                                   'materials', 'experimental', 'bibliography', 'intro', 'int', 'res', 'disc', 'met', 'ref'].some(
+                canonical => sectionName.includes(canonical)
+              );
+              return !isCanonical && s.paragraph_ids && s.paragraph_ids.length > 0;
+            })
+            .map((section) => (
+              <span
+                key={section.section_id}
+                className="px-2 py-1 bg-gray-700/30 text-gray-400 border border-gray-600/40 rounded text-xs font-medium"
+              >
+                {section.section_title || section.heading}
+              </span>
+            ))}
+        </div>
+
+        {/* Authors Section - Collapsible */}
+        {(manuscript.authors || manuscript.affiliations) && (
+          <div className="mb-6">
+            <button
+              onClick={() => setAuthorsExpanded(!authorsExpanded)}
+              className="flex items-center gap-2 text-sm text-gray-400 hover:text-gray-300 transition"
+            >
+              <svg
+                className={`w-4 h-4 transition-transform ${authorsExpanded ? 'rotate-90' : 'rotate-0'}`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+              <span className="font-semibold">Authors & Affiliations</span>
+            </button>
+
+            {authorsExpanded && (
+              <div className="mt-3 p-4 bg-[#232323] rounded-lg border border-[#2E2E2E]">
+                {manuscript.authors && (
+                  <div className="mb-3">
+                    <h3 className="text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wide">Authors</h3>
+                    <p className="text-sm text-gray-300 leading-relaxed whitespace-pre-line">
+                      {manuscript.authors}
+                    </p>
+                  </div>
+                )}
+                {manuscript.affiliations && (
+                  <div>
+                    <h3 className="text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wide">Affiliations</h3>
+                    <p className="text-sm text-gray-300 leading-relaxed whitespace-pre-line">
+                      {manuscript.affiliations}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Abstract */}
         {manuscript.abstract && (
@@ -445,21 +552,74 @@ function ManuscriptView({ onFigureClick }) {
           // Skip sections with no paragraphs
           if (!section.paragraph_ids || section.paragraph_ids.length === 0) return null;
 
+          // Identify meta sections (acknowledgements, funding, etc.)
+          const sectionName = (section.section_title || section.heading || '').toLowerCase();
+          const isMetaSection = ['acknowledgement', 'funding', 'conflict', 'contribution', 'author contribution',
+                                  'data availability', 'code availability', 'supplementary'].some(
+            meta => sectionName.includes(meta)
+          );
+
+          // Regular section rendering
+          if (!isMetaSection) {
+            return (
+              <div
+                key={section.section_id}
+                ref={el => sectionRefs.current[section.section_id] = el}
+                className="mb-10 relative"
+              >
+                <h2
+                  id={section.section_id}
+                  className="text-[17px] font-semibold text-gray-200 mb-5 pb-2 border-b border-[#2E2E2E] tracking-wide"
+                >
+                  {section.section_title || section.heading}
+                </h2>
+                <div className="space-y-2">
+                  {section.paragraph_ids.map(pid => renderParagraph(pid))}
+                </div>
+              </div>
+            );
+          }
+
+          // Meta section - collapsible
+          const isExpanded = expandedMetaSections.has(section.section_id);
+          const toggleMetaSection = () => {
+            setExpandedMetaSections(prev => {
+              const newSet = new Set(prev);
+              if (newSet.has(section.section_id)) {
+                newSet.delete(section.section_id);
+              } else {
+                newSet.add(section.section_id);
+              }
+              return newSet;
+            });
+          };
+
           return (
             <div
               key={section.section_id}
               ref={el => sectionRefs.current[section.section_id] = el}
-              className="mb-10 relative"
+              className="mb-6 relative"
             >
-              <h2
-                id={section.section_id}
-                className="text-[17px] font-semibold text-gray-200 mb-5 pb-2 border-b border-[#2E2E2E] tracking-wide"
+              <button
+                onClick={toggleMetaSection}
+                className="flex items-center gap-2 text-sm text-gray-400 hover:text-gray-300 transition mb-3"
               >
-                {section.section_title || section.heading}
-              </h2>
-              <div className="space-y-2">
-                {section.paragraph_ids.map(pid => renderParagraph(pid))}
-              </div>
+                <svg
+                  className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-90' : 'rotate-0'}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+                <span className="font-semibold">{section.section_title || section.heading}</span>
+              </button>
+
+              {isExpanded && (
+                <div className="pl-6 space-y-2">
+                  {section.paragraph_ids.map(pid => renderParagraph(pid))}
+                </div>
+              )}
             </div>
           );
         })}
