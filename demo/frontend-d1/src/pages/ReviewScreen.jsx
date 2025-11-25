@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useManuscript } from '../context/ManuscriptContext';
 import ManuscriptView from '../components/ManuscriptView';
 import IssuesPanel from '../components/IssuesPanel';
+import RewriteModal from '../components/RewriteModal';
+import OutlineModal from '../components/OutlineModal';
+import BiasedReviewModal from '../components/BiasedReviewModal';
 
 function ReviewScreen() {
   const navigate = useNavigate();
@@ -66,10 +69,10 @@ function ReviewScreen() {
         </div>
       </div>
 
-      {/* Modals - TODO: Implement in Phase 5 */}
-      {/* {rewriteModalIssue && <RewriteModal issue={rewriteModalIssue} onClose={() => setRewriteModalIssue(null)} />} */}
-      {/* {outlineModalIssue && <OutlineModal issue={outlineModalIssue} onClose={() => setOutlineModalIssue(null)} />} */}
-      {/* {biasedReviewModalIssue && <BiasedReviewModal issue={biasedReviewModalIssue} onClose={() => setBiasedReviewModalIssue(null)} />} */}
+      {/* Modals */}
+      {rewriteModalIssue && <RewriteModal issue={rewriteModalIssue} onClose={() => setRewriteModalIssue(null)} />}
+      {outlineModalIssue && <OutlineModal issue={outlineModalIssue} onClose={() => setOutlineModalIssue(null)} />}
+      {biasedReviewModalIssue && <BiasedReviewModal issue={biasedReviewModalIssue} onClose={() => setBiasedReviewModalIssue(null)} />}
     </div>
   );
 }
