@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useManuscript } from '../context/ManuscriptContext';
 import ManuscriptView from '../components/ManuscriptView';
@@ -6,13 +6,31 @@ import IssuesPanel from '../components/IssuesPanel';
 import RewriteModal from '../components/RewriteModal';
 import OutlineModal from '../components/OutlineModal';
 import BiasedReviewModal from '../components/BiasedReviewModal';
+import UndoBanner from '../components/UndoBanner';
 
 function ReviewScreen() {
   const navigate = useNavigate();
-  const { manuscript, issues, loading } = useManuscript();
+  const { manuscript, issues, loading, lastRewrite, undoLastRewrite } = useManuscript();
+  const [showUndoBanner, setShowUndoBanner] = useState(false);
   const [rewriteModalIssue, setRewriteModalIssue] = useState(null);
   const [outlineModalIssue, setOutlineModalIssue] = useState(null);
   const [biasedReviewModalIssue, setBiasedReviewModalIssue] = useState(null);
+
+  // Show undo banner when a rewrite is made
+  useEffect(() => {
+    if (lastRewrite) {
+      setShowUndoBanner(true);
+    }
+  }, [lastRewrite]);
+
+  const handleUndo = () => {
+    undoLastRewrite();
+    setShowUndoBanner(false);
+  };
+
+  const handleDismissBanner = () => {
+    setShowUndoBanner(false);
+  };
 
   if (loading || !manuscript) {
     return (
@@ -73,6 +91,15 @@ function ReviewScreen() {
       {rewriteModalIssue && <RewriteModal issue={rewriteModalIssue} onClose={() => setRewriteModalIssue(null)} />}
       {outlineModalIssue && <OutlineModal issue={outlineModalIssue} onClose={() => setOutlineModalIssue(null)} />}
       {biasedReviewModalIssue && <BiasedReviewModal issue={biasedReviewModalIssue} onClose={() => setBiasedReviewModalIssue(null)} />}
+
+      {/* Undo Banner */}
+      {showUndoBanner && lastRewrite && (
+        <UndoBanner
+          message={`Paragraph updated: "${lastRewrite.paragraphId}"`}
+          onUndo={handleUndo}
+          onDismiss={handleDismissBanner}
+        />
+      )}
     </div>
   );
 }
