@@ -232,28 +232,33 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
                     {issue.title || issue.message}
                   </h3>
 
-                  {/* Description - Clear and readable */}
-                  {(issue.description || issue.message) && (
-                    <p className="text-[13px] text-gray-400 leading-relaxed mb-3 opacity-90">
-                      {issue.description || (issue.title ? issue.message : '')}
-                    </p>
+                  {/* Collapsible content - hidden when dismissed */}
+                  {!isDismissed && (
+                    <>
+                      {/* Description - Clear and readable */}
+                      {(issue.description || issue.message) && (
+                        <p className="text-[13px] text-gray-400 leading-relaxed mb-3 opacity-90">
+                          {issue.description || (issue.title ? issue.message : '')}
+                        </p>
+                      )}
+
+                      {/* Meta info row */}
+                      <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
+                        <span className="px-2 py-0.5 bg-gray-800 rounded">
+                          {issue.issue_type?.replace(/_/g, ' ') || 'general'}
+                        </span>
+                        {issue.paragraph_id && (
+                          <span>• {issue.paragraph_id}</span>
+                        )}
+                        {issue.section_id && !issue.paragraph_id && (
+                          <span>• Section</span>
+                        )}
+                      </div>
+
+                      {/* Action button */}
+                      {renderActionButton(issue)}
+                    </>
                   )}
-
-                  {/* Meta info row */}
-                  <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
-                    <span className="px-2 py-0.5 bg-gray-800 rounded">
-                      {issue.issue_type?.replace(/_/g, ' ') || 'general'}
-                    </span>
-                    {issue.paragraph_id && (
-                      <span>• {issue.paragraph_id}</span>
-                    )}
-                    {issue.section_id && !issue.paragraph_id && (
-                      <span>• Section</span>
-                    )}
-                  </div>
-
-                  {/* Action button */}
-                  {renderActionButton(issue)}
                 </div>
               </div>
             );

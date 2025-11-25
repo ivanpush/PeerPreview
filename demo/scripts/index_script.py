@@ -170,7 +170,10 @@ class ManuscriptIndexer:
                 if self.is_section_header(buffer_line):
                     merged_lines.append(buffer_line)
                     buffer_line = line
-                # Priority 1: If buffer ends with opening parenthesis/bracket, always merge
+                # Priority 1a: If next line starts with closing paren/bracket, always merge
+                elif line and line[0] in (')', ']'):
+                    buffer_line += " " + line
+                # Priority 1b: If buffer ends with opening parenthesis/bracket, always merge
                 elif buffer_line.endswith(("(", "[")):
                     # Add space only if buffer doesn't already end with space
                     if not buffer_line.endswith(" "):
@@ -576,35 +579,69 @@ class ManuscriptIndexer:
             self.save_references_block()
 
     def save_references_block(self):
-        """Save accumulated references as a single text block"""
+        """Save accumulated references as individual numbered entries"""
         if not self.references_text:
             return
 
         # Join all references into one block
         references_content = "\n\n".join(self.references_text)
 
-        p_id = "p_refs_1"
+        # Remove any figure/table captions that got included (they appear after references)
+        # Pattern: Figure/Fig/Table X: caption text (everything after the caption until end)
+        references_content = re.sub(
+            r'(?:Figure|Fig\.?|Table)\s+\d+[.:]\s+.*',
+            '',
+            references_content,
+            flags=re.IGNORECASE | re.DOTALL
+        )
 
-        # Add paragraph ID to references section
+        # Split references by numbered entries (e.g., "1.", "2.", etc.)
+        # Pattern: line starting with number followed by period and whitespace
+        ref_pattern = re.compile(r'^\s*(\d+)\.\s+', re.MULTILINE)
+
+        # Find all reference numbers
+        ref_numbers = ref_pattern.findall(references_content)
+
+        # Split on the pattern
+        ref_parts = ref_pattern.split(references_content)
+
+        # ref_parts will be: ['', '1', 'text1', '2', 'text2', ...]
+        # So we pair up numbers with their text
+        references = []
+        for i in range(1, len(ref_parts), 2):
+            if i + 1 < len(ref_parts):
+                ref_num = ref_parts[i]
+                ref_text = ref_parts[i + 1].strip()
+                if ref_text:  # Only add non-empty references
+                    references.append({
+                        "number": int(ref_num),
+                        "text": ref_text
+                    })
+
+        # Add paragraph IDs to references section
         for sec in self.data["sections"]:
             if sec["section_id"] == "sec_refs":
-                sec["paragraph_ids"].append(p_id)
+                for ref in references:
+                    p_id = f"p_refs_{ref['number']}"
+                    sec["paragraph_ids"].append(p_id)
                 break
 
-        # Create a single paragraph for all references
-        para_obj = {
-            "paragraph_id": p_id,
-            "section_id": "sec_refs",
-            "para_type": "references_block",
-            "text": references_content,
-            "sentences": [],
-            "metadata": {
-                "fig_refs": [],
-                "table_refs": []
+        # Create individual paragraphs for each reference
+        for ref in references:
+            p_id = f"p_refs_{ref['number']}"
+            para_obj = {
+                "paragraph_id": p_id,
+                "section_id": "sec_refs",
+                "para_type": "reference",
+                "text": f"{ref['number']}. {ref['text']}",
+                "sentences": [],
+                "metadata": {
+                    "ref_number": ref['number'],
+                    "fig_refs": [],
+                    "table_refs": []
+                }
             }
-        }
-
-        self.data["paragraphs"].append(para_obj)
+            self.data["paragraphs"].append(para_obj)
 
     def to_json(self):
         return json.dumps(self.data, indent=2)

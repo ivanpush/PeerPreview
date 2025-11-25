@@ -10,13 +10,34 @@ import UndoBanner from '../components/UndoBanner';
 
 function ReviewScreen() {
   const navigate = useNavigate();
-  const { manuscript, issues, loading, lastRewrite, undoLastRewrite } = useManuscript();
+  const { manuscript, issues, loading, lastRewrite, undoLastRewrite, loadMockData } = useManuscript();
   const [showUndoBanner, setShowUndoBanner] = useState(false);
   const [rewriteModalIssue, setRewriteModalIssue] = useState(null);
   const [outlineModalIssue, setOutlineModalIssue] = useState(null);
   const [biasedReviewModalIssue, setBiasedReviewModalIssue] = useState(null);
   const [selectedFigureId, setSelectedFigureId] = useState(null);
   const [figuresPanelExpanded, setFiguresPanelExpanded] = useState(false);
+
+  // Load mock data if manuscript is not already loaded (for direct navigation/refresh)
+  useEffect(() => {
+    if (!manuscript && !loading) {
+      loadMockData();
+    }
+  }, [manuscript, loading, loadMockData]);
+
+  // Handler to open figure panel and select a figure
+  const handleFigureClick = (figureId) => {
+    setSelectedFigureId(figureId);
+    setFiguresPanelExpanded(true);
+  };
+
+  // Handler to scroll to a paragraph from figure panel
+  const handleParagraphClick = (paragraphId) => {
+    const element = document.getElementById(paragraphId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
 
   // Show undo banner when a rewrite is made
   useEffect(() => {
@@ -78,7 +99,7 @@ function ReviewScreen() {
         <div className="flex-1 flex overflow-hidden">
           {/* Manuscript view (left - 60%) */}
           <div className="w-[60%] overflow-hidden border-r border-[#2E2E2E]">
-            <ManuscriptView />
+            <ManuscriptView onFigureClick={handleFigureClick} />
           </div>
 
           {/* Issues panel (right - 40%) */}
@@ -101,7 +122,7 @@ function ReviewScreen() {
               onClick={() => setFiguresPanelExpanded(!figuresPanelExpanded)}
               className="text-gray-500 hover:text-gray-300 transition mr-1"
             >
-              <svg className={`w-4 h-4 transition-transform ${figuresPanelExpanded ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className={`w-4 h-4 transition-transform ${figuresPanelExpanded ? '' : 'rotate-180'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
@@ -176,9 +197,13 @@ function ReviewScreen() {
                           <div className="flex items-center gap-2 text-xs text-gray-500 mt-3">
                             <span>Referenced in:</span>
                             {manuscript.figures.find(f => f.figure_id === selectedFigureId).mentions.map((pid, idx) => (
-                              <span key={pid} className="px-2 py-0.5 bg-gray-800 rounded">
+                              <button
+                                key={pid}
+                                onClick={() => handleParagraphClick(pid)}
+                                className="px-2 py-0.5 bg-gray-800 hover:bg-gray-700 rounded transition cursor-pointer"
+                              >
                                 {pid}
-                              </span>
+                              </button>
                             ))}
                           </div>
                         )}
