@@ -2,6 +2,7 @@
   "name": "peerpreview-demo",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "description": "PeerPreview Demo - Static prototype for user touchpoint testing",
   "scripts": {
     "dev": "vite",
