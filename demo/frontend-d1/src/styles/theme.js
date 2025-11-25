@@ -2,23 +2,29 @@
 // Clear separation between severity (warm) and track categories (cool)
 
 export const theme = {
+  // Accent colors
+  accent: {
+    teal: '#5BAEB8',       // Primary accent - highlights, selections
+    uiBlue: '#65B2E8',     // UI elements - section pills, figure pills
+  },
+
   // Severity colors (warm spectrum)
   severity: {
     major: '#E5484D',      // Red - major issues
     minor: '#FFBE3C',      // Amber - minor issues
-    low: '#3E63DD',        // Blue - low severity (info)
+    low: '#65B2E8',        // UI Blue - low severity (info)
   },
 
-  // Track categories (cool spectrum, non-overlapping with severity)
+  // Track categories
   track: {
     rigor: '#3E63DD',      // Blue - structure & reasoning
     clarity: '#8E4EC6',    // Purple - language & style
-    counterpoint: '#3AA8A0' // Teal - reviewer-style critique
+    counterpoint: '#C75A7A' // Rose - reviewer-style critique
   },
 
   // Action colors (buttons, interactive elements)
   action: {
-    primary: '#4786FF',    // Bright blue for primary actions
+    primary: '#5BAEB8',    // Teal accent for primary actions
     secondary: '#A0A0A0',  // Gray for secondary actions
   },
 

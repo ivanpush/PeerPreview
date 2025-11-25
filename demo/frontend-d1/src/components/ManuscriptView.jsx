@@ -199,7 +199,7 @@ function ManuscriptView({ onFigureClick }) {
         ref={el => paragraphRefs.current[paragraphId] = el}
         className={`group mb-4 p-4 rounded-lg border transition-all duration-300 relative ${
           isHighlighted
-            ? 'bg-[#1E1E1E] border-blue-500/60 shadow-lg shadow-blue-500/10'
+            ? 'bg-[#1A2E2D] shadow-xl'
             : isDeleted
             ? 'bg-transparent border-red-900/30 hover:border-red-800/40'
             : isRewritten
@@ -208,6 +208,11 @@ function ManuscriptView({ onFigureClick }) {
             ? 'bg-[#2A1E1E] border-yellow-900/50 hover:bg-[#331E1E] hover:border-yellow-800/50'
             : 'bg-transparent border-[#2E2E2E] hover:bg-[#1E1E1E]/50 hover:border-[#3A3A3A]'
         }`}
+        style={isHighlighted ? {
+          borderWidth: '2px',
+          borderColor: '#5BAEB8',
+          boxShadow: '0 0 20px rgba(91, 174, 184, 0.2)'
+        } : {}}
       >
         {/* Top right controls - Edit button only */}
         <div className="absolute top-2 right-2 flex items-center gap-2">
@@ -399,12 +404,21 @@ function ManuscriptView({ onFigureClick }) {
                         e.stopPropagation();
                         onFigureClick(figure.figure_id);
                       }}
-                      className="text-xs bg-purple-950/40 text-purple-400 px-2 py-1 rounded border border-purple-900/50 hover:bg-purple-900/40 hover:border-purple-800/50 transition cursor-pointer"
+                      className="text-xs px-2 py-1 rounded border transition cursor-pointer"
+                      style={{
+                        backgroundColor: 'rgba(101, 178, 232, 0.15)',
+                        color: '#65B2E8',
+                        borderColor: 'rgba(101, 178, 232, 0.4)'
+                      }}
                     >
                       {figRef}
                     </button>
                   ) : (
-                    <span key={figRef} className="text-xs bg-purple-950/40 text-purple-400 px-2 py-1 rounded border border-purple-900/50">
+                    <span key={figRef} className="text-xs px-2 py-1 rounded border" style={{
+                      backgroundColor: 'rgba(101, 178, 232, 0.15)',
+                      color: '#65B2E8',
+                      borderColor: 'rgba(101, 178, 232, 0.4)'
+                    }}>
                       {figRef}
                     </span>
                   );
@@ -430,7 +444,7 @@ function ManuscriptView({ onFigureClick }) {
         </div>
       )}
 
-      <div className="max-w-4xl mx-auto p-8">
+      <div className="max-w-4xl ml-auto mr-8 px-6 py-8">
         {/* Title */}
         <h1 className="text-xl font-semibold text-white mb-3 leading-tight tracking-tight">
           {manuscript.title}
@@ -440,27 +454,30 @@ function ManuscriptView({ onFigureClick }) {
         <div className="flex items-center flex-wrap gap-2 mb-8">
           {/* Canonical sections (required) */}
           {['abstract', 'introduction', 'methods', 'results', 'discussion', 'references'].map((required) => {
-            const hasSection = required === 'abstract'
-              ? manuscript.abstract
-              : manuscript.sections?.some(
-                  s => s.section_id?.includes(required) ||
-                       s.section_title?.toLowerCase().includes(required) ||
-                       s.heading?.toLowerCase().includes(required) ||
-                       (required === 'methods' && (
-                         s.section_id?.includes('materials') ||
-                         s.section_title?.toLowerCase().includes('materials') ||
-                         s.section_title?.toLowerCase().includes('experimental')
-                       ))
-                );
+            const hasSection = manuscript.sections?.some(
+              s => s.section_id?.includes(required) ||
+                   s.section_title?.toLowerCase().includes(required) ||
+                   s.heading?.toLowerCase().includes(required) ||
+                   (required === 'methods' && (
+                     s.section_id?.includes('materials') ||
+                     s.section_title?.toLowerCase().includes('materials') ||
+                     s.section_title?.toLowerCase().includes('experimental')
+                   ))
+            );
 
             return (
               <span
                 key={required}
-                className={`px-2 py-1 rounded text-xs font-medium flex items-center gap-1 ${
-                  hasSection
-                    ? 'bg-blue-500/20 text-blue-400 border border-blue-500/40'
-                    : 'bg-red-500/20 text-red-400 border border-red-500/40'
-                }`}
+                className="px-2 py-1 rounded text-xs font-medium flex items-center gap-1"
+                style={hasSection ? {
+                  backgroundColor: 'rgba(101, 178, 232, 0.2)',
+                  color: '#65B2E8',
+                  border: '1px solid rgba(101, 178, 232, 0.4)'
+                } : {
+                  backgroundColor: 'rgba(229, 72, 77, 0.2)',
+                  color: '#E5484D',
+                  border: '1px solid rgba(229, 72, 77, 0.4)'
+                }}
               >
                 {hasSection ? (
                   <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -564,35 +581,58 @@ function ManuscriptView({ onFigureClick }) {
           </div>
         )}
 
-        {/* Abstract */}
-        {manuscript.abstract && (
-          <div className="abstract-section mb-8 p-6 bg-[#232323] rounded-lg border border-[#2E2E2E]">
-            <h2 className="text-[15px] font-semibold text-gray-300 mb-3 tracking-wide">ABSTRACT</h2>
-            <p className="text-[15px] text-gray-200 leading-[1.7]">
-              {manuscript.abstract}
-            </p>
-          </div>
-        )}
-
         {/* Sections - reconstruct from section.paragraph_ids */}
         {manuscript.sections?.map(section => {
           // Skip sections with no paragraphs
           if (!section.paragraph_ids || section.paragraph_ids.length === 0) return null;
 
-          // Identify meta sections (acknowledgements, funding, etc.)
+          // Identify section type
           const sectionName = (section.section_title || section.heading || '').toLowerCase();
+          const sectionId = (section.section_id || '').toLowerCase();
+
           const isMetaSection = ['acknowledgement', 'funding', 'conflict', 'contribution', 'author contribution',
                                   'data availability', 'code availability', 'supplementary'].some(
             meta => sectionName.includes(meta)
           );
 
-          // Regular section rendering
+          // Regular section rendering (including abstract)
           if (!isMetaSection) {
+            // Group paragraphs by meta subheadings
+            const paragraphGroups = [];
+            let currentGroup = { subheading: null, paragraphs: [] };
+
+            section.paragraph_ids.forEach(pid => {
+              const para = manuscript.paragraphs?.find(p => p.paragraph_id === pid);
+              if (!para) return;
+
+              const isMetaSubheading = para.para_type === 'subheading' &&
+                ['author contribution', 'competing interest', 'declaration', 'acknowledgement',
+                 'funding', 'data availability', 'code availability'].some(
+                  meta => para.text.toLowerCase().includes(meta)
+                );
+
+              if (isMetaSubheading) {
+                // Save previous group if it has content
+                if (currentGroup.subheading || currentGroup.paragraphs.length > 0) {
+                  paragraphGroups.push(currentGroup);
+                }
+                // Start new group with this subheading
+                currentGroup = { subheading: pid, paragraphs: [] };
+              } else {
+                currentGroup.paragraphs.push(pid);
+              }
+            });
+
+            // Add final group
+            if (currentGroup.subheading || currentGroup.paragraphs.length > 0) {
+              paragraphGroups.push(currentGroup);
+            }
+
             return (
               <div
                 key={section.section_id}
                 ref={el => sectionRefs.current[section.section_id] = el}
-                className="mb-10 relative"
+                className="mb-6 relative"
               >
                 <h2
                   id={section.section_id}
@@ -601,13 +641,54 @@ function ManuscriptView({ onFigureClick }) {
                   {section.section_title || section.heading}
                 </h2>
                 <div className="space-y-2">
-                  {section.paragraph_ids.map(pid => renderParagraph(pid))}
+                  {paragraphGroups.map((group, idx) => {
+                    if (group.subheading) {
+                      const subheadingPara = manuscript.paragraphs?.find(p => p.paragraph_id === group.subheading);
+                      const isExpanded = expandedMetaSections.has(group.subheading);
+
+                      return (
+                        <div key={group.subheading} className="mb-4">
+                          <button
+                            onClick={() => {
+                              setExpandedMetaSections(prev => {
+                                const newSet = new Set(prev);
+                                if (newSet.has(group.subheading)) {
+                                  newSet.delete(group.subheading);
+                                } else {
+                                  newSet.add(group.subheading);
+                                }
+                                return newSet;
+                              });
+                            }}
+                            className="flex items-center gap-2 text-sm text-gray-400 hover:text-gray-300 transition mb-3"
+                          >
+                            <svg
+                              className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-90' : 'rotate-0'}`}
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            </svg>
+                            <span className="font-semibold">{subheadingPara?.text}</span>
+                          </button>
+                          {isExpanded && (
+                            <div className="pl-6 space-y-2">
+                              {group.paragraphs.map(pid => renderParagraph(pid))}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    } else {
+                      return group.paragraphs.map(pid => renderParagraph(pid));
+                    }
+                  })}
                 </div>
               </div>
             );
           }
 
-          // Meta section - collapsible
+          // Meta section - collapsible and editable
           const isExpanded = expandedMetaSections.has(section.section_id);
           const toggleMetaSection = () => {
             setExpandedMetaSections(prev => {

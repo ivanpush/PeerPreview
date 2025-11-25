@@ -94,16 +94,16 @@ function ReviewScreen() {
       </div>
 
       {/* Main content area */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Top: Manuscript + Issues (60% + 40%) */}
-        <div className="flex-1 flex overflow-hidden">
-          {/* Manuscript view (left - 60%) */}
-          <div className="w-[60%] overflow-hidden border-r border-[#2E2E2E]">
+      <div className="flex-1 flex flex-col overflow-hidden bg-[#1D1D1D]">
+        {/* Top: Manuscript + Issues */}
+        <div className="flex-1 flex overflow-hidden justify-center">
+          {/* Manuscript view (left - flexible with max width) */}
+          <div className="flex-1 max-w-5xl overflow-hidden">
             <ManuscriptView onFigureClick={handleFigureClick} />
           </div>
 
-          {/* Issues panel (right - 40%) */}
-          <div className="w-[40%] overflow-hidden bg-[#1D1D1D]">
+          {/* Issues panel (right - fixed width) */}
+          <div className="w-[480px] overflow-hidden border-l border-[rgba(255,255,255,0.08)]">
             <IssuesPanel
               onOpenRewriteModal={setRewriteModalIssue}
               onOpenOutlineModal={setOutlineModalIssue}
@@ -143,11 +143,22 @@ function ReviewScreen() {
                         setSelectedFigureId(isSelected ? null : fig.figure_id);
                         if (!isSelected) setFiguresPanelExpanded(true);
                       }}
-                      className={`flex-shrink-0 px-2 py-0.5 text-xs rounded border transition ${
-                        isSelected
-                          ? 'bg-blue-500/20 border-blue-500/50 text-blue-400'
-                          : 'bg-[#252525] hover:bg-[#2A2A2A] text-gray-400 border-[#2E2E2E]'
-                      }`}
+                      className="flex-shrink-0 px-2 py-0.5 text-xs rounded border transition"
+                      style={isSelected ? {
+                        backgroundColor: 'rgba(101, 178, 232, 0.2)',
+                        borderColor: 'rgba(101, 178, 232, 0.5)',
+                        color: '#65B2E8'
+                      } : {
+                        backgroundColor: '#252525',
+                        borderColor: '#2E2E2E',
+                        color: '#A0A0A0'
+                      }}
+                      onMouseEnter={(e) => {
+                        if (!isSelected) e.currentTarget.style.backgroundColor = '#2A2A2A';
+                      }}
+                      onMouseLeave={(e) => {
+                        if (!isSelected) e.currentTarget.style.backgroundColor = '#252525';
+                      }}
                     >
                       {fig.label || `Fig ${idx + 1}`}
                     </button>
@@ -168,11 +179,22 @@ function ReviewScreen() {
                       <button
                         key={fig.figure_id || idx}
                         onClick={() => setSelectedFigureId(isSelected ? null : fig.figure_id)}
-                        className={`flex-shrink-0 px-2.5 py-1 text-xs rounded border transition ${
-                          isSelected
-                            ? 'bg-blue-500/20 border-blue-500/50 text-blue-400'
-                            : 'bg-[#252525] hover:bg-[#2A2A2A] text-gray-400 border-[#2E2E2E]'
-                        }`}
+                        className="flex-shrink-0 px-2.5 py-1 text-xs rounded border transition"
+                        style={isSelected ? {
+                          backgroundColor: 'rgba(101, 178, 232, 0.2)',
+                          borderColor: 'rgba(101, 178, 232, 0.5)',
+                          color: '#65B2E8'
+                        } : {
+                          backgroundColor: '#252525',
+                          borderColor: '#2E2E2E',
+                          color: '#A0A0A0'
+                        }}
+                        onMouseEnter={(e) => {
+                          if (!isSelected) e.currentTarget.style.backgroundColor = '#2A2A2A';
+                        }}
+                        onMouseLeave={(e) => {
+                          if (!isSelected) e.currentTarget.style.backgroundColor = '#252525';
+                        }}
                       >
                         {fig.label || `Fig ${idx + 1}`}
                       </button>
