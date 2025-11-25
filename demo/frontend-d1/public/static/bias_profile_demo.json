@@ -14,12 +14,13 @@
       "id": "C-major-1",
       "category": "Mechanistic Depth",
       "title": "Absence of transcriptomic or proteomic validation undermines biological interpretation",
-      "critique": "The authors identify numerous hits with apparent cell-type selectivity but provide no molecular characterization of the underlying mechanisms. Without RNA-seq, phosphoproteomics, or at minimum targeted pathway validation, it is impossible to distinguish genuine mechanobiological insights from off-target effects on cell viability, metabolism, or cytoskeletal integrity. For example, PI3K/Akt/mTOR inhibitors (enriched in the HHSteC-specific cluster) have well-documented effects on cell survival and metabolism that could indirectly reduce contractility without revealing targetable disease mechanisms. The claim that these findings 'challenge the assumption that contractile pathways are too highly conserved' (Abstract, s_abs_1_4) requires mechanistic evidence that the observed selectivity reflects genuine pathway biology rather than differential drug sensitivity or toxicity thresholds.",
+      "critique": "The authors identify numerous hits with apparent cell-type selectivity but provide no molecular characterization of the underlying mechanisms. Without RNA-seq, phosphoproteomics, or at minimum targeted pathway validation, it is impossible to distinguish genuine mechanobiological insights from off-target effects on cell viability, metabolism, or cytoskeletal integrity. For example, PI3K/Akt/mTOR inhibitors (enriched in the HHSteC-specific cluster) have well-documented effects on cell survival and metabolism that could indirectly reduce contractility without revealing targetable disease mechanisms. The claim that these findings 'challenge the assumption that contractile pathways are too highly conserved for selective targeting' (Abstract, s_abs_1_4) requires mechanistic evidence that the observed selectivity reflects genuine pathway biology rather than differential drug sensitivity or toxicity thresholds.",
       "location": {
         "section_id": "abstract",
         "paragraph_id": "p_abs_1",
         "sentence_ids": ["s_abs_1_4"]
       },
+      "original_text": "Clustering analysis identified distinct mechanobiological profiles and novel pathway associations that challenge the assumption that contractile pathways are too highly conserved for selective targeting.",
       "suggested_revision": "The authors should perform RNA-seq on at least the top 10 selective hits in their most divergent cell pair (HLF vs HHSteC) to identify transcriptional signatures that explain differential responses. Alternatively, phosphoproteomic profiling of key contractility pathways (ROCK, MLCK, myosin phosphorylation) would provide direct mechanistic insight. Without such data, claims of 'novel pathway associations' should be substantially tempered.",
       "severity": "major",
       "addressable": true
@@ -28,12 +29,13 @@
       "id": "C-major-2",
       "category": "Translational Relevance",
       "title": "No in vivo or 3D tissue validation limits disease relevance",
-      "critique": "The authors position this work as foundational for 'discovering cell-type specific contractile pathway modulators for a broad range of mechanically-driven disease indications' (s_abs_1_5), yet all experiments are performed in 2D monoculture on artificial micropatterned substrates. While convenient for high-throughput screening, this format fails to capture the complex mechanical environment of fibrotic tissue, including ECM stiffness gradients, cell-cell interactions, and immune cell contributions. The Discussion mentions that 'these findings lay the groundwork for translating these insights into meaningful therapeutic advances' (s_dis_7_4), but without any validation in collagen gel contraction assays, precision-cut tissue slices, or organoid models, this claim is premature. At minimum, the top selective hits should be validated in a disease-relevant 3D model.",
+      "critique": "The authors position this work as foundational for 'discovering cell-type specific contractile pathway modulators for a broad range of mechanically-driven disease indications' (s_abs_1_5), yet all experiments are performed in 2D monoculture on artificial micropatterned substrates. While convenient for high-throughput screening, this format fails to capture the complex mechanical environment of fibrotic tissue, including ECM stiffness gradients, cell-cell interactions, and immune cell contributions. The Discussion mentions that 'these findings lay the groundwork for future studies and provide a strong foundation for translating these insights into meaningful therapeutic advances' (s_dis_7_4), but without any validation in collagen gel contraction assays, precision-cut tissue slices, or organoid models, this claim is premature.",
       "location": {
         "section_id": "sec_disc",
         "paragraph_id": "p_dis_7",
         "sentence_ids": ["s_dis_7_4"]
       },
+      "original_text": "These findings lay the groundwork for future studies and provide a strong foundation for translating these insights into meaningful therapeutic advances.",
       "suggested_revision": "Validate 3-5 top selective hits in either (a) TGF-β-induced collagen gel contraction assays, (b) precision-cut lung slices from IPF patients, or (c) liver organoids for HHSteC findings. Even negative results would be informative and would substantially strengthen the translational narrative.",
       "severity": "major",
       "addressable": true
@@ -42,12 +44,13 @@
       "id": "C-major-3",
       "category": "Novelty Claims",
       "title": "'First-ever' claim requires explicit comparison to prior phenotypic screens",
-      "critique": "The authors repeatedly claim this represents the 'first high-throughput cell contractility screen' (s_int_4_1) and 'first-ever high-throughput kinase inhibitor screen targeting cell contraction' (s_dis_1_3). While this may be true for single-cell micropatterning at this specific scale, the field has extensive prior art in phenotypic contractility screening using traction force microscopy, collagen gel contraction, and impedance-based assays. The authors cite their own prior FLECS publications but do not systematically compare to other high-throughput contractility platforms. This omission makes it difficult to assess the true novelty of the approach versus incremental technical improvement.",
+      "critique": "The authors repeatedly claim this represents the 'first ever high-throughput cell contractility screen' (s_int_4_1) and 'first-ever high-throughput kinase inhibitor screen targeting cell contraction' (s_dis_1_3). While this may be true for single-cell micropatterning at this specific scale, the field has extensive prior art in phenotypic contractility screening using traction force microscopy, collagen gel contraction, and impedance-based assays. The authors cite their own prior FLECS publications but do not systematically compare to other high-throughput contractility platforms. This omission makes it difficult to assess the true novelty of the approach versus incremental technical improvement.",
       "location": {
         "section_id": "sec_intro",
         "paragraph_id": "p_int_4",
         "sentence_ids": ["s_int_4_1"]
       },
+      "original_text": "To address this, we conducted the first ever high-throughput cell contractility screen of an annotated library of kinase inhibitors across two distinct disease categories within mechanobiology and utilizing five primary human cell types representative of these conditions.",
       "suggested_revision": "Include a dedicated paragraph in the Introduction or Discussion comparing FLECS to alternative high-throughput contractility platforms (e.g., CellASIC, xCELLigence, published TFM screens). Explicitly state what biological questions this platform can address that others cannot, rather than relying on scale alone as the differentiator.",
       "severity": "major",
       "addressable": true
@@ -56,12 +59,13 @@
       "id": "C-major-4",
       "category": "Statistical Rigor",
       "title": "Cluster analysis methodology is insufficiently rigorous for atlas-level claims",
-      "critique": "The clustering approach central to the paper's biological conclusions relies on visual inspection for determining cluster number (s_res_16_2: 'We chose this number of clusters based on visual inspection'). For a study claiming to build a 'mechanobiology atlas' (s_dis_2_5), this methodological choice is surprisingly subjective. Furthermore, the pathway enrichment analysis uses only hypergeometric testing without correction for multiple comparisons across the many pathway-cluster combinations tested. Given the modest effect sizes for many hits and the known promiscuity of kinase inhibitors, false discovery is a significant concern that is not adequately addressed.",
+      "critique": "The clustering approach central to the paper's biological conclusions relies on visual inspection for determining cluster number (s_res_11_2: 'We chose this number of clusters based on visual inspection'). For a study claiming to build a 'mechanobiology atlas' (s_dis_2_5), this methodological choice is surprisingly subjective. Furthermore, the pathway enrichment analysis uses only hypergeometric testing without correction for multiple comparisons across the many pathway-cluster combinations tested. Given the modest effect sizes for many hits and the known promiscuity of kinase inhibitors, false discovery is a significant concern that is not adequately addressed.",
       "location": {
         "section_id": "sec_results",
-        "paragraph_id": "p_res_16",
-        "sentence_ids": ["s_res_16_2"]
+        "paragraph_id": "p_res_11",
+        "sentence_ids": ["s_res_11_2"]
       },
+      "original_text": "We chose this number of clusters based on visual inspection.",
       "suggested_revision": "Apply formal cluster validation metrics (silhouette score, gap statistic, or stability analysis via bootstrapping). Report FDR-corrected p-values for all pathway enrichment analyses. Consider whether the 'atlas' framing is appropriate given the exploratory nature of the analysis, or revise to more accurately reflect the hypothesis-generating nature of the findings.",
       "severity": "major",
       "addressable": true
@@ -75,43 +79,51 @@
       "critique": "The choice of the MedChemExpress Kinase Inhibitor Library, while comprehensive, represents a target-agnostic approach. For fibrosis specifically, the field has converged on TGF-β/SMAD, YAP/TAZ, and Rho/ROCK as central regulatory nodes. It is unclear whether this unbiased screen provides insights beyond what targeted interrogation of canonical pathways would reveal.",
       "location": {
         "section_id": "sec_methods",
-        "paragraph_id": "p_met_4",
-        "sentence_ids": ["s_met_4_1"]
+        "paragraph_id": "p_met_3",
+        "sentence_ids": ["s_met_3_1"]
       },
-      "severity": "minor"
+      "original_text": "The screen was conducted using the Kinase Inhibitor Library (MedChemExpress), which consists of 18 unique 384-well source plates.",
+      "severity": "minor",
+      "addressable": false
     },
     {
       "id": "C-minor-2",
-      "title": "Incomplete reporting of assay quality metrics",
-      "critique": "The authors mention that 'Robust Z' factors for all TGF-β MYO screens are given in the appendix' (s_res_8_3), but Z' values are not reported in the main text for any screen. For a methods-focused paper, comprehensive reporting of assay performance (Z', CV%, edge effects, plate-to-plate variability) should be in the main figures.",
+      "title": "Incomplete reporting of assay quality metrics in main text",
+      "critique": "The authors mention that 'Robust Z' factors for all TGF-β MYO screens are given in the appendix' (s_res_7_3), but Z' values are not reported in the main text for any screen. For a methods-focused paper, comprehensive reporting of assay performance (Z', CV%, edge effects, plate-to-plate variability) should be in the main figures.",
       "location": {
         "section_id": "sec_results",
-        "paragraph_id": "p_res_8",
-        "sentence_ids": ["s_res_8_3"]
+        "paragraph_id": "p_res_7",
+        "sentence_ids": ["s_res_7_3"]
       },
-      "severity": "minor"
+      "original_text": "The tightest distributions are observed in acute SMC screens (hit upper bound > 8 MADs below median of treated wells) while the most variation is seen in HLF-SC at the 356 nM dose (hit upper bound 1.5 MADs below median), Robust Z' factors for all TGF-    MYO screens are given in the appendix.",
+      "severity": "minor",
+      "addressable": true
     },
     {
       "id": "C-minor-3",
       "title": "Single donor cells limit generalizability claims",
-      "critique": "The Methods indicate cells were 'prepared for experiments at passage 3' (s_met_2_2) but do not specify whether single or multiple donors were used for each cell type. Given the substantial inter-donor variability in primary human cells, claims about cell-type-specific responses may be confounded by donor-specific effects if single donors were used.",
+      "critique": "The Methods indicate cells were 'prepared for experiments at passage 3' (s_met_1_7) but do not specify whether single or multiple donors were used for each cell type. Given the substantial inter-donor variability in primary human cells, claims about cell-type-specific responses may be confounded by donor-specific effects if single donors were used.",
       "location": {
         "section_id": "sec_methods",
-        "paragraph_id": "p_met_2",
-        "sentence_ids": ["s_met_2_2"]
+        "paragraph_id": "p_met_1",
+        "sentence_ids": ["s_met_1_7"]
       },
-      "severity": "minor"
+      "original_text": "Cells were detached using 0.05% Trypsin-EDTA and prepared for experiments at passage 3.",
+      "severity": "minor",
+      "addressable": true
     },
     {
       "id": "C-minor-4",
       "title": "IPF-HLF characterization is insufficient",
-      "critique": "The IPF patient-derived fibroblasts are described as 'a gift from Prof. Brigette Gomperts' (s_met_1_2) without information on disease severity, patient demographics, or how many patients contributed cells. Given that IPF-HLF showed lower confirmation rates and higher heterogeneity, this characterization gap limits interpretation of these results.",
+      "critique": "The IPF patient-derived fibroblasts are described as 'a gift from Prof. Brigette Gomperts (UCLA)' (s_met_1_2) without information on disease severity, patient demographics, or how many patients contributed cells. Given that IPF-HLF showed lower confirmation rates and higher heterogeneity, this characterization gap limits interpretation of these results.",
       "location": {
         "section_id": "sec_methods",
         "paragraph_id": "p_met_1",
         "sentence_ids": ["s_met_1_2"]
       },
-      "severity": "minor"
+      "original_text": "IPF-HLF were a gift from Prof. Brigette Gomperts (UCLA).",
+      "severity": "minor",
+      "addressable": true
     },
     {
       "id": "C-minor-5",
@@ -122,40 +134,48 @@
         "paragraph_id": "p_dis_5",
         "sentence_ids": ["s_dis_5_3"]
       },
-      "severity": "minor"
+      "original_text": "Additionally, compound storage conditions may have affected the reproducibility of weakly active compounds, though this limitation did not impact our major hits, which showed consistent activity across experiments.",
+      "severity": "minor",
+      "addressable": true
     },
     {
       "id": "C-minor-6",
       "title": "Substrate stiffness rationale not provided",
-      "critique": "The authors use 8 kPa substrates throughout (s_met_3_2) without justifying this choice. Fibrotic tissue stiffness varies substantially (normal lung ~1-5 kPa, fibrotic lung 20-100 kPa). How would results differ on stiffer substrates more representative of disease states?",
+      "critique": "The authors use 8 kPa substrates throughout (s_met_2_2) without justifying this choice. Fibrotic tissue stiffness varies substantially (normal lung ~1-5 kPa, fibrotic lung 20-100 kPa). How would results differ on stiffer substrates more representative of disease states?",
       "location": {
         "section_id": "sec_methods",
-        "paragraph_id": "p_met_3",
-        "sentence_ids": ["s_met_3_2"]
+        "paragraph_id": "p_met_2",
+        "sentence_ids": ["s_met_2_2"]
       },
-      "severity": "minor"
+      "original_text": "Plates pre-coated with 70 µm \"X\"-shaped collagen type IV micropatterns on an 8 kPa substrate (Forcyte Biotechnologies, product #384-HC4R-QC10) were used throughout the study.",
+      "severity": "minor",
+      "addressable": true
     },
     {
       "id": "C-minor-7",
       "title": "Dose selection rationale unclear",
-      "critique": "Screens were performed at 356 nM and 35 nM (s_res_5_1), but no rationale is provided for these specific concentrations. Are these based on typical kinase IC50 values? Plasma-achievable concentrations? This affects interpretation of hit rates and selectivity claims.",
+      "critique": "Screens were performed at 356 nM and 35 nM (s_res_4_1), but no rationale is provided for these specific concentrations. Are these based on typical kinase IC50 values? Plasma-achievable concentrations? This affects interpretation of hit rates and selectivity claims.",
       "location": {
         "section_id": "sec_results",
-        "paragraph_id": "p_res_5",
-        "sentence_ids": ["s_res_5_1"]
+        "paragraph_id": "p_res_4",
+        "sentence_ids": ["s_res_4_1"]
       },
-      "severity": "minor"
+      "original_text": "All experiments were performed on 384-well FLECS plates at two doses (356 nM and 35 nM).",
+      "severity": "minor",
+      "addressable": true
     },
     {
       "id": "C-minor-8",
-      "title": "Missing confidence intervals on key comparisons",
-      "critique": "The dose-response comparisons between cell types (e.g., 'compounds 9E and 9F demonstrated over 100% greater percent inhibition in HHSteC compared to HLF', s_res_71_4) lack confidence intervals or formal statistical comparison. Without these, the claimed selectivity could reflect assay noise rather than genuine biology.",
+      "title": "Missing confidence intervals on key selectivity comparisons",
+      "critique": "The dose-response comparisons between cell types (e.g., 'compounds 9E and 9F demonstrated over 100% greater percent inhibition in HHSteC compared to HLF', s_res_41_4) lack confidence intervals or formal statistical comparison. Without these, the claimed selectivity could reflect assay noise rather than genuine biology.",
       "location": {
         "section_id": "sec_results",
-        "paragraph_id": "p_res_71",
-        "sentence_ids": ["s_res_71_4"]
+        "paragraph_id": "p_res_41",
+        "sentence_ids": ["s_res_41_4"]
       },
-      "severity": "minor"
+      "original_text": "Moreover, compounds 9E and 9F demonstrated over 100% greater percent inhibition in HHSteC compared to HLF.",
+      "severity": "minor",
+      "addressable": true
     }
   ],
   

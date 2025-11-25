@@ -5,6 +5,7 @@ import { theme, withOpacity, getTrackColor } from '../styles/theme';
 function BiasedReviewModal({ issue, onClose }) {
   const { biasProfile, issues } = useManuscript();
   const [selectedCritiqueId, setSelectedCritiqueId] = useState(issue?.id);
+  const contentRef = React.useRef(null);
 
   if (!issue || !biasProfile) return null;
 
@@ -12,6 +13,13 @@ function BiasedReviewModal({ issue, onClose }) {
   const trackCIssues = issues.filter(i => i.track === 'C');
   const currentIndex = trackCIssues.findIndex(i => i.id === selectedCritiqueId);
   const currentIssue = trackCIssues[currentIndex] || issue;
+
+  // Scroll to top when critique changes
+  React.useEffect(() => {
+    if (contentRef.current) {
+      contentRef.current.scrollTop = 0;
+    }
+  }, [selectedCritiqueId]);
 
   // Separate major and minor critiques
   const majorCritiques = trackCIssues.filter(i => i.severity === 'major');
