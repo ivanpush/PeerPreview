@@ -155,7 +155,9 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
     const trackColor = getTrackColor(issue.track);
     const severityColor = getSeverityColor(issue.severity);
     const isSelected = selectedIssue?.id === issue.id;
-    const rationalePreview = getRationalePreview(issue.rationale);
+    const rationalePreview = issue.track === 'C'
+      ? getRationalePreview(issue.critique)
+      : getRationalePreview(issue.rationale);
 
     return (
       <div
@@ -206,6 +208,13 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
               </svg>
             </button>
           </div>
+
+          {/* Category for Track C */}
+          {issue.track === 'C' && issue.category && (
+            <div className="text-[11px] text-gray-500 mb-1">
+              {issue.category}
+            </div>
+          )}
 
           {/* Title */}
           <h3
@@ -275,7 +284,12 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
     const severityColor = getSeverityColor(issue.severity);
     const isSelected = selectedIssue?.id === issue.id;
     const quotedExcerpt = getQuotedExcerpt(issue);
-    const rewritePreview = getRewritePreview(issue.suggested_rewrite);
+    const rewritePreview = issue.track === 'C'
+      ? getRewritePreview(issue.suggested_revision)
+      : getRewritePreview(issue.suggested_rewrite);
+    const critiquePreview = issue.track === 'C'
+      ? getRewritePreview(issue.critique)
+      : null;
 
     return (
       <div
@@ -326,6 +340,13 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
               </svg>
             </button>
           </div>
+
+          {/* Category for Track C */}
+          {issue.track === 'C' && issue.category && (
+            <div className="text-[11px] text-gray-500 mb-1">
+              {issue.category}
+            </div>
+          )}
 
           {/* Title */}
           <h3
@@ -378,8 +399,8 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
             </div>
           )}
 
-          {/* Full rationale */}
-          {issue.rationale && (
+          {/* Full rationale - hide for Track C (use critique instead) */}
+          {issue.rationale && issue.track !== 'C' && (
             <div className="mb-3">
               <p className="text-[13px] leading-relaxed" style={{ color: theme.text.tertiary }}>
                 {issue.rationale}
@@ -387,8 +408,20 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
             </div>
           )}
 
-          {/* Rewrite preview (if available) */}
-          {issue.suggested_rewrite && (
+          {/* Critique preview (for Track C) */}
+          {issue.track === 'C' && critiquePreview && (
+            <div className="mb-3">
+              <div className="text-[11px] font-semibold mb-1 uppercase tracking-wide" style={{ color: theme.text.muted }}>
+                Critique
+              </div>
+              <p className="text-[13px] leading-relaxed" style={{ color: theme.text.tertiary }}>
+                {critiquePreview}
+              </p>
+            </div>
+          )}
+
+          {/* Rewrite/Strategic Solution preview (if available) */}
+          {(issue.suggested_rewrite || issue.suggested_revision) && rewritePreview && (
             <div
               className="mb-3 rounded p-2"
               style={{
@@ -397,7 +430,7 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
               }}
             >
               <div className="text-[11px] font-semibold mb-1 uppercase tracking-wide" style={{ color: theme.accent.teal }}>
-                Suggested Rewrite
+                {issue.track === 'C' ? 'Strategic Solution' : 'Suggested Rewrite'}
               </div>
               <p className="text-[13px] leading-relaxed" style={{ color: theme.text.secondary }}>
                 {rewritePreview}
@@ -427,8 +460,25 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
 
           {/* Action buttons */}
           <div className="flex items-center gap-2">
-            {/* Paragraph rewrite actions */}
-            {issue.suggested_rewrite && (
+            {/* Track C biased critique actions */}
+            {issue.track === 'C' && issue.issue_type === 'biased_critique' && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onOpenBiasedReviewModal(issue);
+                }}
+                className="px-3 py-1.5 text-xs rounded font-medium hover:opacity-90 transition"
+                style={{
+                  backgroundColor: theme.action.primary,
+                  color: 'white'
+                }}
+              >
+                View Full Review
+              </button>
+            )}
+
+            {/* Paragraph rewrite actions (Track A/B) */}
+            {issue.track !== 'C' && issue.suggested_rewrite && (
               <>
                 <button
                   onClick={(e) => handleAcceptRewrite(issue, e)}
@@ -471,23 +521,6 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
                 }}
               >
                 View Outline
-              </button>
-            )}
-
-            {/* Counterpoint/biased review action */}
-            {issue.track === 'C' && issue.issue_type === 'biased_critique' && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onOpenBiasedReviewModal(issue);
-                }}
-                className="px-3 py-1.5 text-xs rounded font-medium hover:opacity-90 transition"
-                style={{
-                  backgroundColor: theme.action.primary,
-                  color: 'white'
-                }}
-              >
-                View Review
               </button>
             )}
 
