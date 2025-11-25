@@ -88,50 +88,50 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
   };
 
   return (
-    <div className="h-full flex flex-col bg-gray-50">
+    <div className="h-full flex flex-col bg-gray-900">
       {/* Header with filters */}
-      <div className="p-4 bg-white border-b">
-        <h2 className="text-xl font-semibold text-gray-800 mb-3">
+      <div className="p-4 bg-gray-800 border-b border-gray-700">
+        <h2 className="text-lg font-semibold text-gray-200 mb-3">
           Issues ({filteredIssues.length})
         </h2>
 
         <div className="flex gap-2 flex-wrap">
           <button
             onClick={() => setFilterTrack('all')}
-            className={`px-3 py-1 rounded-md text-sm font-medium transition ${
+            className={`px-3 py-1 rounded-md text-xs font-medium transition ${
               filterTrack === 'all'
-                ? 'bg-gray-800 text-white'
-                : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+                ? 'bg-gray-600 text-white'
+                : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
             }`}
           >
             All
           </button>
           <button
             onClick={() => setFilterTrack('A')}
-            className={`px-3 py-1 rounded-md text-sm font-medium transition ${
+            className={`px-3 py-1 rounded-md text-xs font-medium transition ${
               filterTrack === 'A'
                 ? 'bg-blue-600 text-white'
-                : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+                : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
             }`}
           >
             Track A
           </button>
           <button
             onClick={() => setFilterTrack('B')}
-            className={`px-3 py-1 rounded-md text-sm font-medium transition ${
+            className={`px-3 py-1 rounded-md text-xs font-medium transition ${
               filterTrack === 'B'
                 ? 'bg-purple-600 text-white'
-                : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+                : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
             }`}
           >
             Track B
           </button>
           <button
             onClick={() => setFilterTrack('C')}
-            className={`px-3 py-1 rounded-md text-sm font-medium transition ${
+            className={`px-3 py-1 rounded-md text-xs font-medium transition ${
               filterTrack === 'C'
                 ? 'bg-amber-600 text-white'
-                : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+                : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
             }`}
           >
             Track C
@@ -150,10 +150,10 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
             <div
               key={issue.id}
               onClick={() => handleIssueClick(issue)}
-              className={`bg-white rounded-lg p-4 border cursor-pointer transition-all ${
+              className={`bg-gray-800 rounded-lg p-3 border cursor-pointer transition-all ${
                 selectedIssue?.id === issue.id
-                  ? 'border-blue-500 shadow-md'
-                  : 'border-gray-200 hover:shadow-md'
+                  ? 'border-blue-500 shadow-lg shadow-blue-500/20'
+                  : 'border-gray-700 hover:border-gray-600 hover:shadow-md'
               }`}
             >
               {/* Issue header */}
@@ -170,13 +170,13 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
               </div>
 
               {/* Issue message */}
-              <p className="text-gray-700 text-sm mb-2 font-medium">
+              <p className="text-gray-200 text-sm mb-2 font-medium">
                 {issue.title || issue.message}
               </p>
 
               {/* Description if available */}
               {issue.description && (
-                <p className="text-gray-600 text-xs mb-2">
+                <p className="text-gray-400 text-xs mb-2">
                   {issue.description}
                 </p>
               )}
@@ -189,7 +189,7 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
               )}
               {issue.section_id && !issue.paragraph_id && (
                 <p className="text-xs text-gray-500">
-                  Section: {manuscript?.sections?.find(s => s.section_id === issue.section_id)?.heading || issue.section_id}
+                  Section: {manuscript?.sections?.find(s => s.section_id === issue.section_id)?.section_title || manuscript?.sections?.find(s => s.section_id === issue.section_id)?.heading || issue.section_id}
                 </p>
               )}
 
