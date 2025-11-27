@@ -1,0 +1,356 @@
+{
+  "document_id": "grant_001",
+  "document_type": "grant_proposal",
+  "source_format": "docx",
+  "title": "Developing Novel Therapeutics for Alzheimer's Disease Through Targeted Protein Aggregation Inhibition",
+  "authors": "Sarah Chen, MD PhD\nPrincipal Investigator\nDepartment of Neuroscience",
+  "affiliations": "Stanford University School of Medicine\nStanford, CA 94305",
+  "sections": [
+    {
+      "section_id": "sec_aims",
+      "section_title": "Specific Aims",
+      "paragraph_ids": ["p_aims_1", "p_aims_2", "p_aims_3", "p_aims_4"]
+    },
+    {
+      "section_id": "sec_significance",
+      "section_title": "Significance",
+      "paragraph_ids": ["p_sig_1", "p_sig_2"]
+    },
+    {
+      "section_id": "sec_innovation",
+      "section_title": "Innovation",
+      "paragraph_ids": ["p_inn_1", "p_inn_2"]
+    },
+    {
+      "section_id": "sec_approach",
+      "section_title": "Approach",
+      "paragraph_ids": ["p_app_1", "p_app_2", "p_app_3", "p_app_4", "p_app_5", "p_app_6"]
+    },
+    {
+      "section_id": "sec_timeline",
+      "section_title": "Timeline and Milestones",
+      "paragraph_ids": ["p_tim_1", "p_tim_2"]
+    },
+    {
+      "section_id": "sec_budget",
+      "section_title": "Budget Justification",
+      "paragraph_ids": ["p_bud_1", "p_bud_2"]
+    }
+  ],
+  "paragraphs": [
+    {
+      "paragraph_id": "p_aims_1",
+      "section_id": "sec_aims",
+      "para_type": "text",
+      "text": "Alzheimer's disease (AD) affects over 6 million Americans, with no cure and limited treatment options. The accumulation of amyloid-β (Aβ) plaques and tau neurofibrillary tangles are hallmarks of AD pathology. Our preliminary data reveals a novel small molecule, SCI-401, that inhibits both Aβ and tau aggregation in vitro and shows promise in animal models.",
+      "sentences": [
+        {
+          "sentence_id": "s_aims_1_1",
+          "text": "Alzheimer's disease (AD) affects over 6 million Americans, with no cure and limited treatment options.",
+          "position": 0
+        },
+        {
+          "sentence_id": "s_aims_1_2",
+          "text": "The accumulation of amyloid-β (Aβ) plaques and tau neurofibrillary tangles are hallmarks of AD pathology.",
+          "position": 1
+        },
+        {
+          "sentence_id": "s_aims_1_3",
+          "text": "Our preliminary data reveals a novel small molecule, SCI-401, that inhibits both Aβ and tau aggregation in vitro and shows promise in animal models.",
+          "position": 2
+        }
+      ],
+      "metadata": {"fig_refs": [], "table_refs": []}
+    },
+    {
+      "paragraph_id": "p_aims_2",
+      "section_id": "sec_aims",
+      "para_type": "text",
+      "text": "Aim 1: Characterize the mechanism of SCI-401 inhibition of protein aggregation.",
+      "sentences": [
+        {
+          "sentence_id": "s_aims_2_1",
+          "text": "Aim 1: Characterize the mechanism of SCI-401 inhibition of protein aggregation.",
+          "position": 0
+        }
+      ],
+      "metadata": {"fig_refs": [], "table_refs": []}
+    },
+    {
+      "paragraph_id": "p_aims_3",
+      "section_id": "sec_aims",
+      "para_type": "text",
+      "text": "We will use biophysical assays, NMR spectroscopy, and cryo-EM to determine how SCI-401 prevents Aβ and tau aggregation at the molecular level.",
+      "sentences": [
+        {
+          "sentence_id": "s_aims_3_1",
+          "text": "We will use biophysical assays, NMR spectroscopy, and cryo-EM to determine how SCI-401 prevents Aβ and tau aggregation at the molecular level.",
+          "position": 0
+        }
+      ],
+      "metadata": {"fig_refs": [], "table_refs": []}
+    },
+    {
+      "paragraph_id": "p_aims_4",
+      "section_id": "sec_aims",
+      "para_type": "text",
+      "text": "Aim 2: Evaluate SCI-401 efficacy in transgenic AD mouse models. We will test SCI-401 in APP/PS1 and rTg4510 mice, assessing cognitive function, plaque/tangle burden, and neuroinflammation markers. Aim 3: Optimize SCI-401 pharmacokinetics and brain penetration. We will synthesize analogs to improve blood-brain barrier penetration while maintaining efficacy, preparing for IND-enabling studies.",
+      "sentences": [
+        {
+          "sentence_id": "s_aims_4_1",
+          "text": "Aim 2: Evaluate SCI-401 efficacy in transgenic AD mouse models.",
+          "position": 0
+        },
+        {
+          "sentence_id": "s_aims_4_2",
+          "text": "We will test SCI-401 in APP/PS1 and rTg4510 mice, assessing cognitive function, plaque/tangle burden, and neuroinflammation markers.",
+          "position": 1
+        },
+        {
+          "sentence_id": "s_aims_4_3",
+          "text": "Aim 3: Optimize SCI-401 pharmacokinetics and brain penetration.",
+          "position": 2
+        },
+        {
+          "sentence_id": "s_aims_4_4",
+          "text": "We will synthesize analogs to improve blood-brain barrier penetration while maintaining efficacy, preparing for IND-enabling studies.",
+          "position": 3
+        }
+      ],
+      "metadata": {"fig_refs": [], "table_refs": []}
+    },
+    {
+      "paragraph_id": "p_sig_1",
+      "section_id": "sec_significance",
+      "para_type": "text",
+      "text": "Current AD therapeutics provide only modest symptomatic relief without addressing underlying pathology. Recent antibody therapies show limited efficacy with significant side effects. Small molecule inhibitors of protein aggregation represent an underexplored therapeutic avenue.",
+      "sentences": [
+        {
+          "sentence_id": "s_sig_1_1",
+          "text": "Current AD therapeutics provide only modest symptomatic relief without addressing underlying pathology.",
+          "position": 0
+        },
+        {
+          "sentence_id": "s_sig_1_2",
+          "text": "Recent antibody therapies show limited efficacy with significant side effects.",
+          "position": 1
+        },
+        {
+          "sentence_id": "s_sig_1_3",
+          "text": "Small molecule inhibitors of protein aggregation represent an underexplored therapeutic avenue.",
+          "position": 2
+        }
+      ],
+      "metadata": {"fig_refs": [], "table_refs": []}
+    },
+    {
+      "paragraph_id": "p_sig_2",
+      "section_id": "sec_significance",
+      "para_type": "text",
+      "text": "Our approach is significant because: 1. Dual targeting of both Aβ and tau addresses multiple pathological cascades 2. Small molecules offer advantages in brain penetration, oral bioavailability, and cost 3. Early intervention potential before irreversible neuronal damage. This work addresses NINDS priority areas for AD research and could transform treatment paradigms for neurodegenerative diseases.",
+      "sentences": [
+        {
+          "sentence_id": "s_sig_2_1",
+          "text": "Our approach is significant because: 1. Dual targeting of both Aβ and tau addresses multiple pathological cascades 2. Small molecules offer advantages in brain penetration, oral bioavailability, and cost 3. Early intervention potential before irreversible neuronal damage.",
+          "position": 0
+        },
+        {
+          "sentence_id": "s_sig_2_2",
+          "text": "This work addresses NINDS priority areas for AD research and could transform treatment paradigms for neurodegenerative diseases.",
+          "position": 1
+        }
+      ],
+      "metadata": {"fig_refs": [], "table_refs": []}
+    },
+    {
+      "paragraph_id": "p_inn_1",
+      "section_id": "sec_innovation",
+      "para_type": "text",
+      "text": "This proposal is innovative in several ways:",
+      "sentences": [
+        {
+          "sentence_id": "s_inn_1_1",
+          "text": "This proposal is innovative in several ways:",
+          "position": 0
+        }
+      ],
+      "metadata": {"fig_refs": [], "table_refs": []}
+    },
+    {
+      "paragraph_id": "p_inn_2",
+      "section_id": "sec_innovation",
+      "para_type": "text",
+      "text": "1. Novel compound: SCI-401 represents a new chemical scaffold distinct from existing aggregation inhibitors, discovered through our proprietary screening platform. 2. Dual mechanism: Unlike single-target approaches, SCI-401 inhibits both Aβ and tau through a unique binding mode at aggregation-prone regions. 3. Advanced methodology: We employ cutting-edge cryo-EM and in vivo two-photon imaging to visualize drug-protein interactions in unprecedented detail. 4. Translational pipeline: Our integrated approach from molecular mechanism to preclinical optimization accelerates clinical translation.",
+      "sentences": [
+        {
+          "sentence_id": "s_inn_2_1",
+          "text": "1. Novel compound: SCI-401 represents a new chemical scaffold distinct from existing aggregation inhibitors, discovered through our proprietary screening platform.",
+          "position": 0
+        },
+        {
+          "sentence_id": "s_inn_2_2",
+          "text": "2. Dual mechanism: Unlike single-target approaches, SCI-401 inhibits both Aβ and tau through a unique binding mode at aggregation-prone regions.",
+          "position": 1
+        },
+        {
+          "sentence_id": "s_inn_2_3",
+          "text": "3. Advanced methodology: We employ cutting-edge cryo-EM and in vivo two-photon imaging to visualize drug-protein interactions in unprecedented detail.",
+          "position": 2
+        },
+        {
+          "sentence_id": "s_inn_2_4",
+          "text": "4. Translational pipeline: Our integrated approach from molecular mechanism to preclinical optimization accelerates clinical translation.",
+          "position": 3
+        }
+      ],
+      "metadata": {"fig_refs": [], "table_refs": []}
+    },
+    {
+      "paragraph_id": "p_app_1",
+      "section_id": "sec_approach",
+      "para_type": "text",
+      "text": "Aim 1 Methods (Months 1-12): - Thioflavin T assays for aggregation kinetics - Solution NMR to map binding sites - Cryo-EM of SCI-401-bound fibrils - Cell culture neurotoxicity assays",
+      "sentences": [
+        {
+          "sentence_id": "s_app_1_1",
+          "text": "Aim 1 Methods (Months 1-12): - Thioflavin T assays for aggregation kinetics - Solution NMR to map binding sites - Cryo-EM of SCI-401-bound fibrils - Cell culture neurotoxicity assays",
+          "position": 0
+        }
+      ],
+      "metadata": {"fig_refs": [], "table_refs": []}
+    },
+    {
+      "paragraph_id": "p_app_2",
+      "section_id": "sec_approach",
+      "para_type": "text",
+      "text": "Potential pitfalls: If direct binding isn't observed, we'll investigate allosteric mechanisms using hydrogen-deuterium exchange mass spectrometry.",
+      "sentences": [
+        {
+          "sentence_id": "s_app_2_1",
+          "text": "Potential pitfalls: If direct binding isn't observed, we'll investigate allosteric mechanisms using hydrogen-deuterium exchange mass spectrometry.",
+          "position": 0
+        }
+      ],
+      "metadata": {"fig_refs": [], "table_refs": []}
+    },
+    {
+      "paragraph_id": "p_app_3",
+      "section_id": "sec_approach",
+      "para_type": "text",
+      "text": "Aim 2 Methods (Months 6-24): - Treatment groups: vehicle, low-dose (10mg/kg), high-dose (30mg/kg) - Morris water maze and novel object recognition at 3, 6, 9 months - Immunohistochemistry for plaques/tangles - ELISA for inflammatory cytokines",
+      "sentences": [
+        {
+          "sentence_id": "s_app_3_1",
+          "text": "Aim 2 Methods (Months 6-24): - Treatment groups: vehicle, low-dose (10mg/kg), high-dose (30mg/kg) - Morris water maze and novel object recognition at 3, 6, 9 months - Immunohistochemistry for plaques/tangles - ELISA for inflammatory cytokines",
+          "position": 0
+        }
+      ],
+      "metadata": {"fig_refs": [], "table_refs": []}
+    },
+    {
+      "paragraph_id": "p_app_4",
+      "section_id": "sec_approach",
+      "para_type": "text",
+      "text": "Power analysis indicates n=15 per group for 80% power to detect 25% improvement.",
+      "sentences": [
+        {
+          "sentence_id": "s_app_4_1",
+          "text": "Power analysis indicates n=15 per group for 80% power to detect 25% improvement.",
+          "position": 0
+        }
+      ],
+      "metadata": {"fig_refs": [], "table_refs": []}
+    },
+    {
+      "paragraph_id": "p_app_5",
+      "section_id": "sec_approach",
+      "para_type": "text",
+      "text": "Aim 3 Methods (Months 18-36): - Synthesize 20 analogs with varied lipophilicity - In vitro ADMET profiling - Brain/plasma ratio studies in rats - Lead optimization for IND-enabling studies",
+      "sentences": [
+        {
+          "sentence_id": "s_app_5_1",
+          "text": "Aim 3 Methods (Months 18-36): - Synthesize 20 analogs with varied lipophilicity - In vitro ADMET profiling - Brain/plasma ratio studies in rats - Lead optimization for IND-enabling studies",
+          "position": 0
+        }
+      ],
+      "metadata": {"fig_refs": [], "table_refs": []}
+    },
+    {
+      "paragraph_id": "p_app_6",
+      "section_id": "sec_approach",
+      "para_type": "text",
+      "text": "Success criteria: >10-fold brain/plasma ratio with maintained IC50 <100nM.",
+      "sentences": [
+        {
+          "sentence_id": "s_app_6_1",
+          "text": "Success criteria: >10-fold brain/plasma ratio with maintained IC50 <100nM.",
+          "position": 0
+        }
+      ],
+      "metadata": {"fig_refs": [], "table_refs": []}
+    },
+    {
+      "paragraph_id": "p_tim_1",
+      "section_id": "sec_timeline",
+      "para_type": "text",
+      "text": "Year 1: Complete Aim 1 mechanistic studies, initiate Aim 2 mouse studies Year 2: Complete Aim 2 behavioral and histological analyses, begin Aim 3 optimization Year 3: Finalize lead compound selection, complete IND-enabling package",
+      "sentences": [
+        {
+          "sentence_id": "s_tim_1_1",
+          "text": "Year 1: Complete Aim 1 mechanistic studies, initiate Aim 2 mouse studies Year 2: Complete Aim 2 behavioral and histological analyses, begin Aim 3 optimization Year 3: Finalize lead compound selection, complete IND-enabling package",
+          "position": 0
+        }
+      ],
+      "metadata": {"fig_refs": [], "table_refs": []}
+    },
+    {
+      "paragraph_id": "p_tim_2",
+      "section_id": "sec_timeline",
+      "para_type": "text",
+      "text": "Go/No-go decision points: - Month 12: Binding affinity Kd < 1μM - Month 24: >30% reduction in plaque burden - Month 36: Lead compound suitable for IND filing",
+      "sentences": [
+        {
+          "sentence_id": "s_tim_2_1",
+          "text": "Go/No-go decision points: - Month 12: Binding affinity Kd < 1μM - Month 24: >30% reduction in plaque burden - Month 36: Lead compound suitable for IND filing",
+          "position": 0
+        }
+      ],
+      "metadata": {"fig_refs": [], "table_refs": []}
+    },
+    {
+      "paragraph_id": "p_bud_1",
+      "section_id": "sec_budget",
+      "para_type": "text",
+      "text": "Total costs: $1,250,000 over 3 years",
+      "sentences": [
+        {
+          "sentence_id": "s_bud_1_1",
+          "text": "Total costs: $1,250,000 over 3 years",
+          "position": 0
+        }
+      ],
+      "metadata": {"fig_refs": [], "table_refs": []}
+    },
+    {
+      "paragraph_id": "p_bud_2",
+      "section_id": "sec_budget",
+      "para_type": "text",
+      "text": "Personnel (65%): PI (20% effort), postdoc (100%), graduate student (50%), technician (100%) Supplies (20%): Reagents, antibodies, compound synthesis Animal costs (10%): Purchase and maintenance of 180 transgenic mice Core facilities (5%): NMR, cryo-EM, mass spectrometry time",
+      "sentences": [
+        {
+          "sentence_id": "s_bud_2_1",
+          "text": "Personnel (65%): PI (20% effort), postdoc (100%), graduate student (50%), technician (100%) Supplies (20%): Reagents, antibodies, compound synthesis Animal costs (10%): Purchase and maintenance of 180 transgenic mice Core facilities (5%): NMR, cryo-EM, mass spectrometry time",
+          "position": 0
+        }
+      ],
+      "metadata": {"fig_refs": [], "table_refs": []}
+    }
+  ],
+  "meta": {
+    "filename": "chen_r01_grant.docx",
+    "page_count": 12,
+    "word_count": 4500,
+    "section_names": ["Specific Aims", "Significance", "Innovation", "Approach", "Timeline and Milestones", "Budget Justification"]
+  },
+  "references": "1. Alzheimer's Association. 2023 Alzheimer's Disease Facts and Figures.\n2. Chen S, et al. Discovery of SCI-401: A novel dual inhibitor of amyloid and tau aggregation. J Med Chem. 2023;66(8):5234-5248.\n3. Wang L, et al. Cryo-EM structures of tau filaments from Alzheimer's disease. Nature. 2017;547:185-190."
+}
