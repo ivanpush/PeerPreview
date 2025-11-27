@@ -18,6 +18,7 @@ function ReviewSetupScreen() {
   const [documentType, setDocumentType] = useState('');
   const [detectedType, setDetectedType] = useState('');
   const [showTypeMenu, setShowTypeMenu] = useState(false);
+  const [chipsAnimating, setChipsAnimating] = useState(false);
   const typeMenuRef = useRef(null);
 
   // Depth configurations
@@ -27,27 +28,76 @@ function ReviewSetupScreen() {
     { key: 'heavy', label: 'Heavy', description: 'Deep reasoning + hostile review' }
   ];
 
-  // Document type options
+  // Document type options with colors
   const documentTypes = [
-    { value: 'academic_manuscript', label: 'Academic Manuscript' },
-    { value: 'grant_proposal', label: 'Grant Proposal' },
-    { value: 'policy_brief', label: 'Policy Brief' },
-    { value: 'legal_brief', label: 'Legal Brief' },
-    { value: 'memo', label: 'Memo' },
-    { value: 'technical_report', label: 'Technical Report' },
-    { value: 'generic', label: 'Generic Document' }
+    { value: 'academic_manuscript', label: 'Academic Manuscript', color: '#10B981' },
+    { value: 'grant_proposal', label: 'Grant Proposal', color: '#14B8A6' },
+    { value: 'policy_brief', label: 'Policy Brief', color: '#F59E0B' },
+    { value: 'legal_brief', label: 'Legal Brief', color: '#6366F1' },
+    { value: 'memo', label: 'Memo', color: '#F43F5E' },
+    { value: 'technical_report', label: 'Technical Report', color: '#06B6D4' },
+    { value: 'generic', label: 'Generic Document', color: '#6B7280' }
   ];
 
-  // Prompt chips
-  const promptChips = [
-    'Desk-reject risks',
-    'Methods rigor',
-    'Statistical validity',
-    'Clarity only',
-    'Hostile reviewer POV',
-    'Grant competitiveness',
-    'Policy feasibility'
-  ];
+  // Dynamic chips per document type
+  const chipsByType = {
+    academic_manuscript: [
+      'Desk-reject risks',
+      'Methods rigor',
+      'Statistical validity',
+      'Clarity & flow',
+      'Novelty & framing',
+      'Hostile reviewer POV'
+    ],
+    grant_proposal: [
+      'Significance & impact',
+      'Innovation claims',
+      'Approach & methods',
+      'Feasibility & timeline',
+      'Investigator fit',
+      'Study section simulation'
+    ],
+    policy_brief: [
+      'Evidence quality',
+      'Stakeholder objections',
+      'Implementation feasibility',
+      'Political framing',
+      'Executive summary strength',
+      'Counterarguments'
+    ],
+    legal_brief: [
+      'Precedent strength',
+      'Factual record support',
+      'Procedural vulnerabilities',
+      'Persuasive force',
+      'Opposing counsel POV',
+      'Jurisdictional issues'
+    ],
+    generic: [
+      'Internal consistency',
+      'Clarity & structure',
+      'Claim strength',
+      'Audience fit',
+      'Overclaims & gaps'
+    ],
+    memo: [
+      'Internal consistency',
+      'Clarity & structure',
+      'Claim strength',
+      'Audience fit',
+      'Overclaims & gaps'
+    ],
+    technical_report: [
+      'Internal consistency',
+      'Clarity & structure',
+      'Claim strength',
+      'Audience fit',
+      'Overclaims & gaps'
+    ]
+  };
+
+  // Get current chips based on document type
+  const promptChips = chipsByType[documentType] || chipsByType.generic;
 
   useEffect(() => {
     // Load document info from previous screen
@@ -105,6 +155,14 @@ function ReviewSetupScreen() {
       return () => document.removeEventListener('mousedown', handleClickOutside);
     }
   }, [showTypeMenu]);
+
+  // Reset selected chips and animate when document type changes
+  useEffect(() => {
+    setChipsAnimating(true);
+    setSelectedChips([]);
+    const timer = setTimeout(() => setChipsAnimating(false), 300);
+    return () => clearTimeout(timer);
+  }, [documentType]);
 
   const handleChipClick = (chip) => {
     if (selectedChips.includes(chip)) {
@@ -205,7 +263,17 @@ function ReviewSetupScreen() {
           <div className="relative mb-6">
             <p className="text-lg text-[#E8E9EB]">
               This looks like {documentTypes.find(t => t.value === documentType)?.label?.match(/^[aeiou]/i) ? 'an' : 'a'}{' '}
-              <span className="text-[#3C82F6]">{documentTypes.find(t => t.value === documentType)?.label}</span>
+              <span
+                className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md font-medium"
+                style={{
+                  color: documentTypes.find(t => t.value === documentType)?.color,
+                  backgroundColor: `${documentTypes.find(t => t.value === documentType)?.color}20`,
+                  borderColor: `${documentTypes.find(t => t.value === documentType)?.color}40`,
+                  borderWidth: '1px'
+                }}
+              >
+                {documentTypes.find(t => t.value === documentType)?.label}
+              </span>
               <sup className="relative" ref={typeMenuRef}>
                 <button
                   onClick={() => setShowTypeMenu(!showTypeMenu)}
@@ -254,22 +322,39 @@ function ReviewSetupScreen() {
           />
 
           {/* Pills - moved below textarea */}
-          <div className="flex flex-wrap gap-2">
-            {promptChips.map(chip => (
-              <button
-                key={chip}
-                onClick={() => handleChipClick(chip)}
-                className={`
-                  px-3 py-1.5 text-sm rounded-full transition-all duration-200
-                  ${selectedChips.includes(chip)
-                    ? 'bg-[#3C82F6] bg-opacity-15 text-[#3C82F6] border border-[#3C82F6]'
-                    : 'border border-[#2E2E2E] text-[#A1A5AC] hover:border-[#3C82F6] hover:text-[#E8E9EB]'
-                  }
-                `}
-              >
-                {chip}
-              </button>
-            ))}
+          <div className={`flex flex-wrap gap-2 transition-opacity duration-300 ${chipsAnimating ? 'opacity-0' : 'opacity-100'}`}>
+            {promptChips.map(chip => {
+              const currentTypeColor = documentTypes.find(t => t.value === documentType)?.color || '#6B7280';
+              const isSelected = selectedChips.includes(chip);
+
+              return (
+                <button
+                  key={chip}
+                  onClick={() => handleChipClick(chip)}
+                  className="px-3 py-1.5 text-sm rounded-full transition-all duration-200"
+                  style={{
+                    color: isSelected ? currentTypeColor : '#A1A5AC',
+                    backgroundColor: isSelected ? `${currentTypeColor}30` : 'transparent',
+                    borderColor: isSelected ? currentTypeColor : `${currentTypeColor}20`,
+                    borderWidth: '1px'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isSelected) {
+                      e.currentTarget.style.borderColor = currentTypeColor;
+                      e.currentTarget.style.color = '#E8E9EB';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isSelected) {
+                      e.currentTarget.style.borderColor = `${currentTypeColor}20`;
+                      e.currentTarget.style.color = '#A1A5AC';
+                    }
+                  }}
+                >
+                  {chip}
+                </button>
+              );
+            })}
           </div>
         </div>
 
