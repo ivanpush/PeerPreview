@@ -17,6 +17,8 @@ export const ManuscriptProvider = ({ children }) => {
   const [lastRewrite, setLastRewrite] = useState(null);
   const [selectedIssue, setSelectedIssue] = useState(null);
   const [activeFigureId, setActiveFigureId] = useState(null);
+  const [acceptedIssues, setAcceptedIssues] = useState(new Set());
+  const [acceptedWithRewrite, setAcceptedWithRewrite] = useState(new Set()); // Track which accepted issues had rewrites
   const [dismissedIssues, setDismissedIssues] = useState(new Set());
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -198,6 +200,8 @@ export const ManuscriptProvider = ({ children }) => {
     lastRewrite,
     selectedIssue,
     activeFigureId,
+    acceptedIssues,
+    acceptedWithRewrite,
     dismissedIssues,
     loading,
     error,
@@ -208,6 +212,8 @@ export const ManuscriptProvider = ({ children }) => {
     restoreDeleted,
     setSelectedIssue,
     setActiveFigureId,
+    setAcceptedIssues,
+    setAcceptedWithRewrite,
     setDismissedIssues,
     loadMockData,
 

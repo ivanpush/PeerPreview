@@ -3,13 +3,61 @@ import { useManuscript } from '../context/ManuscriptContext';
 import { theme, withOpacity, getTrackColor, getSeverityColor } from '../styles/theme';
 
 function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedReviewModal, onSelectIssue }) {
-  const { issues, setSelectedIssue, selectedIssue, manuscript, updateParagraph, dismissedIssues, setDismissedIssues } = useManuscript();
+  const { issues, setSelectedIssue, selectedIssue, manuscript, updateParagraph, acceptedIssues, setAcceptedIssues, acceptedWithRewrite, setAcceptedWithRewrite, dismissedIssues, setDismissedIssues } = useManuscript();
   const [filterTrack, setFilterTrack] = useState('all');
   const [expandedIssues, setExpandedIssues] = useState(new Set());
 
   const filteredIssues = issues.filter(issue =>
     filterTrack === 'all' || issue.track === filterTrack
   );
+
+  const toggleAccept = (issueId, e, isRewrite = false) => {
+    e?.stopPropagation();
+
+    // Remove from dismissed if it was dismissed (mutual exclusivity)
+    if (dismissedIssues.has(issueId)) {
+      setDismissedIssues(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(issueId);
+        return newSet;
+      });
+    }
+
+    // Toggle accepted state
+    setAcceptedIssues(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(issueId)) {
+        // Recalling - remove from accepted
+        newSet.delete(issueId);
+        // Also remove from rewrite tracking
+        setAcceptedWithRewrite(prev2 => {
+          const newSet2 = new Set(prev2);
+          newSet2.delete(issueId);
+          return newSet2;
+        });
+        // Select and scroll to the recalled issue
+        setSelectedIssue(issues.find(i => i.id === issueId));
+        setTimeout(() => {
+          const issueElement = document.querySelector(`[data-issue-id="${issueId}"]`);
+          if (issueElement) {
+            issueElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 100);
+      } else {
+        // Accepting
+        newSet.add(issueId);
+        // Track if this was a rewrite accept
+        if (isRewrite) {
+          setAcceptedWithRewrite(prev2 => {
+            const newSet2 = new Set(prev2);
+            newSet2.add(issueId);
+            return newSet2;
+          });
+        }
+      }
+      return newSet;
+    });
+  };
 
   const toggleDismiss = (issueId, e) => {
     e?.stopPropagation();
@@ -19,10 +67,34 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
       setSelectedIssue(null);
     }
 
+    // Remove from accepted if it was accepted (mutual exclusivity)
+    if (acceptedIssues.has(issueId)) {
+      setAcceptedIssues(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(issueId);
+        return newSet;
+      });
+      // Also remove from rewrite tracking
+      setAcceptedWithRewrite(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(issueId);
+        return newSet;
+      });
+    }
+
+    // Toggle dismissed state
     setDismissedIssues(prev => {
       const newSet = new Set(prev);
       if (newSet.has(issueId)) {
+        // Recalling from dismissed - select and scroll to it
         newSet.delete(issueId);
+        setSelectedIssue(issues.find(i => i.id === issueId));
+        setTimeout(() => {
+          const issueElement = document.querySelector(`[data-issue-id="${issueId}"]`);
+          if (issueElement) {
+            issueElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 100);
       } else {
         newSet.add(issueId);
       }
@@ -146,8 +218,8 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
       updateParagraph(issue.paragraph_id, issue.suggested_rewrite, true);
     }
 
-    // Dismiss the issue after accepting
-    toggleDismiss(issue.id);
+    // Mark as accepted with rewrite (will be exported)
+    toggleAccept(issue.id, null, true);
   };
 
   // Render collapsed issue card
@@ -177,7 +249,7 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
         )}
 
         <div className="pl-4 pr-3 py-3">
-          {/* Header row: Track dot + Severity badge + Dismiss */}
+          {/* Header row: Track dot + Severity badge + Accept/Dismiss */}
           <div className="flex items-center gap-2 mb-2">
             {!isSelected && (
               <div
@@ -199,8 +271,17 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
             </span>
 
             <button
+              onClick={(e) => toggleAccept(issue.id, e)}
+              className="ml-auto text-blue-500 hover:text-blue-400 transition"
+              title="Accept issue (will export)"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </button>
+            <button
               onClick={(e) => toggleDismiss(issue.id, e)}
-              className="ml-auto text-gray-500 hover:text-gray-300 transition"
+              className="text-gray-500 hover:text-gray-300 transition"
               title="Dismiss issue"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -331,8 +412,17 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
             </span>
 
             <button
+              onClick={(e) => toggleAccept(issue.id, e)}
+              className="ml-auto text-blue-500 hover:text-blue-400 transition"
+              title="Accept issue (will export)"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </button>
+            <button
               onClick={(e) => toggleDismiss(issue.id, e)}
-              className="ml-auto text-gray-500 hover:text-gray-300 transition"
+              className="text-gray-500 hover:text-gray-300 transition"
               title="Dismiss issue"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -525,8 +615,19 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
             )}
 
             <button
+              onClick={(e) => toggleAccept(issue.id, e)}
+              className="px-3 py-1.5 text-xs rounded font-medium hover:opacity-80 transition"
+              style={{
+                backgroundColor: withOpacity(theme.accent.uiBlue, 0.15),
+                color: theme.accent.uiBlue,
+                border: `1px solid ${withOpacity(theme.accent.uiBlue, 0.3)}`
+              }}
+            >
+              Accept Issue
+            </button>
+            <button
               onClick={(e) => toggleDismiss(issue.id, e)}
-              className="px-3 py-1.5 text-xs rounded font-medium hover:opacity-80 transition ml-auto"
+              className="px-3 py-1.5 text-xs rounded font-medium hover:opacity-80 transition"
               style={{
                 backgroundColor: 'rgba(255, 255, 255, 0.05)',
                 color: theme.text.tertiary,
@@ -642,25 +743,123 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
 
       {/* Issues list */}
       <div className="flex-1 overflow-y-auto px-6 pt-4 pb-4">
-        {/* Active issues */}
-        <div className="space-y-3">
-          {filteredIssues.filter(issue => !dismissedIssues.has(issue.id)).length === 0 ? (
-            <div className="text-center py-8" style={{ color: theme.text.muted }}>
-              No active issues in this track
-            </div>
-          ) : (
-            filteredIssues.filter(issue => !dismissedIssues.has(issue.id)).map(issue => {
-              const isExpanded = expandedIssues.has(issue.id);
-              return isExpanded ? renderExpandedCard(issue) : renderCollapsedCard(issue);
-            })
+        {/* Needs Attention issues (active) */}
+        <div>
+          {filteredIssues.filter(issue => !acceptedIssues.has(issue.id) && !dismissedIssues.has(issue.id)).length > 0 && (
+            <h3 className="text-[11px] font-semibold mb-2 px-1 uppercase tracking-wide" style={{ color: theme.text.primary }}>
+              Needs Attention ({filteredIssues.filter(issue => !acceptedIssues.has(issue.id) && !dismissedIssues.has(issue.id)).length})
+            </h3>
           )}
+          <div className="space-y-3">
+            {filteredIssues.filter(issue => !acceptedIssues.has(issue.id) && !dismissedIssues.has(issue.id)).length === 0 ? (
+              <div className="text-center py-8" style={{ color: theme.text.muted }}>
+                No issues need attention in this track
+              </div>
+            ) : (
+              filteredIssues.filter(issue => !acceptedIssues.has(issue.id) && !dismissedIssues.has(issue.id)).map(issue => {
+                const isExpanded = expandedIssues.has(issue.id);
+                return isExpanded ? renderExpandedCard(issue) : renderCollapsedCard(issue);
+              })
+            )}
+          </div>
         </div>
 
-        {/* Dismissed issues section */}
+        {/* Accepted issues section (will be exported) */}
+        {acceptedIssues.size > 0 && (
+          <div className="mt-6 pt-4 border-t" style={{ borderColor: theme.border.primary }}>
+            <h3 className="text-[11px] font-semibold mb-2 px-1 uppercase tracking-wide" style={{ color: theme.accent.uiBlue }}>
+              Accepted - Included in Export ({acceptedIssues.size})
+            </h3>
+            <div className="space-y-1.5">
+              {filteredIssues.filter(issue => acceptedIssues.has(issue.id)).map(issue => {
+                const trackColor = getTrackColor(issue.track);
+                const severityColor = getSeverityColor(issue.severity);
+
+                return (
+                  <div
+                    key={issue.id}
+                    className="relative rounded cursor-pointer transition-all overflow-hidden"
+                    style={{
+                      opacity: 0.9,
+                      backgroundColor: withOpacity(theme.accent.uiBlue, 0.05),
+                      border: `1px solid ${withOpacity(theme.accent.uiBlue, 0.3)}`
+                    }}
+                  >
+                    {/* Left track indicator */}
+                    <div className="absolute left-0 top-0 bottom-0 w-[2px]" style={{ backgroundColor: trackColor }}></div>
+
+                    {/* Collapsed header row */}
+                    <div className="flex items-center gap-2 pl-3 pr-2 py-2">
+                      {/* Track dot */}
+                      <div
+                        className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                        style={{ backgroundColor: trackColor }}
+                      ></div>
+
+                      {/* Severity badge */}
+                      <span
+                        className="px-1.5 py-0.5 rounded text-[10px] font-medium border flex-shrink-0"
+                        style={{
+                          backgroundColor: withOpacity(severityColor, 0.15),
+                          color: severityColor,
+                          borderColor: withOpacity(severityColor, 0.3)
+                        }}
+                      >
+                        {issue.severity}
+                      </span>
+
+                      {/* Title - truncated */}
+                      <span className="text-[12px] flex-1 truncate" style={{ color: theme.text.secondary }}>
+                        {issue.title || issue.message}
+                      </span>
+
+                      {/* Rewrite Applied or Acknowledged pill */}
+                      {acceptedWithRewrite.has(issue.id) ? (
+                        <span
+                          className="px-1.5 py-0.5 rounded text-[9px] font-medium flex-shrink-0"
+                          style={{
+                            backgroundColor: withOpacity(theme.accent.uiBlue, 0.15),
+                            color: theme.accent.uiBlue,
+                            border: `1px solid ${withOpacity(theme.accent.uiBlue, 0.3)}`
+                          }}
+                        >
+                          Rewrite Applied
+                        </span>
+                      ) : (
+                        <span
+                          className="px-1.5 py-0.5 rounded text-[9px] font-medium flex-shrink-0"
+                          style={{
+                            backgroundColor: 'rgba(128, 128, 128, 0.15)',
+                            color: 'rgba(200, 200, 200, 0.9)',
+                            border: `1px solid rgba(128, 128, 128, 0.3)`
+                          }}
+                        >
+                          Acknowledged
+                        </span>
+                      )}
+
+                      {/* Recall button */}
+                      <button
+                        onClick={(e) => toggleAccept(issue.id, e)}
+                        className="text-[9px] px-1.5 py-0.5 rounded hover:bg-gray-700 transition flex-shrink-0"
+                        style={{ color: theme.text.muted }}
+                        title="Recall to active"
+                      >
+                        Recall
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Dismissed issues section (not included in export) */}
         {dismissedIssues.size > 0 && (
           <div className="mt-6 pt-4 border-t" style={{ borderColor: theme.border.primary }}>
             <h3 className="text-[11px] font-semibold mb-2 px-1 uppercase tracking-wide" style={{ color: theme.text.muted }}>
-              Dismissed ({dismissedIssues.size})
+              Dismissed - Not Included in Export ({dismissedIssues.size})
             </h3>
             <div className="space-y-1.5">
               {filteredIssues.filter(issue => dismissedIssues.has(issue.id)).map(issue => {
