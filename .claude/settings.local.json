@@ -50,7 +50,8 @@
       "Bash(ssh-keyscan:*)",
       "Bash(~/.ssh/known_hosts)",
       "Bash(gh auth:*)",
-      "Bash(git fetch:*)"
+      "Bash(git fetch:*)",
+      "Bash(sort:*)"
     ],
     "deny": [],
     "ask": []
