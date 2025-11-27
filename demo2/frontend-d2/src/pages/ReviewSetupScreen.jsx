@@ -18,7 +18,6 @@ function ReviewSetupScreen() {
   const [documentType, setDocumentType] = useState('');
   const [detectedType, setDetectedType] = useState('');
   const [showTypeMenu, setShowTypeMenu] = useState(false);
-  const [chipsAnimating, setChipsAnimating] = useState(false);
   const typeMenuRef = useRef(null);
 
   // Depth configurations
@@ -39,61 +38,68 @@ function ReviewSetupScreen() {
     { value: 'generic', label: 'Generic Document', color: '#6B7280' }
   ];
 
-  // Dynamic chips per document type
+  // Dynamic chips per document type (severity-first)
   const chipsByType = {
     academic_manuscript: [
       'Desk-reject risks',
       'Methods rigor',
       'Statistical validity',
-      'Clarity & flow',
       'Novelty & framing',
-      'Hostile reviewer POV'
+      'Clarity & flow'
     ],
     grant_proposal: [
+      'Study section simulation',
       'Significance & impact',
       'Innovation claims',
       'Approach & methods',
-      'Feasibility & timeline',
-      'Investigator fit',
-      'Study section simulation'
+      'Feasibility & timeline'
     ],
     policy_brief: [
+      'Counterarguments',
       'Evidence quality',
       'Stakeholder objections',
       'Implementation feasibility',
-      'Political framing',
-      'Executive summary strength',
-      'Counterarguments'
+      'Executive summary strength'
     ],
     legal_brief: [
+      'Opposing counsel POV',
       'Precedent strength',
       'Factual record support',
       'Procedural vulnerabilities',
-      'Persuasive force',
-      'Opposing counsel POV',
-      'Jurisdictional issues'
-    ],
-    generic: [
-      'Internal consistency',
-      'Clarity & structure',
-      'Claim strength',
-      'Audience fit',
-      'Overclaims & gaps'
+      'Persuasive force'
     ],
     memo: [
-      'Internal consistency',
-      'Clarity & structure',
-      'Claim strength',
-      'Audience fit',
-      'Overclaims & gaps'
+      'Action clarity',
+      'Decision support',
+      'Audience targeting',
+      'Brevity check',
+      'Tone appropriateness'
     ],
     technical_report: [
+      'Conclusions vs evidence',
+      'Methods reproducibility',
+      'Technical accuracy',
+      'Data presentation',
+      'Clarity for non-specialists'
+    ],
+    generic: [
+      'Overclaims & gaps',
       'Internal consistency',
-      'Clarity & structure',
       'Claim strength',
-      'Audience fit',
-      'Overclaims & gaps'
+      'Clarity & structure',
+      'Audience fit'
     ]
+  };
+
+  // Dynamic placeholder text per document type
+  const placeholderByType = {
+    academic_manuscript: 'e.g., "Targeting Nature Methods" or "Stats need scrutiny" or "Be harsh on discussion"',
+    grant_proposal: 'e.g., "R01 resubmission" or "Aims 2-3 are weak" or "Reviewers hated the timeline last time"',
+    policy_brief: 'e.g., "For skeptical legislators" or "Implementation section is rushed" or "Need stronger evidence"',
+    legal_brief: 'e.g., "Opposition will attack standing" or "Weak on Smith v. Jones distinction" or "Judge is textualist"',
+    memo: 'e.g., "For C-suite" or "Too long" or "Action items are buried"',
+    technical_report: 'e.g., "External audience" or "Methods section is thin" or "Conclusions overreach"',
+    generic: 'e.g., "Be harsh" or "Check logical flow" or "Audience is non-technical"'
   };
 
   // Get current chips based on document type
@@ -156,13 +162,11 @@ function ReviewSetupScreen() {
     }
   }, [showTypeMenu]);
 
-  // Reset selected chips and animate when document type changes
+  // Reset selected chips when document type changes
   useEffect(() => {
-    setChipsAnimating(true);
     setSelectedChips([]);
-    const timer = setTimeout(() => setChipsAnimating(false), 300);
-    return () => clearTimeout(timer);
   }, [documentType]);
+
 
   const handleChipClick = (chip) => {
     if (selectedChips.includes(chip)) {
@@ -220,8 +224,7 @@ function ReviewSetupScreen() {
       key: 'light',
       label: 'Quick Scan',
       time: '~5 min',
-      description: 'Surface issues • Grammar • Clarity',
-      benefits: ['Basic readability check', 'Obvious errors', 'Quick turnaround'],
+      description: 'Major gaps • Structure • Fast turnaround',
       textColor: '#10b981', // emerald-400
       bgColor: '#10b981'
     },
@@ -229,8 +232,7 @@ function ReviewSetupScreen() {
       key: 'medium',
       label: 'Standard Review',
       time: '~15 min',
-      description: 'All major issues • Balanced analysis',
-      benefits: ['Logic & flow', 'Citation check', 'Best for most docs'],
+      description: 'Full critique • All sections • Balanced depth',
       textColor: '#3C82F6', // blue
       bgColor: '#3C82F6'
     },
@@ -238,8 +240,7 @@ function ReviewSetupScreen() {
       key: 'heavy',
       label: 'Deep Analysis',
       time: '~30 min',
-      description: 'Hostile review • Edge cases • Full rigor',
-      benefits: ['Methodological rigor', 'Hidden flaws', 'Pre-submission check'],
+      description: 'Publication-ready • Adversarial • Nothing missed',
       textColor: '#a855f7', // purple-400
       bgColor: '#a855f7'
     }
@@ -309,7 +310,7 @@ function ReviewSetupScreen() {
                   </div>
                 )}
               </sup>
-              . Should the review focus on anything in particular?
+              . What matters most for this review?
             </p>
           </div>
 
@@ -317,12 +318,12 @@ function ReviewSetupScreen() {
           <textarea
             value={userPrompt}
             onChange={(e) => setUserPrompt(e.target.value)}
-            placeholder="Any other specific areas to examine..."
+            placeholder={placeholderByType[documentType] || placeholderByType.generic}
             className="w-full h-24 px-4 py-3 bg-[#1A1C1F] border border-[#2E2E2E] rounded-2xl text-sm text-[#E8E9EB] placeholder-[#6A6D73] focus:outline-none focus:border-[#3C82F6] transition-colors resize-none mb-4"
           />
 
           {/* Pills - moved below textarea */}
-          <div className={`flex flex-wrap gap-2 transition-opacity duration-300 ${chipsAnimating ? 'opacity-0' : 'opacity-100'}`}>
+          <div className="flex flex-wrap gap-2">
             {promptChips.map(chip => {
               const currentTypeColor = documentTypes.find(t => t.value === documentType)?.color || '#6B7280';
               const isSelected = selectedChips.includes(chip);
@@ -412,80 +413,10 @@ function ReviewSetupScreen() {
               </button>
             ))}
           </div>
-
-          {/* Detailed benefits for selected depth */}
-          <div className="bg-[#1A1C1F] rounded-lg p-4">
-            <div className="flex items-start gap-3">
-              <div
-                className="w-1 h-16 rounded-full"
-                style={{ backgroundColor: depthConfigs[depth].bgColor }}
-              ></div>
-              <div>
-                <p className="text-sm font-medium text-[#E8E9EB] mb-2">
-                  {depthConfigs[depth].label} includes:
-                </p>
-                <ul className="space-y-1">
-                  {depthConfigs[depth].benefits.map((benefit, i) => (
-                    <li key={i} className="text-xs text-[#A1A5AC] flex items-center gap-2">
-                      <span className="text-[#6A6D73]">•</span>
-                      {benefit}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Thin separator */}
         <div className="border-t border-[#1A1C1F] mb-10"></div>
-
-        {/* Review Mode Toggle - minimal, only for demo */}
-        {hasStaticDemo && (
-          <div className="mb-10">
-            <div className="flex items-center gap-6">
-              <label className="flex items-center cursor-pointer">
-                <input
-                  type="radio"
-                  name="mode"
-                  value="static"
-                  checked={reviewMode === 'static'}
-                  onChange={(e) => setReviewMode(e.target.value)}
-                  className="sr-only"
-                />
-                <div className={`w-4 h-4 rounded-full border-2 mr-2 transition-colors ${reviewMode === 'static' ? 'border-[#3C82F6] bg-[#3C82F6]' : 'border-[#6A6D73]'}`}>
-                  {reviewMode === 'static' && <div className="w-2 h-2 bg-[#0B0C0E] rounded-full m-0.5"></div>}
-                </div>
-                <span className={`text-sm ${reviewMode === 'static' ? 'text-[#E8E9EB]' : 'text-[#6A6D73]'}`}>
-                  Static Demo <span className="text-xs text-[#4ADE80]">• Instant</span>
-                </span>
-              </label>
-
-              <label className="flex items-center cursor-pointer">
-                <input
-                  type="radio"
-                  name="mode"
-                  value="dynamic"
-                  checked={reviewMode === 'dynamic'}
-                  onChange={(e) => setReviewMode(e.target.value)}
-                  className="sr-only"
-                />
-                <div className={`w-4 h-4 rounded-full border-2 mr-2 transition-colors ${reviewMode === 'dynamic' ? 'border-[#3C82F6] bg-[#3C82F6]' : 'border-[#6A6D73]'}`}>
-                  {reviewMode === 'dynamic' && <div className="w-2 h-2 bg-[#0B0C0E] rounded-full m-0.5"></div>}
-                </div>
-                <span className={`text-sm ${reviewMode === 'dynamic' ? 'text-[#E8E9EB]' : 'text-[#6A6D73]'}`}>
-                  Dynamic <span className="text-xs text-[#3C82F6]">• ~30s</span>
-                </span>
-              </label>
-            </div>
-
-            {reviewMode === 'static' && (
-              <p className="text-xs text-[#6A6D73] mt-3">
-                Using pre-computed review data for instant demonstration
-              </p>
-            )}
-          </div>
-        )}
 
         {/* Actions - right-aligned, minimal */}
         <div className="flex justify-end gap-3 mb-10">
@@ -501,12 +432,12 @@ function ReviewSetupScreen() {
             className={`
               px-6 py-2 rounded text-sm font-medium transition-all duration-200
               ${canProceed
-                ? 'bg-[#3C82F6] text-white hover:bg-opacity-90 shadow-lg hover:shadow-xl'
+                ? 'bg-[#5BAEB8] text-white hover:bg-[#1C6D79] shadow-lg hover:shadow-xl'
                 : 'bg-[#1A1C1F] text-[#6A6D73] cursor-not-allowed'
               }
             `}
           >
-            Start Review →
+            Run Review →
           </button>
         </div>
 
@@ -517,6 +448,47 @@ function ReviewSetupScreen() {
             <p className="text-xs text-[#FEF3C7]">
               Large document detected • Some review options may be limited
             </p>
+          </div>
+        )}
+
+        {/* Review Mode Toggle - V0 only, hidden at bottom */}
+        {hasStaticDemo && (
+          <div className="mt-16 pt-8 border-t border-[#1A1C1F]/30">
+            <div className="flex items-center gap-6 justify-center opacity-40 hover:opacity-60 transition-opacity">
+              <label className="flex items-center cursor-pointer">
+                <input
+                  type="radio"
+                  name="mode"
+                  value="static"
+                  checked={reviewMode === 'static'}
+                  onChange={(e) => setReviewMode(e.target.value)}
+                  className="sr-only"
+                />
+                <div className={`w-3 h-3 rounded-full border mr-2 transition-colors ${reviewMode === 'static' ? 'border-[#6A6D73] bg-[#6A6D73]' : 'border-[#3A3A3A]'}`}>
+                  {reviewMode === 'static' && <div className="w-1.5 h-1.5 bg-[#0B0C0E] rounded-full m-0.5"></div>}
+                </div>
+                <span className={`text-xs ${reviewMode === 'static' ? 'text-[#A1A5AC]' : 'text-[#4A4A4A]'}`}>
+                  Static Demo
+                </span>
+              </label>
+
+              <label className="flex items-center cursor-pointer">
+                <input
+                  type="radio"
+                  name="mode"
+                  value="dynamic"
+                  checked={reviewMode === 'dynamic'}
+                  onChange={(e) => setReviewMode(e.target.value)}
+                  className="sr-only"
+                />
+                <div className={`w-3 h-3 rounded-full border mr-2 transition-colors ${reviewMode === 'dynamic' ? 'border-[#6A6D73] bg-[#6A6D73]' : 'border-[#3A3A3A]'}`}>
+                  {reviewMode === 'dynamic' && <div className="w-1.5 h-1.5 bg-[#0B0C0E] rounded-full m-0.5"></div>}
+                </div>
+                <span className={`text-xs ${reviewMode === 'dynamic' ? 'text-[#A1A5AC]' : 'text-[#4A4A4A]'}`}>
+                  Dynamic
+                </span>
+              </label>
+            </div>
           </div>
         )}
       </div>

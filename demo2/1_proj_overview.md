@@ -41,53 +41,40 @@ User exports           →  POST /api/export
 
 ---
 
-## Three Review Axes (Tracks)
+## Architecture: Backend Agents + Scopes + Personas
 
-Every review runs up to three independent tracks. They have **strict separation** — no overlap in responsibilities.
+**Key insight**: Personas are output frames, not processing units.
 
-| Track | Name | What It Checks |
-|-------|------|----------------|
-| A | **Rigor** | Correctness, logic, evidence, methodology, cross-section alignment |
-| B | **Clarity** | Writing structure, readability, terminology, flow |
-| C | **Skeptic** | Overclaiming, hidden assumptions, missing limitations, unbalanced framing |
+The backend runs 5 core agents that produce raw analysis. An **Assembler** then reframes that into document-type-specific **scopes** and **personas** at render time.
 
----
+### Backend Agents
 
-## The Rubric System (Critical)
+| Agent | Purpose |
+|-------|---------|
+| `global_map` | Structure, claims, evidence links, argument map |
+| `domain_positioning` | Field detection, related work, novelty signals |
+| `rigor` | Logic, stats, methods, feasibility |
+| `clarity` | Paragraph + block level readability |
+| `global_hostile` | Adversarial synthesis (Heavy only) |
+| `assembler` | Maps backend → scopes → personas |
 
-To prevent hallucinations and over-criticism, all reviewers use a **hard, deterministic rubric**. Agents can ONLY flag violations from this list.
+### Scopes (UI-facing, vary by document type)
 
-### Track A — Rigor Violations
-| Code | Violation | Description |
-|------|-----------|-------------|
-| A1 | Claim-evidence mismatch | Conclusion not supported by presented evidence |
-| A2 | Internal contradiction | Statements conflict with each other |
-| A3 | Non-sequitur | Conclusion does not follow from premises |
-| A4 | Missing methodological detail | Essential info omitted |
-| A5 | Statistical misinterpretation | Incorrect use/interpretation of stats |
-| A6 | Cross-section disagreement | Abstract/results/discussion inconsistent |
+| Document Type | UI Scopes |
+|---------------|-----------|
+| Scientific Manuscript | Rigor, Clarity, Counterpoint |
+| Grant Application | Significance, Innovation, Approach, Feasibility |
+| Policy Brief | Evidence, Stakeholder Objections, Implementation, Clarity |
+| Legal Brief | Precedent, Factual Support, Procedural, Persuasive Force |
+| Generic | Consistency, Clarity, Claim Strength |
 
-### Track B — Clarity Violations
-| Code | Violation | Description |
-|------|-----------|-------------|
-| B1 | Ambiguity blocking meaning | Reader cannot determine intent |
-| B2 | Cohesion broken | Logical flow disrupted between sentences/paragraphs |
-| B3 | Undefined critical term | Jargon or term used without definition |
-| B4 | Style undermining professionalism | Tone/register inappropriate for audience |
+### How It Fits Together
 
-### Track C — Skeptic Violations
-| Code | Violation | Description |
-|------|-----------|-------------|
-| C1 | Overclaiming | Conclusions exceed what evidence supports |
-| C2 | Hidden assumption | Premise taken as given without justification |
-| C3 | Missing limitation | Obvious weakness not acknowledged |
-| C4 | Unbalanced framing | Alternative explanations ignored |
-
-**Rules:**
-- Only violations may be flagged
-- Borderline cases = NOT violations
-- Agents are allowed (and required) to say a section is "good"
-- No code = not a valid issue
+1. Planning Agent chooses which **scopes** to run based on document type + user intent
+2. Scopes map to **backend agents** via `persona_map.json`
+3. Backend agents produce raw issues
+4. **Assembler** maps issues to scopes, applies persona voice, merges duplicates
+5. UI displays issues grouped by scope with persona labels
 
 ---
 
@@ -95,14 +82,29 @@ To prevent hallucinations and over-criticism, all reviewers use a **hard, determ
 
 All agents MUST follow these rules:
 
-1. Return zero issues if nothing violates rubric
-2. Acknowledge strengths when present
-3. Never invent missing content
-4. Never nitpick style preferences (only flag B4 if unprofessional/unclear)
-5. Never escalate severity without evidence
-6. Justify each critique with exact sentence references
-7. Use "suggestion" for mild improvements only
-8. Heavy depth can still return "no issues" if document is strong
+1. **Return zero issues if document is sound** — no manufactured criticism
+2. **Acknowledge strengths** — every section assessment includes what works
+3. **Never invent missing content** — only flag what's actually there
+4. **Never nitpick style preferences** — only flag if it blocks comprehension
+5. **Never escalate severity without evidence** — cite specific text
+6. **Borderline = not a violation** — when in doubt, don't flag
+7. **Heavy depth can return zero issues** — strong docs exist
+
+---
+
+## Issue Codes
+
+Each backend agent produces issues with agent-specific codes:
+
+| Agent | Code Prefix | Examples |
+|-------|-------------|----------|
+| global_map | `MAP_` | `MAP_CLAIM_UNSUPPORTED`, `MAP_CROSS_SECTION_CONFLICT` |
+| rigor | `RIGOR_` | `RIGOR_LOGIC_GAP`, `RIGOR_STATS_MISUSE`, `RIGOR_METHOD_MISSING` |
+| clarity | `CLARITY_` | `CLARITY_AMBIGUOUS`, `CLARITY_UNDEFINED_TERM`, `CLARITY_FLOW_BROKEN` |
+| domain_positioning | `DOMAIN_` | `DOMAIN_NOVELTY_OVERCLAIM`, `DOMAIN_RELATED_WORK_GAP` |
+| global_hostile | `HOSTILE_` | `HOSTILE_FATAL_FLAW`, `HOSTILE_ALTERNATIVE_EXPLANATION` |
+
+The Assembler maps these to UI scopes and applies persona voice.
 
 ---
 
@@ -110,14 +112,15 @@ All agents MUST follow these rules:
 
 Depth = reasoning thoroughness, NOT number of issues.
 
-| Aspect | Light | Medium | Heavy |
-|--------|-------|--------|-------|
-| **Tracks** | Clarity only + minimal Rigor | All three tracks | All three tracks |
-| **Track C tone** | Skipped (or C1 only) | Fair/balanced ("careful reader") | Adversarial ("hostile Reviewer 2") |
-| **Scope** | Per-sentence/paragraph | Paragraph + limited section | Line-level + section-level |
-| **Rewrites** | None | Paragraph-level | Multi-paragraph, section-level |
-| **Global agents** | None | Limited cross-doc check | Full consistency + overclaiming |
-| **Model** | Small/fast | Mid-size | Largest |
+| Aspect | Light | Standard | Heavy |
+|--------|-------|----------|-------|
+| **Global Map** | Basic | Full | Deep analysis |
+| **Domain Positioning** | — | If scope needs | Always |
+| **Rigor Agent** | Light pass | Full pass | Deep pass |
+| **Clarity Agent** | ✓ | ✓ | ✓ |
+| **Global Hostile** | — | — | ✓ |
+| **Assembler Tone** | Supportive | Balanced | Adversarial |
+| **Rewrites** | None | Paragraph-level | Multi-paragraph |
 | **Cost** | ~$0.30-0.50 | ~$0.80-1.50 | ~$2.00-4.00 |
 
 ---
@@ -180,12 +183,12 @@ We ALWAYS return the same format the user uploaded, with revisions in the native
 
 1. **ManuscriptObject is the single source of truth** — HTML is interaction view only
 2. **Export always matches original format** — PDF→PDF, DOCX→DOCX, LaTeX→LaTeX
-3. **Issues must use rubric codes** — only A1-A6, B1-B4, C1-C4 are valid
-4. **Reviewers must acknowledge strengths** — and can return zero issues
+3. **Backend agents produce raw issues, Assembler maps to scopes/personas**
+4. **Agents must acknowledge strengths** — and can return zero issues
 5. **Depth controls reasoning intensity, not issue quantity**
 6. **Accepting a rewrite auto-conflicts overlapping issues** — mutual exclusion
-7. **Track A ≠ Track C** — correctness ≠ skepticism, no overlap
-8. **Track B never touches logic or tone** — only clarity/structure
+7. **Backend agents are reusable** — scopes vary by document type
+8. **Persona voice is applied by Assembler** — not baked into agents
 9. **Docs >60 pages must be blocked or reduced**
 10. **Demo dropdown is temporary** — real upload replaces it in V1
 
@@ -233,10 +236,14 @@ No separate progress page — ReviewScreen shows spinner until data loads.
 ## Success Criteria
 
 - [ ] Load fixtures via demo dropdown
-- [ ] Type detection with override
+- [ ] Type detection with override → persona_schema selection
+- [ ] Scope selection UI (document-type-specific)
 - [ ] Depth slider with cost estimate
-- [ ] Planning Agent → ReviewPlan
-- [ ] All 3 track agents → Issues with rubric codes
-- [ ] ReviewScreen with highlights + Accept/Dismiss
-- [ ] Conflict handling (mutual exclusion)
+- [ ] Planning Agent → ReviewPlan with scopes_to_run + tracks_to_run
+- [ ] Global Map Agent → GlobalMap (claims, evidence, structure)
+- [ ] Rigor + Clarity agents → raw issues
+- [ ] Global Hostile Agent (Heavy only)
+- [ ] Assembler → final issues with scope + persona_label + persona_summaries
+- [ ] ReviewScreen with issues grouped by scope
+- [ ] Accept/Dismiss with conflict handling
 - [ ] Export stubs (PDF annotations, DOCX change log, LaTeX comments)

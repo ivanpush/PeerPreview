@@ -1,398 +1,491 @@
-PeerPreview: Agent Architecture & Pipeline (Final Version)
-Overview
+# PeerPreview: Agent Architecture & Pipeline
 
-PeerPreview performs deep, structured analysis of long-form knowledge-work documents (manuscripts, policy briefs, grants, memos, up to ~30 pages).
+## Core Insight
 
-The pipeline has three phases:
+**Personas are output frames, not processing units.**
 
-Phase 1 — Global Understanding
+The backend runs a small set of agents that produce raw analysis. An Assembler then reframes that analysis into document-type-specific scopes and personas at render time.
 
-Planning Agent
+This means:
+- Backend agents are reusable across document types
+- UI scopes (Rigor, Significance, Precedent, etc.) are views on the same underlying analysis
+- Persona voice/tone is applied at the end, not baked into each agent
 
-Global Map Agent (claims, terminology, section map, early hostile sketch)
+---
 
-Phase 2 — Local Reviews (parallel)
+## Backend Agents
 
-Rigor Agent (Track A) — section-level
+| Agent | Purpose | Used By |
+|-------|---------|---------|
+| `global_map_agent` | Structure, claims, evidence links, argument map | All scopes |
+| `domain_positioning_agent` | Field detection, related work, novelty signals | Counterpoint, Significance, Precedent |
+| `rigor_agent` | Logic, stats, methods, feasibility | Rigor, Approach, Evidence Quality |
+| `clarity_agent` | Paragraph + block level readability | Clarity scopes |
+| `global_hostile_agent` | Adversarial synthesis, weakness exploitation | Counterpoint, Stakeholder Objections |
+| `assembler_agent` | Maps backend → scopes → personas | Final output |
 
-Clarity Agents (Track B)
-• B1 = per paragraph
-• B2 = multi-paragraph flow
+---
 
-(Track C does NOT run here!)
+## Pipeline
 
-Phase 3 — Global Reasoning (Heavy only)
-
-Global Consistency & Hostile Synthesis Agent (Track C final)
-
-Flow Diagram
-documentObject + UserIntent
+```
+ManuscriptObject + UserIntent
             │
             ▼
       Planning Agent
             │
             ▼
-   Phase 1: Global Map Agent
-   (Claim Map, Term Map, Section Map,
-    Early Hostile Sketch)
+   PHASE 1: Global Understanding
+   ├── Global Map Agent (claims, evidence, structure)
+   └── Domain Positioning Agent (optional)
             │
             ▼
-   Phase 2: Local Track Agents (parallel)
-   ├── Track A (Rigor, per-section)
-   ├── Track B1 (Clarity, per-paragraph)
-   └── Track B2 (Clarity, multi-paragraph blocks)
+   PHASE 2: Local Track Agents (parallel)
+   ├── Rigor Agent
+   └── Clarity Agent
             │
             ▼
-        Aggregator
+   PHASE 3a: Global Hostile Agent (Heavy only)
             │
             ▼
-   Phase 3: (Heavy only)
-   Global Consistency + Final Hostile Review
+   PHASE 3b: Assembler
+   (maps tracks → scopes → personas, merges, reframes)
             │
             ▼
-        Final Issue[]
+      Final Issue[] + Persona Summaries
+```
 
-Data Models (Finalized)
-documentObject
-@dataclass
-class documentObject:
-    document_type: DocumentType          # 'manuscript', 'grant', 'policy_brief', etc.
-    source_format: Literal['pdf', 'docx', 'latex']
-    title: str
-    sections: list['Section']
-    meta: 'DocumentMetadata'
+---
 
-@dataclass
-class Section:
-    id: str
-    heading: str
-    role: SectionRole                    # e.g. 'intro', 'methods', 'discussion'
-    paragraphs: list['Paragraph']
+## Scope → Backend → Persona Mapping
 
-@dataclass
-class Paragraph:
-    id: str
-    sentences: list['Sentence']
-    page: int | None
-    bbox: tuple | None
+### Scientific Manuscript
 
-@dataclass
-class Sentence:
-    id: str
-    text: str
+| UI Scope | Backend Agents | Persona Label | Archetype |
+|----------|----------------|---------------|-----------|
+| rigor | global_map, rigor | "Rigor Review" | Careful grad student |
+| clarity | clarity | "Clarity Review" | Journal editor |
+| counterpoint | domain_positioning, global_hostile | "Counterpoint" | Hostile domain expert |
 
-@dataclass
-class DocumentMetadata:
-    filename: str
-    page_count: int
-    word_count: int
-    section_names: list[str]
+### Grant Application
 
-UserIntent
-@dataclass
-class UserIntent:
-    depth: Literal['light', 'standard', 'heavy']
-    prompt: str
-    chips_selected: list[str]
+| UI Scope | Backend Agents | Persona Label | Archetype |
+|----------|----------------|---------------|-----------|
+| significance | domain_positioning, global_hostile | "Significance Review" | Program officer |
+| innovation | domain_positioning, global_hostile | "Innovation Review" | Skeptical study section |
+| approach_rigor | global_map, rigor | "Approach & Rigor" | Methods reviewer |
+| feasibility | rigor, global_hostile | "Feasibility & Team Fit" | Pragmatic PI |
 
-ReviewPlan
+### Policy Brief
+
+| UI Scope | Backend Agents | Persona Label | Archetype |
+|----------|----------------|---------------|-----------|
+| evidence_quality | global_map, rigor, domain_positioning | "Evidence Review" | Research analyst |
+| stakeholder_objections | domain_positioning, global_hostile | "Stakeholder Objections" | Political staffer |
+| implementation_feasibility | rigor, global_hostile | "Implementation Feasibility" | Agency bureaucrat |
+| clarity | clarity | "Clarity & Messaging" | Comms director |
+
+### Legal Brief
+
+| UI Scope | Backend Agents | Persona Label | Archetype |
+|----------|----------------|---------------|-----------|
+| precedent_strength | domain_positioning, global_hostile | "Precedent Strength" | Opposing counsel |
+| factual_support | global_map, rigor | "Factual Support" | Skeptical judge |
+| procedural | rigor, clarity | "Procedural & Technical" | Court clerk |
+| persuasive_force | clarity, global_hostile | "Persuasive Force" | Senior partner |
+
+### Generic Document
+
+| UI Scope | Backend Agents | Persona Label | Archetype |
+|----------|----------------|---------------|-----------|
+| consistency | global_map, rigor | "Consistency Review" | Careful reader |
+| clarity | clarity | "Clarity Review" | Editor |
+| claim_strength | global_map, rigor, domain_positioning | "Claim Strength" | Skeptic |
+
+---
+
+## Data Models
+
+### ReviewPlan
+
+```python
 @dataclass
 class ReviewPlan:
     document_type: DocumentType
     depth: Literal['light', 'standard', 'heavy']
-
-    # Which tracks run under user intent + depth
-    tracks_to_run: list[Literal['rigor', 'clarity']]
-
-    # C-track is global-only and depth controlled
+    
+    # Persona schema
+    persona_schema: Literal[
+        'scientific_manuscript', 'grant_application', 
+        'policy_brief', 'legal_brief', 'generic'
+    ]
+    
+    # Which UI scopes to run
+    scopes_to_run: list[str]
+    
+    # Which backend tracks needed (derived from scopes)
+    tracks_to_run: list[Literal[
+        'global_map', 'rigor', 'clarity', 
+        'domain_positioning', 'global_hostile'
+    ]]
+    
     run_global_hostile: bool
-
-    # Section prioritization
+    
     section_priorities: list[str]
     sections_to_skip: list[str]
-
-    # User intent
+    
     user_focus_summary: str
     user_constraints: list[str]
-
-    # Tone for critic or supportive reviews
+    
     tone: Literal['supportive', 'balanced', 'adversarial']
-
-    # Cost and token governance
+    
     max_tokens_per_call: int
     total_budget_tokens: int
-    concurrency_limit: int
+```
 
-Issue Model
+### Issue
+
+```python
 @dataclass
 class Issue:
     id: str
-    track: Literal['rigor', 'clarity', 'skeptic']
+    
+    # Backend track (which agent produced this)
+    track: Literal['global_map', 'rigor', 'clarity', 
+                   'domain_positioning', 'global_hostile']
+    
+    # UI scope (set by Assembler)
+    scope: str
+    
+    # Persona label (set by Assembler)
+    persona_label: str
+    
     code: str
     severity: Literal['major', 'moderate', 'minor']
-    location: 'IssueLocation'
+    
+    location: IssueLocation
+    
     rationale: str
     suggestion: str | None
     proposed_rewrite: str | None
+    
+    source_agent_ids: list[str]
+    merged_from_ids: list[str]
     conflicting_issue_ids: list[str]
+```
+
+### GlobalMap
+
+```python
+@dataclass
+class GlobalMap:
+    section_roles: dict[str, str]
+    argument_flow: list[str]
+    claims: list[Claim]
+    evidence_links: list[EvidenceLink]
+    key_terms: list[str]
+    undefined_terms: list[str]
+    potential_weaknesses: list[str]
+    cross_section_tensions: list[tuple[str, str]]
 
 @dataclass
-class IssueLocation:
-    section_id: str
-    paragraph_id: str
-    sentence_ids: list[str] | None
-    char_range: tuple[int, int] | None
+class Claim:
+    id: str
+    text: str
+    location: IssueLocation
+    strength: Literal['strong', 'moderate', 'weak', 'unsupported']
 
-Phase 1 — Global Understanding
-1. Planning Agent
+@dataclass  
+class EvidenceLink:
+    claim_id: str
+    supporting_locations: list[str]
+    link_strength: Literal['direct', 'indirect', 'missing']
+```
 
-Takes documentObject + UserIntent and produces a ReviewPlan:
+---
 
-which tracks run
+## Persona Map Config
 
-the tone
-
-cost cap
-
-concurrency limits
-
-which sections get priority
-
-which are skipped
-
-user constraints
-
-This is a light LLM + logic step.
-
-2. Global Map Agent (Mandatory)
-
-This agent ingests the entire document and outputs:
-
-Claim Map (what claims are made, where)
-
-Terminology Map (acronyms, definitions)
-
-Section Map (high-level summary of each section)
-
-Argument Structure / Narrative Map
-
-Early Hostile Sketch (Track C v0, used later in synthesis)
-
-Output
+```json
 {
-  "claims": [...],
-  "acronyms": {...},
-  "section_summaries": {...},
-  "argument_map": {...},
-  "hostile_sketch": {...}
+  "scientific_manuscript": {
+    "scopes": ["rigor", "clarity", "counterpoint"],
+    "scope_to_backend": {
+      "rigor": ["global_map", "rigor"],
+      "clarity": ["clarity"],
+      "counterpoint": ["domain_positioning", "global_hostile"]
+    },
+    "scope_to_persona": {
+      "rigor": {"label": "Rigor Review", "archetype": "careful_grad_student"},
+      "clarity": {"label": "Clarity Review", "archetype": "journal_editor"},
+      "counterpoint": {"label": "Counterpoint Review", "archetype": "hostile_domain_expert"}
+    }
+  },
+  
+  "grant_application": {
+    "scopes": ["significance", "innovation", "approach_rigor", "feasibility"],
+    "scope_to_backend": {
+      "significance": ["domain_positioning", "global_hostile"],
+      "innovation": ["domain_positioning", "global_hostile"],
+      "approach_rigor": ["global_map", "rigor"],
+      "feasibility": ["rigor", "global_hostile"]
+    },
+    "scope_to_persona": {
+      "significance": {"label": "Significance Review", "archetype": "program_officer"},
+      "innovation": {"label": "Innovation Review", "archetype": "skeptical_study_section"},
+      "approach_rigor": {"label": "Approach & Rigor", "archetype": "methods_reviewer"},
+      "feasibility": {"label": "Feasibility & Team Fit", "archetype": "pragmatic_pi"}
+    }
+  },
+
+  "policy_brief": {
+    "scopes": ["evidence_quality", "stakeholder_objections", "implementation_feasibility", "clarity"],
+    "scope_to_backend": {
+      "evidence_quality": ["global_map", "rigor", "domain_positioning"],
+      "stakeholder_objections": ["domain_positioning", "global_hostile"],
+      "implementation_feasibility": ["rigor", "global_hostile"],
+      "clarity": ["clarity"]
+    },
+    "scope_to_persona": {
+      "evidence_quality": {"label": "Evidence Review", "archetype": "research_analyst"},
+      "stakeholder_objections": {"label": "Stakeholder Objections", "archetype": "political_staffer"},
+      "implementation_feasibility": {"label": "Implementation Feasibility", "archetype": "agency_bureaucrat"},
+      "clarity": {"label": "Clarity & Messaging", "archetype": "comms_director"}
+    }
+  },
+
+  "legal_brief": {
+    "scopes": ["precedent_strength", "factual_support", "procedural", "persuasive_force"],
+    "scope_to_backend": {
+      "precedent_strength": ["domain_positioning", "global_hostile"],
+      "factual_support": ["global_map", "rigor"],
+      "procedural": ["rigor", "clarity"],
+      "persuasive_force": ["clarity", "global_hostile"]
+    },
+    "scope_to_persona": {
+      "precedent_strength": {"label": "Precedent Strength", "archetype": "opposing_counsel"},
+      "factual_support": {"label": "Factual Support Review", "archetype": "skeptical_judge"},
+      "procedural": {"label": "Procedural & Technical", "archetype": "court_clerk"},
+      "persuasive_force": {"label": "Persuasive Force", "archetype": "senior_partner"}
+    }
+  },
+
+  "generic": {
+    "scopes": ["consistency", "clarity", "claim_strength"],
+    "scope_to_backend": {
+      "consistency": ["global_map", "rigor"],
+      "clarity": ["clarity"],
+      "claim_strength": ["global_map", "rigor", "domain_positioning"]
+    },
+    "scope_to_persona": {
+      "consistency": {"label": "Consistency Review", "archetype": "careful_reader"},
+      "clarity": {"label": "Clarity Review", "archetype": "editor"},
+      "claim_strength": {"label": "Claim Strength", "archetype": "skeptic"}
+    }
+  }
 }
+```
 
+---
 
-This grounding is essential for high-accuracy section-level reviews.
+## Agent Prompts
 
-Phase 2 — Local Reviews (Parallel Track Agents)
-All Phase 2 agents run in parallel under concurrency caps, e.g.:
+### Global Map Agent
 
-5 parallel jobs on Light
+```
+Extract document structure:
 
-10 on Standard
+1. CLAIMS: Every substantive claim
+   - Location, text, strength (strong/moderate/weak/unsupported)
 
-15 on Heavy
+2. EVIDENCE LINKS: What supports each claim?
+   - Direct, indirect, or missing support
 
-Track A — Rigor (Section-Level)
+3. ARGUMENT FLOW: Logical progression of claims
 
-Reviews each section:
+4. TERMINOLOGY: Key terms, undefined terms
 
-claim–evidence mismatch
+5. EARLY HOSTILE SKETCH: What would a skeptic attack?
 
-contradictions
+OUTPUT: JSON with section_roles, claims, evidence_links, argument_flow, 
+        key_terms, undefined_terms, potential_weaknesses
+```
 
-statistical issues
+### Domain Positioning Agent
 
-missing methodological detail
+```
+Assess document's field positioning:
 
-internal logic flaws
+1. FIELD DETECTION: What field/subfield?
+2. NOVELTY: What's claimed as new? Any overclaiming?
+3. RELATED WORK GAPS: What should be cited but isn't?
+4. STAKEHOLDERS: Who would oppose? What interests affected?
+5. SIGNIFICANCE: If true, how important?
 
-Uses global maps from Phase 1.
+OUTPUT: JSON with field, novelty_assessment, related_work_gaps, 
+        stakeholder_concerns, significance_assessment
+```
 
-Track B1 — Clarity (Paragraph-Level)
+### Rigor Agent
 
-For each paragraph:
+```
+Check section for methodological issues:
 
-ambiguity
+1. LOGIC: Non-sequiturs, contradictions, circular reasoning
+2. METHODOLOGY: Missing details, inappropriate methods
+3. STATISTICS: Misinterpretation, missing tests
+4. FEASIBILITY: Can this be done? Resources sufficient?
 
-cohesion
+GROUNDEDNESS: Only flag clear violations. May return empty if sound.
 
-undefined terms
+OUTPUT: JSON with section_assessment, strengths, issues[]
+```
 
-tone issues
+### Clarity Agent
 
-rewrites suitable for diff
+```
+Check for clarity issues:
 
-This produces most of the user-facing rewrites.
+PARAGRAPH LEVEL (B1):
+- Ambiguous references
+- Jargon without definition
+- Overly complex sentences
 
-Track B2 — Multi-Paragraph Clarity (Flow-Level)
+BLOCK LEVEL (B2):
+- Transition quality
+- Logical progression
+- Section cohesion
 
-For selected 2–6 paragraph blocks per section:
+Only flag issues that block comprehension. Style preferences ≠ violations.
+```
 
-transitions
+### Global Hostile Agent
 
-redundancy
+```
+You are Reviewer 2 — hostile expert.
 
-narrative flow
+Find attacks that would SINK this document:
+1. BIGGEST LOGICAL GAPS
+2. OVERCLAIMING
+3. MISSING LIMITATIONS
+4. ALTERNATIVE EXPLANATIONS
+5. FIELD POSITIONING ATTACKS
 
-merge/split suggestions
+Use global_map + domain_positioning + existing issues.
+Adversarial but GROUNDED — cannot invent problems.
 
-optional rewritten block
+OUTPUT: JSON with grudging_acknowledgments, killer_issues[]
+```
 
-This captures coherence that single paragraphs can’t.
+### Assembler Agent
 
-❗ Track C does not run in Phase 2
+```
+Map backend issues → scopes → personas.
 
-Track C = global reasoning only
-Not section-level.
+TASKS:
+1. Assign each issue to appropriate UI scope
+2. Merge duplicates (preserve source_agent_ids)
+3. Rewrite rationales in persona voice
+4. Apply tone based on depth:
+   - light: supportive ("consider whether...")
+   - standard: balanced ("this needs attention")
+   - heavy: blunt ("this is a significant flaw")
 
-Phase 3 — Global Consistency & Hostile Synthesis (Heavy Only)
+RULES:
+- Preserve factual content
+- Do not invent new issues
+- Keep proposed_rewrite verbatim
 
-Uses:
+OUTPUT: JSON with final_issues[], persona_summaries{}
+```
 
-The full document
+---
 
-Global maps
+## Execution Flow
 
-All issues found in Phase 2
-
-The early hostile sketch
-
-Produces:
-
-Final Hostile Review (Track C)
-
-Cross-section consistency checks
-
-Prioritized flaw list
-
-Meta-analysis (“what really matters”)
-
-This is the “Reviewer #2” output.
-
-Aggregator
-
-After Phase 2:
-
-Combine issues
-
-Deduplicate
-
-Detect rewrite conflicts
-
-Sort by severity + location
-
-Final issues passed to Phase 3.
-
-Execution Flow (Final Code Structure)
+```python
 async def run_review(manuscript, user_intent):
+    # 1. Planning
+    plan = await planning_agent.plan_review(manuscript, user_intent)
     
-    # Phase 1: Planning + Global Map
-    doc_summary = await summarize_document(manuscript)
-    plan = await plan_review(manuscript, user_intent, doc_summary)
-    global_map = await global_map_agent(manuscript, plan)
-
-    # Phase 2: Local Tracks (parallel)
-    track_a_task = run_rigor(manuscript, plan, global_map)
-    track_b1_task = run_clarity_paragraphs(manuscript, plan)
-    track_b2_task = run_clarity_blocks(manuscript, plan)
-
-    a_issues, b1_issues, b2_issues = await asyncio.gather(
-        track_a_task, track_b1_task, track_b2_task
-    )
-
-    all_issues = aggregate(a_issues + b1_issues + b2_issues)
-
-    # Phase 3: Global Reasoning (Heavy only)
-    if plan.run_global_hostile:
-        hostile_issues = await global_hostile_agent(
-            manuscript, plan, global_map, all_issues
+    # 2. Phase 1: Global Understanding
+    global_map = await global_map_agent.analyze(manuscript, plan)
+    
+    domain_positioning = None
+    if 'domain_positioning' in plan.tracks_to_run:
+        domain_positioning = await domain_positioning_agent.analyze(
+            manuscript, global_map, plan
         )
-        all_issues.extend(hostile_issues)
-
-    return ReviewResult(
-        plan=plan,
-        issues=all_issues,
-        global_map=global_map,
-        doc_summary=doc_summary
+    
+    # 3. Phase 2: Local Tracks (parallel)
+    tasks = []
+    if 'rigor' in plan.tracks_to_run:
+        tasks.append(rigor_agent.analyze(manuscript, global_map, plan))
+    if 'clarity' in plan.tracks_to_run:
+        tasks.append(clarity_agent.analyze(manuscript, plan))
+    
+    local_results = await asyncio.gather(*tasks)
+    raw_issues = flatten(local_results)
+    
+    # 4. Phase 3a: Global Hostile
+    if plan.run_global_hostile:
+        hostile_issues = await global_hostile_agent.analyze(
+            manuscript, global_map, domain_positioning, raw_issues, plan
+        )
+        raw_issues.extend(hostile_issues)
+    
+    # 5. Phase 3b: Assembler
+    final_issues, persona_summaries = await assembler_agent.assemble(
+        plan, raw_issues, global_map
     )
+    
+    return ReviewResult(plan, final_issues, persona_summaries, global_map)
+```
 
-LLM Model Selection by Depth
-Depth	Models	Tracks
-Light	Haiku	B1 only
-Standard	Sonnet	A + B1 + B2 + global map
-Heavy	Sonnet (locals) + Opus (global)	A + B1 + B2 + full C
-Cost & Concurrency Governance
-Slider determines:
+---
 
-which tracks run
+## Depth → Agent Behavior
 
-which model tier
+| Depth | Global Map | Domain Pos | Rigor | Clarity | Hostile | Tone |
+|-------|------------|------------|-------|---------|---------|------|
+| Light | ✓ basic | — | ✓ light | ✓ | — | Supportive |
+| Standard | ✓ | ✓ if needed | ✓ | ✓ | — | Balanced |
+| Heavy | ✓ deep | ✓ | ✓ deep | ✓ | ✓ | Adversarial |
 
-how many blocks to include in B2
+---
 
-concurrency limits
+## File Structure
 
-token caps
-
-Examples:
-
-Light:
-
-~3k–6k total tokens
-
-clarity only
-
-minimal flow checks
-
-Haiku for everything
-
-Standard:
-
-~15k–30k tokens
-
-A + B1 + B2 (auto selection)
-
-Sonnet everywhere
-
-Heavy:
-
-~40k–80k tokens
-
-All tracks
-
-B2 aggressively
-
-Opus for global passes
-
-All governed by:
-
-if estimated_cost > plan.total_budget_tokens:
-    prune_B2_blocks()
-    downgrade_models()
-    reduce_tracks()
-
-Final File Structure
+```
 /backend/
 ├── agents/
 │   ├── planning_agent.py
 │   ├── global_map_agent.py
+│   ├── domain_positioning_agent.py
 │   ├── rigor_agent.py
 │   ├── clarity_agent.py
-│   │   ├── clarity_paragraphs.py
-│   │   └── clarity_blocks.py
 │   ├── global_hostile_agent.py
-│   └── aggregator.py
+│   └── assembler_agent.py
 ├── core/
 │   ├── models.py
-│   ├── llm_client.py
-│   └── config.py
+│   ├── persona_map.py
+│   └── llm_client.py
 ├── pipeline/
 │   └── orchestrator.py
+├── config/
+│   └── persona_map.json
 └── examples/
+```
+
+---
+
+## UI Scope Selection
+
+UI shows document-type-specific scopes:
+
+- **Scientific Manuscript**: `[Rigor] [Clarity] [Counterpoint]`
+- **Grant Application**: `[Significance] [Innovation] [Approach] [Feasibility]`
+- **Policy Brief**: `[Evidence] [Stakeholders] [Implementation] [Clarity]`
+- **Legal Brief**: `[Precedent] [Factual] [Procedural] [Persuasive]`
+
+User selects scopes → Planning Agent derives tracks_to_run.
