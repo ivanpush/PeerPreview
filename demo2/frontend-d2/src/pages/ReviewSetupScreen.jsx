@@ -167,6 +167,19 @@ function ReviewSetupScreen() {
     setSelectedChips([]);
   }, [documentType]);
 
+  // Handle textarea auto-resize on mount and value changes
+  useEffect(() => {
+    const textarea = document.querySelector('textarea');
+    if (textarea) {
+      if (userPrompt) {
+        textarea.style.height = 'auto';
+        textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px';
+      } else {
+        textarea.style.height = '72px';
+      }
+    }
+  }, [userPrompt]);
+
 
   const handleChipClick = (chip) => {
     if (selectedChips.includes(chip)) {
@@ -250,76 +263,94 @@ function ReviewSetupScreen() {
     <div className="min-h-screen bg-[#0B0C0E] text-[#E8E9EB]">
       <div className="max-w-3xl mx-auto px-8 py-12">
         {/* Document title and stats - at the very top */}
-        <div className="mb-8">
-          <div className="text-xs text-[#6A6D73] mb-4">
+        <div className="mb-4">
+          <div className="text-xs text-[#6A6D73] mb-2">
             <div className="mb-1 truncate max-w-md" title={documentInfo?.title}>
               {documentInfo?.title}
             </div>
             <div>{documentInfo?.source_format?.toUpperCase()} • {documentInfo?.page_count} pages • ~{documentInfo?.word_count?.toLocaleString()} words</div>
           </div>
+
+          {/* Document type detection - kept close to stats */}
+          <p className="text-sm text-[#A1A5AC]">
+            This looks like {documentTypes.find(t => t.value === documentType)?.label?.match(/^[aeiou]/i) ? 'an' : 'a'}{' '}
+            <span
+              className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md font-medium"
+              style={{
+                color: documentTypes.find(t => t.value === documentType)?.color,
+                backgroundColor: `${documentTypes.find(t => t.value === documentType)?.color}20`,
+                borderColor: `${documentTypes.find(t => t.value === documentType)?.color}40`,
+                borderWidth: '1px'
+              }}
+            >
+              {documentTypes.find(t => t.value === documentType)?.label}
+            </span>
+            <sup className="relative" ref={typeMenuRef}>
+              <button
+                onClick={() => setShowTypeMenu(!showTypeMenu)}
+                className="text-[10px] text-[#5BAEB8] hover:text-[#1C6D79] transition-colors ml-0.5"
+              >
+                [change]
+              </button>
+
+              {/* Dropdown menu */}
+              {showTypeMenu && (
+                <div className="absolute top-4 left-0 z-50 bg-[#1A1C1F] border border-[#2E2E2E] rounded-lg shadow-xl py-2 min-w-[200px]">
+                  {documentTypes.map(type => (
+                    <button
+                      key={type.value}
+                      onClick={() => {
+                        setDocumentType(type.value);
+                        setShowTypeMenu(false);
+                      }}
+                      className={`
+                        w-full text-left px-4 py-2 text-sm transition-colors
+                        ${documentType === type.value
+                          ? 'bg-[#3C82F6] bg-opacity-20 text-[#3C82F6]'
+                          : 'text-[#A1A5AC] hover:bg-[#2E2E2E] hover:text-[#E8E9EB]'
+                        }
+                      `}
+                    >
+                      {type.label}
+                      {type.value === detectedType && type.value !== documentType && (
+                        <span className="text-xs text-[#6A6D73] ml-2">(detected)</span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </sup>
+          </p>
         </div>
 
-        {/* Focus/Chat Area */}
-        <div className="mb-10">
-          <div className="relative mb-6">
-            <p className="text-lg text-[#E8E9EB]">
-              This looks like {documentTypes.find(t => t.value === documentType)?.label?.match(/^[aeiou]/i) ? 'an' : 'a'}{' '}
-              <span
-                className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md font-medium"
-                style={{
-                  color: documentTypes.find(t => t.value === documentType)?.color,
-                  backgroundColor: `${documentTypes.find(t => t.value === documentType)?.color}20`,
-                  borderColor: `${documentTypes.find(t => t.value === documentType)?.color}40`,
-                  borderWidth: '1px'
-                }}
-              >
-                {documentTypes.find(t => t.value === documentType)?.label}
-              </span>
-              <sup className="relative" ref={typeMenuRef}>
-                <button
-                  onClick={() => setShowTypeMenu(!showTypeMenu)}
-                  className="text-[10px] text-[#6A6D73] hover:text-[#A1A5AC] transition-colors ml-0.5"
-                >
-                  [change]
-                </button>
+        {/* Thin separator */}
+        <div className="border-t border-[#1A1C1F] mb-8"></div>
 
-                {/* Dropdown menu */}
-                {showTypeMenu && (
-                  <div className="absolute top-4 left-0 z-50 bg-[#1A1C1F] border border-[#2E2E2E] rounded-lg shadow-xl py-2 min-w-[200px]">
-                    {documentTypes.map(type => (
-                      <button
-                        key={type.value}
-                        onClick={() => {
-                          setDocumentType(type.value);
-                          setShowTypeMenu(false);
-                        }}
-                        className={`
-                          w-full text-left px-4 py-2 text-sm transition-colors
-                          ${documentType === type.value
-                            ? 'bg-[#3C82F6] bg-opacity-20 text-[#3C82F6]'
-                            : 'text-[#A1A5AC] hover:bg-[#2E2E2E] hover:text-[#E8E9EB]'
-                          }
-                        `}
-                      >
-                        {type.label}
-                        {type.value === detectedType && type.value !== documentType && (
-                          <span className="text-xs text-[#6A6D73] ml-2">(detected)</span>
-                        )}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </sup>
-              . What matters most for this review?
-            </p>
+        {/* Focus/Chat Area - moved towards center */}
+        <div className="mb-10 mt-24">
+          <div className="mb-4 text-center">
+            <p className="text-lg font-medium text-[#E8E9EB]">What matters most for this review?</p>
           </div>
 
-          {/* Custom instructions - optional, subtle */}
+          {/* Custom instructions - now the visual focus */}
           <textarea
             value={userPrompt}
-            onChange={(e) => setUserPrompt(e.target.value)}
+            onChange={(e) => {
+              setUserPrompt(e.target.value);
+              // Auto-resize textarea
+              e.target.style.height = 'auto';
+              e.target.style.height = Math.min(e.target.scrollHeight, 200) + 'px';
+            }}
+            onFocus={(e) => {
+              // Expand on focus if there's content
+              if (e.target.value) {
+                e.target.style.height = 'auto';
+                e.target.style.height = Math.min(e.target.scrollHeight, 200) + 'px';
+              }
+            }}
             placeholder={placeholderByType[documentType] || placeholderByType.generic}
-            className="w-full h-24 px-4 py-3 bg-[#1A1C1F] border border-[#2E2E2E] rounded-2xl text-sm text-[#E8E9EB] placeholder-[#6A6D73] focus:outline-none focus:border-[#3C82F6] transition-colors resize-none mb-4"
+            className="w-full min-h-[72px] max-h-[200px] px-5 py-3 bg-[#1A1C1F] border-2 border-[#2E2E2E] rounded-2xl text-base text-[#E8E9EB] placeholder:text-[#6A6D73] focus:outline-none focus:border-[#3C82F6] focus:bg-[#0F1012] transition-all duration-200 ease-out resize-none mb-4 overflow-y-auto"
+            style={{ height: userPrompt ? 'auto' : '72px' }}
           />
 
           {/* Pills - moved below textarea */}
@@ -364,7 +395,7 @@ function ReviewSetupScreen() {
 
         {/* Depth Selector - SEGMENTED BLOCKS */}
         <div className="mb-10">
-          <h2 className="text-sm font-medium text-[#A1A5AC] mb-6">How thorough should the review be?</h2>
+          <h2 className="text-lg font-medium text-[#E8E9EB] mb-6 text-center">How thorough should the review be?</h2>
 
           {/* Segmented control blocks */}
           <div className="grid grid-cols-3 gap-3 mb-6">
