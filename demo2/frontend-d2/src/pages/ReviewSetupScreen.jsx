@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ConsensusToggle from '../components/ConsensusToggle';
 
 function ReviewSetupScreen() {
   const navigate = useNavigate();
@@ -18,13 +19,14 @@ function ReviewSetupScreen() {
   const [documentType, setDocumentType] = useState('');
   const [detectedType, setDetectedType] = useState('');
   const [showTypeMenu, setShowTypeMenu] = useState(false);
+  const [consensusReview, setConsensusReview] = useState(false);
   const typeMenuRef = useRef(null);
 
   // Depth configurations
   const depthSettings = [
-    { key: 'light', label: 'Light', description: 'Clarity + basic checks' },
-    { key: 'medium', label: 'Medium', description: 'Balanced, all tracks' },
-    { key: 'heavy', label: 'Heavy', description: 'Deep reasoning + hostile review' }
+    { key: 'light', label: 'First Pass', description: 'Core logic, structure, major issues.' },
+    { key: 'medium', label: 'Full Review', description: 'Full-section critique with balanced depth.' },
+    { key: 'heavy', label: 'Deep Analysis', description: 'Adversarial expert review of claims, methods, and reasoning.' }
   ];
 
   // Document type options with colors
@@ -167,6 +169,13 @@ function ReviewSetupScreen() {
     setSelectedChips([]);
   }, [documentType]);
 
+  // Reset consensus review when depth changes from Deep Analysis
+  useEffect(() => {
+    if (depth !== 2) {
+      setConsensusReview(false);
+    }
+  }, [depth]);
+
   // Handle textarea auto-resize on mount and value changes
   useEffect(() => {
     const textarea = document.querySelector('textarea');
@@ -199,7 +208,8 @@ function ReviewSetupScreen() {
       userPrompt: combinedPrompt,
       documentType,
       documentInfo,
-      reviewMode // Include the mode
+      reviewMode, // Include the mode
+      consensusReview: depth === 2 && consensusReview // Only for Deep Analysis
     };
 
     sessionStorage.setItem('reviewConfig', JSON.stringify(reviewConfig));
@@ -235,25 +245,22 @@ function ReviewSetupScreen() {
   const depthConfigs = [
     {
       key: 'light',
-      label: 'Quick Scan',
-      time: '~5 min',
-      description: 'Major gaps • Structure • Fast turnaround',
+      label: 'First Pass',
+      description: 'Core logic, structure, major issues.',
       textColor: '#10b981', // emerald-400
       bgColor: '#10b981'
     },
     {
       key: 'medium',
-      label: 'Standard Review',
-      time: '~15 min',
-      description: 'Full critique • All sections • Balanced depth',
+      label: 'Full Review',
+      description: 'Full-section critique with balanced depth.',
       textColor: '#3C82F6', // blue
       bgColor: '#3C82F6'
     },
     {
       key: 'heavy',
       label: 'Deep Analysis',
-      time: '~30 min',
-      description: 'Publication-ready • Adversarial • Nothing missed',
+      description: 'Adversarial expert review of claims, methods, and reasoning.',
       textColor: '#a855f7', // purple-400
       bgColor: '#a855f7'
     }
@@ -363,12 +370,13 @@ function ReviewSetupScreen() {
                 <button
                   key={chip}
                   onClick={() => handleChipClick(chip)}
-                  className="px-3 py-1.5 text-sm rounded-full transition-all duration-200"
+                  className="px-3 py-1.5 text-sm rounded-full"
                   style={{
                     color: isSelected ? currentTypeColor : '#A1A5AC',
                     backgroundColor: isSelected ? `${currentTypeColor}30` : 'transparent',
                     borderColor: isSelected ? currentTypeColor : `${currentTypeColor}20`,
-                    borderWidth: '1px'
+                    borderWidth: '1px',
+                    transition: 'all 0.2s ease-out'
                   }}
                   onMouseEnter={(e) => {
                     if (!isSelected) {
@@ -431,12 +439,11 @@ function ReviewSetupScreen() {
 
                 <div className="text-left">
                   <div
-                    className="font-medium text-sm mb-1"
+                    className="font-medium text-sm mb-2"
                     style={{ color: depth === index ? config.textColor : '#E8E9EB' }}
                   >
                     {config.label}
                   </div>
-                  <div className="text-xs text-[#6A6D73] mb-2">{config.time}</div>
                   <div className="text-xs text-[#A1A5AC] leading-relaxed">
                     {config.description}
                   </div>
@@ -444,6 +451,28 @@ function ReviewSetupScreen() {
               </button>
             ))}
           </div>
+
+          {/* Consensus Mode - appears below Deep Analysis when selected */}
+          {depth === 2 && (
+            <div className="mt-3 grid grid-cols-3 gap-3">
+              <div className="col-start-3">
+                <div className="pl-6 flex flex-col gap-2">
+                  <div className="flex items-start gap-2">
+                    <span className="text-xs text-[#6A6D73] mt-0.5">↳</span>
+                    <div className="flex flex-col gap-1">
+                      <ConsensusToggle
+                        checked={consensusReview}
+                        onChange={setConsensusReview}
+                      />
+                      <p className="text-[10px] text-[#6A6D73] leading-relaxed max-w-[160px]">
+                        Three top models cross-check and reconcile disagreements
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Thin separator */}
