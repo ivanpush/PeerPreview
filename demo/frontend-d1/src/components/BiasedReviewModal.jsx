@@ -21,10 +21,6 @@ function BiasedReviewModal({ issue, onClose }) {
     }
   }, [selectedCritiqueId]);
 
-  // Separate major and minor critiques
-  const majorCritiques = trackCIssues.filter(i => i.severity === 'major');
-  const minorCritiques = trackCIssues.filter(i => i.severity === 'minor');
-
   const handlePrevious = () => {
     if (currentIndex > 0) {
       setSelectedCritiqueId(trackCIssues[currentIndex - 1].id);
@@ -107,7 +103,7 @@ function BiasedReviewModal({ issue, onClose }) {
             </p>
             <p className="text-sm text-gray-300 leading-relaxed font-medium">
               <span className="text-amber-400">However, </span>
-              {biasProfile.pivot_statement}
+              {biasProfile.pivot_statement.replace(/^however,?\s*/i, '')}
             </p>
           </div>
 
@@ -330,68 +326,6 @@ function BiasedReviewModal({ issue, onClose }) {
               </div>
             </div>
           )}
-
-          {/* Summary of all critiques */}
-          <div>
-            <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">
-              All Critiques ({trackCIssues.length})
-            </h3>
-            <div className="space-y-2">
-              {/* Major Critiques */}
-              {majorCritiques.length > 0 && (
-                <div>
-                  <h4 className="text-xs text-gray-500 mb-2">Major ({majorCritiques.length})</h4>
-                  {majorCritiques.map((critique) => (
-                    <button
-                      key={critique.id}
-                      onClick={() => setSelectedCritiqueId(critique.id)}
-                      className="w-full text-left px-3 py-2 rounded transition mb-1"
-                      style={{
-                        backgroundColor: critique.id === selectedCritiqueId
-                          ? 'rgba(229, 72, 77, 0.15)'
-                          : 'rgba(255,255,255,0.03)',
-                        border: critique.id === selectedCritiqueId
-                          ? '1px solid rgba(229, 72, 77, 0.3)'
-                          : '1px solid rgba(255,255,255,0.08)'
-                      }}
-                    >
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-mono text-gray-500">{critique.id}</span>
-                        <span className="text-xs text-gray-300 flex-1">{critique.title}</span>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              )}
-
-              {/* Minor Critiques */}
-              {minorCritiques.length > 0 && (
-                <div className="mt-3">
-                  <h4 className="text-xs text-gray-500 mb-2">Minor ({minorCritiques.length})</h4>
-                  {minorCritiques.map((critique) => (
-                    <button
-                      key={critique.id}
-                      onClick={() => setSelectedCritiqueId(critique.id)}
-                      className="w-full text-left px-3 py-2 rounded transition mb-1"
-                      style={{
-                        backgroundColor: critique.id === selectedCritiqueId
-                          ? 'rgba(255, 190, 60, 0.15)'
-                          : 'rgba(255,255,255,0.03)',
-                        border: critique.id === selectedCritiqueId
-                          ? '1px solid rgba(255, 190, 60, 0.3)'
-                          : '1px solid rgba(255,255,255,0.08)'
-                      }}
-                    >
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-mono text-gray-500">{critique.id}</span>
-                        <span className="text-xs text-gray-300 flex-1">{critique.title}</span>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
 
           {/* Overall Recommendation */}
           <div

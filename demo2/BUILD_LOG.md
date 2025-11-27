@@ -55,10 +55,77 @@
 3. **Dynamic mode ready for backend** - ProcessScreen has API call structure commented
 4. **Seamless user experience** - Same ReviewScreen handles both modes
 
-### Next Steps
-- Backend API setup with FastAPI
-- Implement review agents (Planning, Track A/B/C)
-- Connect dynamic mode to real backend
+### Stage 3: Backend Setup (COMPLETED)
+- **Created FastAPI backend structure** in `/demo2/backend/`:
+  - `main.py` - FastAPI app with CORS configured for frontend
+  - `config/settings.py` - Configuration for Claude API and agent settings
+  - `requirements.txt` - Python dependencies
+
+- **Implemented Agent Wireframe**:
+  - `agents/orchestrator.py` - **Main coordinator** that orchestrates the 3-phase review
+    - Called from `/api/run-review` endpoint
+    - Manages: Planning → Parallel Tracks → Aggregation
+  - `agents/planning_agent.py` - Analyzes document, creates review strategy
+  - `agents/global_map_agent.py` - Creates document-wide understanding
+  - `agents/track_agents.py` - Three review tracks:
+    - Track A: Rigor (A1-A6 rubric codes)
+    - Track B: Clarity (B1-B4 rubric codes)
+    - Track C: Skeptical (C1-C4 rubric codes)
+  - `agents/aggregator_agent.py` - Deduplicates and prioritizes issues
+  - `agents/hostile_agent.py` - Extra scrutiny for "heavy" depth
+
+- **Created Data Models**:
+  - `models/document.py` - DocumentObject matching frontend structure
+  - `models/review.py` - Issue, ReviewResult with rubric codes
+
+- **API Endpoints** (`api/routes.py`):
+  - `POST /api/run-review` - **Main entry point** called by ProcessScreen
+    - Receives document + config
+    - Initiates orchestrator agent
+    - Returns mock data for demo (ready for LLM integration)
+  - `GET /api/review-status/{job_id}` - Check async job status
+  - `POST /api/parse-document` - Parse uploaded documents
+
+### Orchestrator Flow
+```
+ProcessScreen (dynamic mode)
+    ↓ POST /api/run-review
+OrchestratorAgent.run_review()
+    ↓ Phase 1: Planning + Global Map
+    ↓ Phase 2: Track A, B, C (parallel)
+    ↓ Phase 3: Aggregation + Hostile (if heavy)
+    ↓ Returns ReviewResult
+Frontend ReviewScreen displays issues
+```
+
+### Stage 4: Frontend-Backend Connection (COMPLETED)
+- **Connected ProcessScreen to Backend**:
+  - ProcessScreen now calls `POST /api/run-review` in dynamic mode
+  - Sends document + configuration to backend
+  - Shows progress animation during processing
+  - Falls back to static mode if backend unavailable
+
+- **Updated ManuscriptContext**:
+  - Checks for backend review results in sessionStorage
+  - Uses backend issues when available (dynamic mode)
+  - Falls back to static issues otherwise
+
+- **Created Testing Documentation**:
+  - README.md with complete testing guide
+  - Instructions for both static and dynamic modes
+  - API testing examples
+  - Troubleshooting guide
+
+### Complete Flow Now Working
+1. **Static Mode**: Instant review with pre-computed data
+2. **Dynamic Mode**: Calls backend API → Orchestrator → Mock issues
+3. **Error Handling**: Graceful fallback if backend unavailable
+
+### Next Steps (Future)
+- Add Claude API key to .env
+- Implement actual LLM calls in agents
+- Integrate with PDF parser pipeline
+- Add real document upload support
 
 ---
 

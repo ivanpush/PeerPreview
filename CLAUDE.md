@@ -4,3 +4,5 @@
 - when making changes to our pdf pipeline, in addition to unit test, run test of each of the pdfs inside @backend/docs/testPDFs/ and evsaluate the output as an LLM to see if we hve any of : wird character residuals from figures, jumbled sections, lack of line breaks, amnything out of order, and in general, to make sure our goals are met for the pipeline. for each test, keep a log of test run, pdf doc e.g. 1,2,3.. , and issues found, and likely step involved. attempt to resolve the issue and test again up to 3 times to ensure that the pronlem is solved and no new problmes are created. if this fails, summarize the failure and we will think hard about a new plan.
 - always test each edit on pipelne/stage with the test pdfs!
 - whenever building test scripts do not leave them in the root of /backend or anywhere like that. for /backend work there is a /backend/scripts dir -they should be here
+- read the @demo2/1_proj_overview.md, @demo2/2_pages_and_views and @demo2/3_agent_arch.md before commensing. you do not do anything i dont ask for. you do not do anything i dont ask for.
+- stress test every new impmenetation

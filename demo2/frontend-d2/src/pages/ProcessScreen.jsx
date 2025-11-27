@@ -41,8 +41,7 @@ function ProcessScreen() {
           navigate('/review');
         }, 800);
       } else {
-        // Dynamic mode - would call backend API
-        // Simulate longer processing for agents
+        // Dynamic mode - call backend API
         const stages = [
           { progress: 20, label: 'Parsing document structure', duration: 1000 },
           { progress: 40, label: 'Running Planning Agent', duration: 2000 },
@@ -52,30 +51,68 @@ function ProcessScreen() {
           { progress: 100, label: 'Aggregating results', duration: 1000 }
         ];
 
-        let currentStage = 0;
-
         const processStages = async () => {
-          for (const stage of stages) {
-            setProgress(stage.progress);
-            await new Promise(resolve => setTimeout(resolve, stage.duration));
-            currentStage++;
+          try {
+            // Show initial progress
+            setProgress(20);
+
+            // Prepare the review request
+            const reviewRequest = {
+              document: reviewConfig.documentInfo || {},
+              depth: reviewConfig.depth || 'medium',
+              user_prompt: reviewConfig.userPrompt || null,
+              document_type: reviewConfig.documentType || 'academic_manuscript'
+            };
+
+            // Call backend API
+            const response = await fetch('http://localhost:8000/api/run-review', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(reviewRequest)
+            });
+
+            if (!response.ok) {
+              throw new Error(`API error: ${response.statusText}`);
+            }
+
+            const reviewResult = await response.json();
+
+            // Simulate progress stages for UX
+            for (const stage of stages) {
+              setProgress(stage.progress);
+              await new Promise(resolve => setTimeout(resolve, 500));
+            }
+
+            // Store the review result for ReviewScreen
+            sessionStorage.setItem('reviewResult', JSON.stringify(reviewResult));
+
+            // Also load the document data for display
+            await loadMockData();
+
+            setStatus('complete');
+
+            setTimeout(() => {
+              navigate('/review');
+            }, 1000);
+          } catch (error) {
+            console.error('Backend API call failed:', error);
+            // Fallback to mock data if backend is not running
+            console.log('Falling back to mock data...');
+
+            for (const stage of stages) {
+              setProgress(stage.progress);
+              await new Promise(resolve => setTimeout(resolve, stage.duration));
+            }
+
+            await loadMockData();
+            setStatus('complete');
+
+            setTimeout(() => {
+              navigate('/review');
+            }, 1000);
           }
-
-          // In production, this would be:
-          // const response = await fetch('/api/run-review', {
-          //   method: 'POST',
-          //   body: JSON.stringify(reviewConfig)
-          // });
-          // const data = await response.json();
-          // setManuscriptData(data);
-
-          // For demo, load mock data
-          await loadMockData();
-          setStatus('complete');
-
-          setTimeout(() => {
-            navigate('/review');
-          }, 1000);
         };
 
         processStages();

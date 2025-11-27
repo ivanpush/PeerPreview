@@ -141,30 +141,61 @@ export const ManuscriptProvider = ({ children }) => {
     setError(null);
 
     try {
-      // Load all three files in parallel
-      const [manuscriptRes, issuesRes, biasProfileRes] = await Promise.all([
-        fetch('/static/manuscript_demo.json'),
-        fetch('/static/issues_demo.json'),
-        fetch('/static/bias_profile_demo.json')
-      ]);
+      // Check if we have backend review results (from dynamic mode)
+      const reviewResultStr = sessionStorage.getItem('reviewResult');
 
-      if (!manuscriptRes.ok || !issuesRes.ok || !biasProfileRes.ok) {
-        throw new Error('Failed to load demo data');
-      }
+      if (reviewResultStr) {
+        // Dynamic mode: Use backend review results
+        const reviewResult = JSON.parse(reviewResultStr);
 
-      const [manuscriptData, issuesData, biasProfileData] = await Promise.all([
-        manuscriptRes.json(),
-        issuesRes.json(),
-        biasProfileRes.json()
-      ]);
+        // Load manuscript and bias profile (but use backend issues)
+        const [manuscriptRes, biasProfileRes] = await Promise.all([
+          fetch('/static/manuscript_demo.json'),
+          fetch('/static/bias_profile_demo.json')
+        ]);
 
-      setManuscript(manuscriptData);
-      setIssues(issuesData);
-      setBiasProfile(biasProfileData);
+        if (!manuscriptRes.ok || !biasProfileRes.ok) {
+          throw new Error('Failed to load demo data');
+        }
 
-      // Set first figure as active by default
-      if (manuscriptData.figures?.length > 0) {
-        setActiveFigureId(manuscriptData.figures[0].figure_id);
+        const [manuscriptData, biasProfileData] = await Promise.all([
+          manuscriptRes.json(),
+          biasProfileRes.json()
+        ]);
+
+        // Use backend issues instead of static ones
+        setManuscript(manuscriptData);
+        setIssues(reviewResult.issues || []);
+        setBiasProfile(biasProfileData);
+
+        // Clear the review result from session
+        sessionStorage.removeItem('reviewResult');
+      } else {
+        // Static mode: Load all three files
+        const [manuscriptRes, issuesRes, biasProfileRes] = await Promise.all([
+          fetch('/static/manuscript_demo.json'),
+          fetch('/static/issues_demo.json'),
+          fetch('/static/bias_profile_demo.json')
+        ]);
+
+        if (!manuscriptRes.ok || !issuesRes.ok || !biasProfileRes.ok) {
+          throw new Error('Failed to load demo data');
+        }
+
+        const [manuscriptData, issuesData, biasProfileData] = await Promise.all([
+          manuscriptRes.json(),
+          issuesRes.json(),
+          biasProfileRes.json()
+        ]);
+
+        setManuscript(manuscriptData);
+        setIssues(issuesData);
+        setBiasProfile(biasProfileData);
+
+        // Set first figure as active by default
+        if (manuscriptData.figures?.length > 0) {
+          setActiveFigureId(manuscriptData.figures[0].figure_id);
+        }
       }
 
       setLoading(false);

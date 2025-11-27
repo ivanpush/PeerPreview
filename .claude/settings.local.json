@@ -34,7 +34,14 @@
       "Bash(done)",
       "Bash(docs/testPDFs/test_outputs/FINAL_TEST_RESULTS.md)",
       "Bash(npx tailwindcss:*)",
-      "Bash(npm uninstall:*)"
+      "Bash(npm uninstall:*)",
+      "Bash(git restore:*)",
+      "Bash(tree:*)",
+      "Bash(jq -r '.paragraphs[0] | \"\"\"\"First para: \\(.paragraph_id), has \\(.sentences | length) sentences\"\"\"\"' echo \"\" done)",
+      "Bash(while read file)",
+      "Bash(jq:*)",
+      "Bash(do echo \"=== $f ===\")",
+      "Bash(npm run build:*)"
     ],
     "deny": [],
     "ask": []

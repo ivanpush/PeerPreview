@@ -123,7 +123,8 @@ function ReviewSetupScreen() {
   const canProceed = documentInfo && depth;
 
   // Check if static demo data is available for this document
-  const hasStaticDemo = documentInfo?.selectedDemo === 'manuscript_pdf';
+  // For now, enable toggle for all demos (we only have static data for manuscript_pdf)
+  const hasStaticDemo = true; // Always show toggle for demo purposes
 
   if (isLoading) {
     return (
