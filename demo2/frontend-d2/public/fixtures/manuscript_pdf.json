@@ -2638,5 +2638,19 @@
       }
     }
   ],
-  "issues": []
+  "issues": [],
+  "document_type": "academic_manuscript",
+  "source_format": "pdf",
+  "meta": {
+    "page_count": 23,
+    "word_count": 8432,
+    "section_names": [
+      "Abstract",
+      "Introduction",
+      "Results",
+      "Discussion",
+      "Methods",
+      "References"
+    ]
+  }
 }

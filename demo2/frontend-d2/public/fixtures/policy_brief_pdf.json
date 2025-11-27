@@ -9,27 +9,56 @@
     {
       "section_id": "sec_summary",
       "section_title": "Executive Summary",
-      "paragraph_ids": ["p_sum_1", "p_sum_2", "p_sum_3"]
+      "paragraph_ids": [
+        "p_sum_1",
+        "p_sum_2",
+        "p_sum_3"
+      ]
     },
     {
       "section_id": "sec_background",
       "section_title": "Background",
-      "paragraph_ids": ["p_bg_1", "p_bg_2", "p_bg_3"]
+      "paragraph_ids": [
+        "p_bg_1",
+        "p_bg_2",
+        "p_bg_3"
+      ]
     },
     {
       "section_id": "sec_analysis",
       "section_title": "Problem Analysis",
-      "paragraph_ids": ["p_ana_1", "p_ana_2", "p_ana_3", "p_ana_4", "p_ana_5"]
+      "paragraph_ids": [
+        "p_ana_1",
+        "p_ana_2",
+        "p_ana_3",
+        "p_ana_4",
+        "p_ana_5"
+      ]
     },
     {
       "section_id": "sec_options",
       "section_title": "Policy Options",
-      "paragraph_ids": ["p_opt_1", "p_opt_2", "p_opt_3", "p_opt_4", "p_opt_5", "p_opt_6", "p_opt_7"]
+      "paragraph_ids": [
+        "p_opt_1",
+        "p_opt_2",
+        "p_opt_3",
+        "p_opt_4",
+        "p_opt_5",
+        "p_opt_6",
+        "p_opt_7"
+      ]
     },
     {
       "section_id": "sec_recommendations",
       "section_title": "Recommendations",
-      "paragraph_ids": ["p_rec_1", "p_rec_2", "p_rec_3", "p_rec_4", "p_rec_5", "p_rec_6"]
+      "paragraph_ids": [
+        "p_rec_1",
+        "p_rec_2",
+        "p_rec_3",
+        "p_rec_4",
+        "p_rec_5",
+        "p_rec_6"
+      ]
     }
   ],
   "paragraphs": [
@@ -50,21 +79,27 @@
           "position": 1
         }
       ],
-      "metadata": {"fig_refs": [], "table_refs": []}
+      "metadata": {
+        "fig_refs": [],
+        "table_refs": []
+      }
     },
     {
       "paragraph_id": "p_sum_2",
       "section_id": "sec_summary",
       "para_type": "text",
-      "text": "Key findings: • Grid congestion costs consumers $13.7 billion annually • 30% of renewable projects face multi-year interconnection delays • Smart grid investments could reduce emissions by 18% by 2030",
+      "text": "Key findings: \u2022 Grid congestion costs consumers $13.7 billion annually \u2022 30% of renewable projects face multi-year interconnection delays \u2022 Smart grid investments could reduce emissions by 18% by 2030",
       "sentences": [
         {
           "sentence_id": "s_sum_2_1",
-          "text": "Key findings: • Grid congestion costs consumers $13.7 billion annually • 30% of renewable projects face multi-year interconnection delays • Smart grid investments could reduce emissions by 18% by 2030",
+          "text": "Key findings: \u2022 Grid congestion costs consumers $13.7 billion annually \u2022 30% of renewable projects face multi-year interconnection delays \u2022 Smart grid investments could reduce emissions by 18% by 2030",
           "position": 0
         }
       ],
-      "metadata": {"fig_refs": [], "table_refs": []}
+      "metadata": {
+        "fig_refs": [],
+        "table_refs": []
+      }
     },
     {
       "paragraph_id": "p_sum_3",
@@ -83,7 +118,10 @@
           "position": 1
         }
       ],
-      "metadata": {"fig_refs": [], "table_refs": []}
+      "metadata": {
+        "fig_refs": [],
+        "table_refs": []
+      }
     },
     {
       "paragraph_id": "p_bg_1",
@@ -107,7 +145,10 @@
           "position": 2
         }
       ],
-      "metadata": {"fig_refs": [], "table_refs": []}
+      "metadata": {
+        "fig_refs": [],
+        "table_refs": []
+      }
     },
     {
       "paragraph_id": "p_bg_2",
@@ -136,7 +177,10 @@
           "position": 3
         }
       ],
-      "metadata": {"fig_refs": [], "table_refs": []}
+      "metadata": {
+        "fig_refs": [],
+        "table_refs": []
+      }
     },
     {
       "paragraph_id": "p_bg_3",
@@ -160,7 +204,10 @@
           "position": 2
         }
       ],
-      "metadata": {"fig_refs": [], "table_refs": []}
+      "metadata": {
+        "fig_refs": [],
+        "table_refs": []
+      }
     },
     {
       "paragraph_id": "p_ana_1",
@@ -174,7 +221,10 @@
           "position": 0
         }
       ],
-      "metadata": {"fig_refs": [], "table_refs": []}
+      "metadata": {
+        "fig_refs": [],
+        "table_refs": []
+      }
     },
     {
       "paragraph_id": "p_ana_2",
@@ -198,7 +248,10 @@
           "position": 2
         }
       ],
-      "metadata": {"fig_refs": [], "table_refs": []}
+      "metadata": {
+        "fig_refs": [],
+        "table_refs": []
+      }
     },
     {
       "paragraph_id": "p_ana_3",
@@ -217,7 +270,10 @@
           "position": 1
         }
       ],
-      "metadata": {"fig_refs": [], "table_refs": []}
+      "metadata": {
+        "fig_refs": [],
+        "table_refs": []
+      }
     },
     {
       "paragraph_id": "p_ana_4",
@@ -236,7 +292,10 @@
           "position": 1
         }
       ],
-      "metadata": {"fig_refs": [], "table_refs": []}
+      "metadata": {
+        "fig_refs": [],
+        "table_refs": []
+      }
     },
     {
       "paragraph_id": "p_ana_5",
@@ -260,7 +319,10 @@
           "position": 2
         }
       ],
-      "metadata": {"fig_refs": [], "table_refs": []}
+      "metadata": {
+        "fig_refs": [],
+        "table_refs": []
+      }
     },
     {
       "paragraph_id": "p_opt_1",
@@ -274,7 +336,10 @@
           "position": 0
         }
       ],
-      "metadata": {"fig_refs": [], "table_refs": []}
+      "metadata": {
+        "fig_refs": [],
+        "table_refs": []
+      }
     },
     {
       "paragraph_id": "p_opt_2",
@@ -293,7 +358,10 @@
           "position": 1
         }
       ],
-      "metadata": {"fig_refs": [], "table_refs": []}
+      "metadata": {
+        "fig_refs": [],
+        "table_refs": []
+      }
     },
     {
       "paragraph_id": "p_opt_3",
@@ -307,7 +375,10 @@
           "position": 0
         }
       ],
-      "metadata": {"fig_refs": [], "table_refs": []}
+      "metadata": {
+        "fig_refs": [],
+        "table_refs": []
+      }
     },
     {
       "paragraph_id": "p_opt_4",
@@ -326,7 +397,10 @@
           "position": 1
         }
       ],
-      "metadata": {"fig_refs": [], "table_refs": []}
+      "metadata": {
+        "fig_refs": [],
+        "table_refs": []
+      }
     },
     {
       "paragraph_id": "p_opt_5",
@@ -340,7 +414,10 @@
           "position": 0
         }
       ],
-      "metadata": {"fig_refs": [], "table_refs": []}
+      "metadata": {
+        "fig_refs": [],
+        "table_refs": []
+      }
     },
     {
       "paragraph_id": "p_opt_6",
@@ -359,7 +436,10 @@
           "position": 1
         }
       ],
-      "metadata": {"fig_refs": [], "table_refs": []}
+      "metadata": {
+        "fig_refs": [],
+        "table_refs": []
+      }
     },
     {
       "paragraph_id": "p_opt_7",
@@ -373,7 +453,10 @@
           "position": 0
         }
       ],
-      "metadata": {"fig_refs": [], "table_refs": []}
+      "metadata": {
+        "fig_refs": [],
+        "table_refs": []
+      }
     },
     {
       "paragraph_id": "p_rec_1",
@@ -387,7 +470,10 @@
           "position": 0
         }
       ],
-      "metadata": {"fig_refs": [], "table_refs": []}
+      "metadata": {
+        "fig_refs": [],
+        "table_refs": []
+      }
     },
     {
       "paragraph_id": "p_rec_2",
@@ -401,7 +487,10 @@
           "position": 0
         }
       ],
-      "metadata": {"fig_refs": [], "table_refs": []}
+      "metadata": {
+        "fig_refs": [],
+        "table_refs": []
+      }
     },
     {
       "paragraph_id": "p_rec_3",
@@ -415,7 +504,10 @@
           "position": 0
         }
       ],
-      "metadata": {"fig_refs": [], "table_refs": []}
+      "metadata": {
+        "fig_refs": [],
+        "table_refs": []
+      }
     },
     {
       "paragraph_id": "p_rec_4",
@@ -429,7 +521,10 @@
           "position": 0
         }
       ],
-      "metadata": {"fig_refs": [], "table_refs": []}
+      "metadata": {
+        "fig_refs": [],
+        "table_refs": []
+      }
     },
     {
       "paragraph_id": "p_rec_5",
@@ -448,7 +543,10 @@
           "position": 1
         }
       ],
-      "metadata": {"fig_refs": [], "table_refs": []}
+      "metadata": {
+        "fig_refs": [],
+        "table_refs": []
+      }
     },
     {
       "paragraph_id": "p_rec_6",
@@ -462,14 +560,23 @@
           "position": 0
         }
       ],
-      "metadata": {"fig_refs": [], "table_refs": []}
+      "metadata": {
+        "fig_refs": [],
+        "table_refs": []
+      }
     }
   ],
   "meta": {
     "filename": "grid_modernization_brief.pdf",
-    "page_count": 6,
-    "word_count": 2800,
-    "section_names": ["Executive Summary", "Background", "Problem Analysis", "Policy Options", "Recommendations"]
+    "page_count": 8,
+    "word_count": 3100,
+    "section_names": [
+      "Executive Summary",
+      "Background",
+      "Problem Analysis",
+      "Policy Options",
+      "Recommendations"
+    ]
   },
   "references": "DOE. Grid Modernization Initiative. 2023.\nIEA. Electricity Grids and Secure Energy Transitions. 2023.\nLawrence Berkeley National Lab. Queued Up: Grid Interconnection Backlog. 2023.\nMIT Energy Initiative. The Future of the Electric Grid. 2022."
 }
