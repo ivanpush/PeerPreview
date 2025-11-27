@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { useManuscript } from '../context/ManuscriptContext';
+import { useDocument } from '../context/DocumentContext';
 import { theme, withOpacity, getTrackColor, getSeverityColor } from '../styles/theme';
 
 function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedReviewModal, onSelectIssue }) {
-  const { issues, setSelectedIssue, selectedIssue, manuscript, updateParagraph, dismissedIssues, setDismissedIssues } = useManuscript();
+  const { issues, setSelectedIssue, selectedIssue, document, updateParagraph, dismissedIssues, setDismissedIssues } = useDocument();
   const [filterTrack, setFilterTrack] = useState('all');
   const [expandedIssues, setExpandedIssues] = useState(new Set());
 
@@ -67,8 +67,8 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
     if (issue.original_text) {
       return issue.original_text;
     }
-    if (issue.paragraph_id && manuscript?.paragraphs) {
-      const para = manuscript.paragraphs.find(p => p.paragraph_id === issue.paragraph_id);
+    if (issue.paragraph_id && document?.paragraphs) {
+      const para = document.paragraphs.find(p => p.paragraph_id === issue.paragraph_id);
       if (para?.text) {
         // Return first ~2 sentences (~200 chars)
         const sentences = para.text.split(/\.\s+/).slice(0, 2);
@@ -126,7 +126,7 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
     e?.stopPropagation();
     if (!issue.suggested_rewrite || !issue.paragraph_id) return;
 
-    const paragraph = manuscript?.paragraphs?.find(p => p.paragraph_id === issue.paragraph_id);
+    const paragraph = document?.paragraphs?.find(p => p.paragraph_id === issue.paragraph_id);
     if (!paragraph) return;
 
     const isSentenceLevel = issue.sentence_ids && issue.sentence_ids.length > 0;

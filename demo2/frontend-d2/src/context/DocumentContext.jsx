@@ -1,17 +1,17 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
 
-const ManuscriptContext = createContext();
+const DocumentContext = createContext();
 
-export const useManuscript = () => {
-  const context = useContext(ManuscriptContext);
+export const useDocument = () => {
+  const context = useContext(DocumentContext);
   if (!context) {
-    throw new Error('useManuscript must be used within ManuscriptProvider');
+    throw new Error('useDocument must be used within DocumentProvider');
   }
   return context;
 };
 
-export const ManuscriptProvider = ({ children }) => {
-  const [manuscript, setManuscript] = useState(null);
+export const DocumentProvider = ({ children }) => {
+  const [document, setDocument] = useState(null);
   const [issues, setIssues] = useState([]);
   const [biasProfile, setBiasProfile] = useState(null);
   const [lastRewrite, setLastRewrite] = useState(null);
@@ -22,10 +22,10 @@ export const ManuscriptProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
   const updateParagraph = useCallback((paragraphId, newText, isRewrite = false, isRevert = false, isDelete = false) => {
-    if (!manuscript) return;
+    if (!document) return;
 
     // Find the paragraph to store previous state
-    const paragraph = manuscript.paragraphs.find(p => p.paragraph_id === paragraphId);
+    const paragraph = document.paragraphs.find(p => p.paragraph_id === paragraphId);
     if (!paragraph) return;
 
     setLastRewrite({
@@ -38,7 +38,7 @@ export const ManuscriptProvider = ({ children }) => {
     // If deleting, mark as deleted and preserve previous state
     if (isDelete) {
       const originalText = paragraph.originalText || paragraph.text;
-      setManuscript(prev => ({
+      setDocument(prev => ({
         ...prev,
         paragraphs: prev.paragraphs.map(p =>
           p.paragraph_id === paragraphId
@@ -58,7 +58,7 @@ export const ManuscriptProvider = ({ children }) => {
 
     // If reverting, clear all flags and restore original
     if (isRevert) {
-      setManuscript(prev => ({
+      setDocument(prev => ({
         ...prev,
         paragraphs: prev.paragraphs.map(p =>
           p.paragraph_id === paragraphId
@@ -81,7 +81,7 @@ export const ManuscriptProvider = ({ children }) => {
     const isEdited = !isRewrite; // Manual edits are marked as "edited", rewrites as "rewritten"
 
     // Update paragraph text while preserving metadata and marking status
-    setManuscript(prev => ({
+    setDocument(prev => ({
       ...prev,
       paragraphs: prev.paragraphs.map(p =>
         p.paragraph_id === paragraphId
@@ -96,12 +96,12 @@ export const ManuscriptProvider = ({ children }) => {
           : p
       )
     }));
-  }, [manuscript]);
+  }, [document]);
 
   const undoLastRewrite = useCallback(() => {
-    if (!lastRewrite || !manuscript) return;
+    if (!lastRewrite || !document) return;
 
-    setManuscript(prev => ({
+    setDocument(prev => ({
       ...prev,
       paragraphs: prev.paragraphs.map(p =>
         p.paragraph_id === lastRewrite.paragraphId
@@ -111,15 +111,15 @@ export const ManuscriptProvider = ({ children }) => {
     }));
 
     setLastRewrite(null);
-  }, [lastRewrite, manuscript]);
+  }, [lastRewrite, document]);
 
   const restoreDeleted = useCallback((paragraphId) => {
-    if (!manuscript) return;
+    if (!document) return;
 
-    const paragraph = manuscript.paragraphs.find(p => p.paragraph_id === paragraphId);
+    const paragraph = document.paragraphs.find(p => p.paragraph_id === paragraphId);
     if (!paragraph) return;
 
-    setManuscript(prev => ({
+    setDocument(prev => ({
       ...prev,
       paragraphs: prev.paragraphs.map(p =>
         p.paragraph_id === paragraphId
@@ -134,7 +134,7 @@ export const ManuscriptProvider = ({ children }) => {
           : p
       )
     }));
-  }, [manuscript]);
+  }, [document]);
 
   const loadMockData = useCallback(async () => {
     setLoading(true);
@@ -148,23 +148,23 @@ export const ManuscriptProvider = ({ children }) => {
         // Dynamic mode: Use backend review results
         const reviewResult = JSON.parse(reviewResultStr);
 
-        // Load manuscript and bias profile (but use backend issues)
-        const [manuscriptRes, biasProfileRes] = await Promise.all([
-          fetch('/static/manuscript_demo.json'),
+        // Load document and bias profile (but use backend issues)
+        const [documentRes, biasProfileRes] = await Promise.all([
+          fetch('/static/manuscript_demo.json'),  // Keep filename as is - it's a specific demo file
           fetch('/static/bias_profile_demo.json')
         ]);
 
-        if (!manuscriptRes.ok || !biasProfileRes.ok) {
+        if (!documentRes.ok || !biasProfileRes.ok) {
           throw new Error('Failed to load demo data');
         }
 
-        const [manuscriptData, biasProfileData] = await Promise.all([
-          manuscriptRes.json(),
+        const [documentData, biasProfileData] = await Promise.all([
+          documentRes.json(),
           biasProfileRes.json()
         ]);
 
         // Use backend issues instead of static ones
-        setManuscript(manuscriptData);
+        setDocument(documentData);
         setIssues(reviewResult.issues || []);
         setBiasProfile(biasProfileData);
 
@@ -172,29 +172,29 @@ export const ManuscriptProvider = ({ children }) => {
         sessionStorage.removeItem('reviewResult');
       } else {
         // Static mode: Load all three files
-        const [manuscriptRes, issuesRes, biasProfileRes] = await Promise.all([
-          fetch('/static/manuscript_demo.json'),
+        const [documentRes, issuesRes, biasProfileRes] = await Promise.all([
+          fetch('/static/manuscript_demo.json'),  // Keep filename as is - it's a specific demo file
           fetch('/static/issues_demo.json'),
           fetch('/static/bias_profile_demo.json')
         ]);
 
-        if (!manuscriptRes.ok || !issuesRes.ok || !biasProfileRes.ok) {
+        if (!documentRes.ok || !issuesRes.ok || !biasProfileRes.ok) {
           throw new Error('Failed to load demo data');
         }
 
-        const [manuscriptData, issuesData, biasProfileData] = await Promise.all([
-          manuscriptRes.json(),
+        const [documentData, issuesData, biasProfileData] = await Promise.all([
+          documentRes.json(),
           issuesRes.json(),
           biasProfileRes.json()
         ]);
 
-        setManuscript(manuscriptData);
+        setDocument(documentData);
         setIssues(issuesData);
         setBiasProfile(biasProfileData);
 
         // Set first figure as active by default
-        if (manuscriptData.figures?.length > 0) {
-          setActiveFigureId(manuscriptData.figures[0].figure_id);
+        if (documentData.figures?.length > 0) {
+          setActiveFigureId(documentData.figures[0].figure_id);
         }
       }
 
@@ -207,14 +207,14 @@ export const ManuscriptProvider = ({ children }) => {
   }, []);
 
   const getParagraphById = useCallback((paragraphId) => {
-    if (!manuscript) return null;
-    return manuscript.paragraphs.find(p => p.paragraph_id === paragraphId);
-  }, [manuscript]);
+    if (!document) return null;
+    return document.paragraphs.find(p => p.paragraph_id === paragraphId);
+  }, [document]);
 
   const getSectionById = useCallback((sectionId) => {
-    if (!manuscript) return null;
-    return manuscript.sections.find(s => s.section_id === sectionId);
-  }, [manuscript]);
+    if (!document) return null;
+    return document.sections.find(s => s.section_id === sectionId);
+  }, [document]);
 
   const getIssuesByTrack = useCallback((track) => {
     if (track === 'all') return issues;
@@ -223,7 +223,7 @@ export const ManuscriptProvider = ({ children }) => {
 
   const value = {
     // State
-    manuscript,
+    document,
     issues,
     biasProfile,
     lastRewrite,
@@ -249,8 +249,8 @@ export const ManuscriptProvider = ({ children }) => {
   };
 
   return (
-    <ManuscriptContext.Provider value={value}>
+    <DocumentContext.Provider value={value}>
       {children}
-    </ManuscriptContext.Provider>
+    </DocumentContext.Provider>
   );
 };

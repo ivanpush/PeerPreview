@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useManuscript } from '../context/ManuscriptContext';
+import { useDocument } from '../context/DocumentContext';
 import * as Diff from 'diff';
 
 function ManuscriptView({ onFigureClick, selectIssueRef }) {
-  const { manuscript, selectedIssue, issues, setSelectedIssue, updateParagraph, restoreDeleted, dismissedIssues } = useManuscript();
+  const { document, selectedIssue, issues, setSelectedIssue, updateParagraph, restoreDeleted, dismissedIssues } = useDocument();
   const paragraphRefs = useRef({});
   const sectionRefs = useRef({});
   const [activeSection, setActiveSection] = useState(null);
@@ -51,7 +51,7 @@ function ManuscriptView({ onFigureClick, selectIssueRef }) {
   // Track active section based on scroll position (80% threshold), only show for actual sections (skip abstract)
   useEffect(() => {
     const handleScroll = () => {
-      const scrollContainer = document.querySelector('.manuscript-scroll-container');
+      const scrollContainer = window.document.querySelector('.manuscript-scroll-container');
       if (!scrollContainer) return;
 
       const scrollTop = scrollContainer.scrollTop;
@@ -96,13 +96,13 @@ function ManuscriptView({ onFigureClick, selectIssueRef }) {
       setActiveSection(currentSection);
     };
 
-    const scrollContainer = document.querySelector('.manuscript-scroll-container');
+    const scrollContainer = window.document.querySelector('.manuscript-scroll-container');
     if (scrollContainer) {
       scrollContainer.addEventListener('scroll', handleScroll);
       handleScroll(); // Initial check
       return () => scrollContainer.removeEventListener('scroll', handleScroll);
     }
-  }, [manuscript]);
+  }, [document]);
 
   useEffect(() => {
     // Scroll to paragraph when issue is selected
@@ -120,10 +120,10 @@ function ManuscriptView({ onFigureClick, selectIssueRef }) {
     }
   }, [selectedIssue]);
 
-  if (!manuscript) {
+  if (!document) {
     return (
       <div className="h-full flex items-center justify-center bg-gray-900">
-        <p className="text-gray-400">Loading manuscript...</p>
+        <p className="text-gray-400">Loading document...</p>
       </div>
     );
   }
@@ -171,7 +171,7 @@ function ManuscriptView({ onFigureClick, selectIssueRef }) {
   };
 
   const renderParagraph = (paragraphId) => {
-    const paragraph = manuscript.paragraphs?.find(p => p.paragraph_id === paragraphId);
+    const paragraph = document.paragraphs?.find(p => p.paragraph_id === paragraphId);
     if (!paragraph) return null;
 
     const paragraphIssues = getParagraphIssues(paragraphId);
@@ -523,7 +523,7 @@ function ManuscriptView({ onFigureClick, selectIssueRef }) {
                 <span className="text-xs text-gray-500">Figs:</span>
                 {paragraph.metadata.fig_refs.map(figRef => {
                   // Find the corresponding figure
-                  const figure = manuscript?.figures?.find(f =>
+                  const figure = document?.figures?.find(f =>
                     f.label?.includes(figRef) || f.figure_id?.includes(figRef)
                   );
 
@@ -577,14 +577,14 @@ function ManuscriptView({ onFigureClick, selectIssueRef }) {
       <div className="max-w-4xl ml-auto mr-8 px-6 py-8">
         {/* Title */}
         <h1 className="text-xl font-semibold text-white mb-3 leading-tight tracking-tight">
-          {manuscript.title}
+          {document.title}
         </h1>
 
         {/* Section Pills - Canonical + Other Sections */}
         <div className="flex items-center flex-wrap gap-2 mb-8">
           {/* Canonical sections (required) */}
           {['abstract', 'introduction', 'methods', 'results', 'discussion', 'references'].map((required) => {
-            const hasSection = manuscript.sections?.some(
+            const hasSection = document.sections?.some(
               s => s.section_id?.includes(required) ||
                    s.section_title?.toLowerCase().includes(required) ||
                    s.heading?.toLowerCase().includes(required) ||
@@ -624,7 +624,7 @@ function ManuscriptView({ onFigureClick, selectIssueRef }) {
           })}
 
           {/* Other sections present but not canonical (gray) */}
-          {manuscript.sections
+          {document.sections
             ?.filter(s => {
               const sectionName = (s.section_id || s.section_title || s.heading || '').toLowerCase();
               const isCanonical = ['abstract', 'introduction', 'methods', 'results', 'discussion', 'references',
@@ -644,7 +644,7 @@ function ManuscriptView({ onFigureClick, selectIssueRef }) {
         </div>
 
         {/* Authors Section - Collapsible */}
-        {(manuscript.authors || manuscript.affiliations) && (
+        {(document.authors || document.affiliations) && (
           <div className="mb-6">
             <button
               onClick={() => setAuthorsExpanded(!authorsExpanded)}
@@ -663,13 +663,13 @@ function ManuscriptView({ onFigureClick, selectIssueRef }) {
 
             {authorsExpanded && (
               <div className="mt-3 p-4 bg-[#232323] rounded-lg border border-[#2E2E2E]">
-                {manuscript.authors && (
+                {document.authors && (
                   <div className="mb-3">
                     <h3 className="text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wide">Authors</h3>
                     <p className="text-sm text-gray-300 leading-relaxed">
                       {(() => {
                         // Split by lines and process each
-                        const lines = manuscript.authors.split('\n');
+                        const lines = document.authors.split('\n');
                         const nameLines = [];
                         const footnoteLines = [];
 
@@ -698,11 +698,11 @@ function ManuscriptView({ onFigureClick, selectIssueRef }) {
                     </p>
                   </div>
                 )}
-                {manuscript.affiliations && (
+                {document.affiliations && (
                   <div>
                     <h3 className="text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wide">Affiliations</h3>
                     <p className="text-sm text-gray-300 leading-relaxed whitespace-pre-line">
-                      {manuscript.affiliations}
+                      {document.affiliations}
                     </p>
                   </div>
                 )}
@@ -712,7 +712,7 @@ function ManuscriptView({ onFigureClick, selectIssueRef }) {
         )}
 
         {/* Sections - reconstruct from section.paragraph_ids */}
-        {manuscript.sections?.map(section => {
+        {document.sections?.map(section => {
           // Skip sections with no paragraphs
           if (!section.paragraph_ids || section.paragraph_ids.length === 0) return null;
 
@@ -732,7 +732,7 @@ function ManuscriptView({ onFigureClick, selectIssueRef }) {
             let currentGroup = { subheading: null, paragraphs: [] };
 
             section.paragraph_ids.forEach(pid => {
-              const para = manuscript.paragraphs?.find(p => p.paragraph_id === pid);
+              const para = document.paragraphs?.find(p => p.paragraph_id === pid);
               if (!para) return;
 
               const isMetaSubheading = para.para_type === 'subheading' &&
@@ -773,7 +773,7 @@ function ManuscriptView({ onFigureClick, selectIssueRef }) {
                 <div className="space-y-2">
                   {paragraphGroups.map((group, idx) => {
                     if (group.subheading) {
-                      const subheadingPara = manuscript.paragraphs?.find(p => p.paragraph_id === group.subheading);
+                      const subheadingPara = document.paragraphs?.find(p => p.paragraph_id === group.subheading);
                       const isExpanded = expandedMetaSections.has(group.subheading);
 
                       return (
@@ -863,11 +863,11 @@ function ManuscriptView({ onFigureClick, selectIssueRef }) {
         })}
 
         {/* References (optional) */}
-        {manuscript.references && (
+        {document.references && (
           <div className="mt-12 pt-8 border-t border-[#2E2E2E]">
             <h2 className="text-[17px] font-semibold text-gray-200 mb-4 tracking-wide">REFERENCES</h2>
             <div className="text-sm text-gray-400 whitespace-pre-wrap leading-relaxed">
-              {manuscript.references}
+              {document.references}
             </div>
           </div>
         )}

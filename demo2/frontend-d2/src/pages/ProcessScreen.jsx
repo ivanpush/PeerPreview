@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useManuscript } from '../context/ManuscriptContext';
+import { useDocument } from '../context/DocumentContext';
 
 function ProcessScreen() {
   const navigate = useNavigate();
-  const { loadMockData, loading, error } = useManuscript();
+  const { loadMockData, loading, error } = useDocument();
   const [status, setStatus] = useState('loading');
   const [progress, setProgress] = useState(0);
   const [reviewMode, setReviewMode] = useState('static');
@@ -180,7 +180,7 @@ function ProcessScreen() {
                   <>
                     <div className={`flex items-center gap-2 ${progress >= 30 ? 'text-green-600' : 'text-gray-400'}`}>
                       <span>{progress >= 30 ? '✓' : '○'}</span>
-                      <span className="text-sm">Loading manuscript data</span>
+                      <span className="text-sm">Loading document data</span>
                     </div>
                     <div className={`flex items-center gap-2 ${progress >= 60 ? 'text-green-600' : 'text-gray-400'}`}>
                       <span>{progress >= 60 ? '✓' : '○'}</span>

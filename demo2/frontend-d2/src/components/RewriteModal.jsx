@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { useManuscript } from '../context/ManuscriptContext';
+import { useDocument } from '../context/DocumentContext';
 import { theme, getTrackColor } from '../styles/theme';
 
 function RewriteModal({ issue, onClose }) {
-  const { manuscript, updateParagraph } = useManuscript();
+  const { document, updateParagraph } = useDocument();
 
   if (!issue) return null;
 
-  const paragraph = manuscript?.paragraphs?.find(p => p.paragraph_id === issue.paragraph_id);
+  const paragraph = document?.paragraphs?.find(p => p.paragraph_id === issue.paragraph_id);
   const originalText = paragraph?.text || '';
 
   // Check if this is a sentence-level issue

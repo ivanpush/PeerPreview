@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useManuscript } from '../context/ManuscriptContext';
+import { useDocument } from '../context/DocumentContext';
 import ManuscriptView from '../components/ManuscriptView';
 import IssuesPanel from '../components/IssuesPanel';
 import RewriteModal from '../components/RewriteModal';
@@ -10,7 +10,7 @@ import UndoBanner from '../components/UndoBanner';
 
 function ReviewScreen() {
   const navigate = useNavigate();
-  const { manuscript, issues, loading, lastRewrite, undoLastRewrite, loadMockData } = useManuscript();
+  const { document, issues, loading, lastRewrite, undoLastRewrite, loadMockData } = useDocument();
   const [showUndoBanner, setShowUndoBanner] = useState(false);
   const [rewriteModalIssue, setRewriteModalIssue] = useState(null);
   const [outlineModalIssue, setOutlineModalIssue] = useState(null);
@@ -19,12 +19,12 @@ function ReviewScreen() {
   const [figuresPanelExpanded, setFiguresPanelExpanded] = useState(false);
   const selectIssueRef = React.useRef(null);
 
-  // Load mock data if manuscript is not already loaded (for direct navigation/refresh)
+  // Load mock data if document is not already loaded (for direct navigation/refresh)
   useEffect(() => {
-    if (!manuscript && !loading) {
+    if (!document && !loading) {
       loadMockData();
     }
-  }, [manuscript, loading, loadMockData]);
+  }, [document, loading, loadMockData]);
 
   // Handler to open figure panel and select a figure
   const handleFigureClick = (figureId) => {
@@ -56,12 +56,12 @@ function ReviewScreen() {
     setShowUndoBanner(false);
   };
 
-  if (loading || !manuscript) {
+  if (loading || !document) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading manuscript...</p>
+          <p className="text-gray-600">Loading document...</p>
         </div>
       </div>
     );

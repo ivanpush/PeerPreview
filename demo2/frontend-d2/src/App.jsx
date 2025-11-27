@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { ManuscriptProvider } from './context/ManuscriptContext';
+import { DocumentProvider } from './context/DocumentContext';
 import UploadScreen from './pages/UploadScreen';
 import ReviewSetupScreen from './pages/ReviewSetupScreen';
 import ProcessScreen from './pages/ProcessScreen';
@@ -9,7 +9,7 @@ import ReviewScreen from './pages/ReviewScreen';
 function App() {
   return (
     <BrowserRouter>
-      <ManuscriptProvider>
+      <DocumentProvider>
         <Routes>
           <Route path="/" element={<UploadScreen />} />
           <Route path="/setup" element={<ReviewSetupScreen />} />
@@ -17,7 +17,7 @@ function App() {
           <Route path="/review" element={<ReviewScreen />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-      </ManuscriptProvider>
+      </DocumentProvider>
     </BrowserRouter>
   );
 }

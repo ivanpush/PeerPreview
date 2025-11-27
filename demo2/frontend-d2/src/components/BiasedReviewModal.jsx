@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { useManuscript } from '../context/ManuscriptContext';
+import { useDocument } from '../context/DocumentContext';
 import { theme, withOpacity, getTrackColor } from '../styles/theme';
 
 function BiasedReviewModal({ issue, onClose }) {
-  const { biasProfile, issues } = useManuscript();
+  const { biasProfile, issues } = useDocument();
   const [selectedCritiqueId, setSelectedCritiqueId] = useState(issue?.id);
   const contentRef = React.useRef(null);
 
