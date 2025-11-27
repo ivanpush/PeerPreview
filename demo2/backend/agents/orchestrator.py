@@ -13,7 +13,6 @@ from dataclasses import dataclass
 import asyncio
 
 from agents.planning_agent import PlanningAgent
-from agents.global_map_agent import GlobalMapAgent
 from agents.track_agents import TrackAAgent, TrackBAgent, TrackCAgent
 from agents.aggregator_agent import AggregatorAgent
 from agents.hostile_agent import HostileAgent
@@ -39,8 +38,7 @@ class OrchestratorAgent:
         self.config = config
 
         # Initialize all agents
-        self.planning_agent = PlanningAgent()
-        self.global_map_agent = GlobalMapAgent()
+        self.planning_agent = PlanningAgent()  # Combined planning + global map
         self.track_a_agent = TrackAAgent()  # Rigor
         self.track_b_agent = TrackBAgent()  # Clarity
         self.track_c_agent = TrackCAgent()  # Skeptic
@@ -77,25 +75,21 @@ class OrchestratorAgent:
 
     async def _phase1_planning(self, document: DocumentObject) -> Dict:
         """
-        Phase 1: Planning and global document understanding
+        Phase 1: Single global pass for planning and document understanding
+
+        The merged planning agent now handles both:
+        - Review planning (priorities, focus areas, strategy)
+        - Global mapping (themes, claims, section relationships, critical passages)
         """
-        # Planning agent analyzes document structure and creates review plan
-        plan = await self.planning_agent.analyze(
+        # Single LLM pass that produces both plan and global map
+        planning_output = await self.planning_agent.analyze(
             document=document,
             depth=self.config.depth,
             user_prompt=self.config.user_prompt
         )
 
-        # Global map agent creates document-wide understanding
-        global_map = await self.global_map_agent.create_map(
-            document=document,
-            plan=plan
-        )
-
-        return {
-            "plan": plan,
-            "global_map": global_map
-        }
+        # Planning output now contains both plan and global map data
+        return planning_output
 
     async def _phase2_tracks(self, document: DocumentObject, planning_output: Dict) -> Dict:
         """
@@ -127,9 +121,10 @@ class OrchestratorAgent:
         Phase 3: Aggregate results and ensure global consistency
         """
         # Aggregate all track results
+        # The merged planning_output now contains global map data directly
         aggregated = await self.aggregator_agent.aggregate(
             track_results=track_results,
-            global_map=planning_output["global_map"]
+            global_map=planning_output  # Full planning output contains global map data
         )
 
         # Optional: Run hostile agent for extra scrutiny

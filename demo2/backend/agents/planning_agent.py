@@ -1,17 +1,21 @@
 """
-Planning Agent - Creates review strategy based on document type and user requirements
+Planning Agent - Creates review strategy and global understanding in a single pass
 """
 
 import logging
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 from models.document import DocumentObject
 
 logger = logging.getLogger(__name__)
 
 class PlanningAgent:
     """
-    Analyzes document structure and creates a tailored review plan.
-    Determines which sections need most attention based on document type.
+    Single global-prepass agent that:
+    1. Creates review plan based on document type and user requirements
+    2. Builds global document map (claims, terms, sections, early hostile sketch)
+    3. Feeds both outputs to downstream track reviewers
+
+    This merged approach eliminates duplicate full-document LLM calls.
     """
 
     async def analyze(
@@ -21,10 +25,11 @@ class PlanningAgent:
         user_prompt: Optional[str] = None
     ) -> Dict:
         """
-        Create review plan based on document analysis
+        Single global pass that creates both review plan and global map
         """
-        logger.info(f"Planning review for {document.document_type}")
+        logger.info(f"Planning review and creating global map for {document.document_type}")
 
+        # === PLANNING PHASE ===
         # Analyze document structure
         section_priorities = self._prioritize_sections(document, document.document_type)
 
@@ -34,12 +39,44 @@ class PlanningAgent:
         # Create depth-specific strategy
         strategy = self._create_strategy(depth, focus_areas)
 
+        # === GLOBAL MAP PHASE ===
+        # Extract key themes and claims
+        themes = await self._extract_themes(document)
+
+        # Map section relationships
+        section_map = self._map_sections(document)
+
+        # Identify critical passages based on plan priorities
+        critical_passages = await self._identify_critical(
+            document, section_priorities, focus_areas
+        )
+
+        # Create consistency checkpoints
+        checkpoints = self._create_checkpoints(themes, section_map)
+
+        # Create document summary
+        document_summary = await self._summarize_document(document)
+
+        # === COMBINED OUTPUT ===
         return {
+            # Planning outputs
             "document_type": document.document_type,
             "section_priorities": section_priorities,
             "focus_areas": focus_areas,
             "strategy": strategy,
-            "custom_instructions": user_prompt
+            "custom_instructions": user_prompt,
+
+            # Global map outputs
+            "themes": themes,
+            "section_map": section_map,
+            "critical_passages": critical_passages,
+            "consistency_checkpoints": checkpoints,
+            "document_summary": document_summary,
+
+            # Metadata
+            "depth": depth,
+            "total_sections": len(document.sections),
+            "estimated_tokens": self._estimate_token_usage(document, depth)
         }
 
     def _prioritize_sections(self, document: DocumentObject, doc_type: str) -> Dict:
@@ -114,3 +151,70 @@ class PlanningAgent:
                 "issue_threshold": "moderate_and_major",
                 "tracks_emphasis": {"A": 0.33, "B": 0.34, "C": 0.33}
             }
+
+    # === GLOBAL MAP METHODS (from merged global_map_agent) ===
+
+    async def _extract_themes(self, document: DocumentObject) -> List[Dict]:
+        """Extract main themes and claims from document"""
+        # TODO: Implement LLM call to identify key themes
+        # For now, return placeholder
+        themes = []
+        logger.debug("Extracting document themes and claims")
+        return themes
+
+    def _map_sections(self, document: DocumentObject) -> Dict:
+        """Map relationships between sections"""
+        section_map = {}
+        for section in document.sections:
+            section_map[section.section_id] = {
+                "title": section.section_title,
+                "paragraph_count": len(section.paragraph_ids),
+                "dependencies": [],  # Would analyze cross-references
+                "role": section.role if hasattr(section, 'role') else None
+            }
+        return section_map
+
+    async def _identify_critical(
+        self,
+        document: DocumentObject,
+        section_priorities: Dict,
+        focus_areas: List[str]
+    ) -> List[Dict]:
+        """Identify critical passages needing special attention"""
+        # TODO: Implement LLM call to identify key passages based on priorities
+        critical_passages = []
+        logger.debug("Identifying critical passages based on priorities")
+        return critical_passages
+
+    def _create_checkpoints(self, themes: List, section_map: Dict) -> List[Dict]:
+        """Create consistency checkpoints for aggregator"""
+        checkpoints = []
+        # Create checkpoints for cross-section consistency
+        for section_id, info in section_map.items():
+            checkpoints.append({
+                "section": section_id,
+                "type": "consistency",
+                "check_against": info.get("dependencies", [])
+            })
+        return checkpoints
+
+    async def _summarize_document(self, document: DocumentObject) -> str:
+        """Create concise document summary"""
+        # TODO: Implement LLM call to summarize
+        # For now, return basic summary
+        summary = f"Document: {document.title} ({document.document_type})"
+        summary += f" - {len(document.sections)} sections"
+        return summary
+
+    def _estimate_token_usage(self, document: DocumentObject, depth: str) -> int:
+        """Estimate total token usage based on document size and depth"""
+        # Rough estimation based on document size
+        total_words = sum(
+            len(section.content.split()) if hasattr(section, 'content') else 100
+            for section in document.sections
+        )
+
+        multiplier = {"light": 1.5, "medium": 3.0, "heavy": 5.0}
+        estimated_tokens = int(total_words * multiplier.get(depth, 2.0))
+
+        return estimated_tokens

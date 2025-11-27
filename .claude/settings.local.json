@@ -41,7 +41,16 @@
       "Bash(while read file)",
       "Bash(jq:*)",
       "Bash(do echo \"=== $f ===\")",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(git push:*)",
+      "Bash(git ls-tree:*)",
+      "Bash(GIT_TRACE=1 GIT_CURL_VERBOSE=1 git push:*)",
+      "Bash(git config:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(ssh-keyscan:*)",
+      "Bash(~/.ssh/known_hosts)",
+      "Bash(gh auth:*)",
+      "Bash(git fetch:*)"
     ],
     "deny": [],
     "ask": []
