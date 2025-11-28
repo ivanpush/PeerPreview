@@ -148,6 +148,23 @@ class ReviewPlan:
     total_budget_tokens: int
 ```
 
+### User Intent Allocation (TBD)
+
+Planning Agent interprets user prompt and outputs:
+- `section_priorities` — where to focus effort
+- `user_constraints` — emphasis modifiers (e.g., "focus on methods")
+- `user_focus_summary` — LLM interpretation of what user wants
+
+**Open question**: How do we guarantee user intent actually shapes output?
+
+Options under consideration:
+- **Token budget allocation**: Planning outputs `{methods: 40%, results: 30%, ...}` → agents respect this
+- **Minimum issue %**: ≥50% of issues must relate to user focus, or Assembler explains why not
+- **Section weighting**: Agents spend 2× tokens on prioritized sections
+- **Explicit check**: Assembler verifies "did we address user's request?" before finalizing
+
+For now: Planning extracts intent, passes to agents via ReviewPlan. Enforcement mechanism TBD.
+
 ### Issue
 
 ```python
@@ -177,6 +194,37 @@ class Issue:
     source_agent_ids: list[str]
     merged_from_ids: list[str]
     conflicting_issue_ids: list[str]
+    
+    # Consensus state (Consensus tier only)
+    consensus_status: Literal['agreed', 'disputed', 'resolved_with_research'] | None
+    model_stances: list[ModelStance] | None  # What each model said
+    
+    # Go Deeper state
+    deep_research_status: Literal['available', 'not_applicable', 'completed']
+    deep_research_result: DeepResearchResult | None
+
+@dataclass
+class ModelStance:
+    model: str  # 'opus', 'gpt5', 'gemini'
+    stance: str
+    confidence: float
+
+@dataclass
+class DeepResearchResult:
+    sources: list[Citation]
+    reasoning_trace: str  # The thought process
+    original_stances: list[str]  # What models originally said
+    final_verdict: str
+    confidence: float
+    timestamp: datetime
+
+@dataclass
+class Citation:
+    title: str
+    authors: str
+    year: int
+    url: str | None
+    relevant_excerpt: str
 ```
 
 ### GlobalMap
@@ -472,12 +520,12 @@ Depth scales behavior. Some agents only run at higher tiers.
 
 | Aspect | First Pass | Full Review | Deep Analysis |
 |--------|------------|-------------|---------------|
-| **Model** | Haiku | Sonnet | Opus + Sonnet |
+| **Model** | Opus (Planning) + Haiku | Opus (Planning) + Sonnet | Opus |
 | **Tokens/call** | 1–3k | 10–20k | 20–40k |
 | **Rewrites on** | Major | Major + Moderate | All |
 | **Cost** | $0.25–1.00 | $0.50–2.50 | $1.00–4.00 |
 
-See `04-REVIEW-TIERS.md` for full canonical definitions.
+See `04-REVIEW-TIERS.md` for full model selection by agent.
 
 ---
 

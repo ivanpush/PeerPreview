@@ -576,4 +576,6 @@ Depth scales behavior. Some agents only run at higher tiers.
 | Global Hostile | Off | Off | **ON** |
 | Assembler | ✓ | ✓ | ✓ |
 
-See `04-REVIEW-TIERS.md` for full canonical tier definitions.
+**Note**: Planning Agent uses Opus at all tiers — it's one call, it's the steering wheel, don't cheap out.
+
+See `04-REVIEW-TIERS.md` for full model selection by agent.
