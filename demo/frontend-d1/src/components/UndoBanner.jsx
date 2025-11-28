@@ -1,8 +1,51 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 function UndoBanner({ message, onUndo, onDismiss }) {
+  const [isFading, setIsFading] = useState(false);
+  const fadeTimeoutRef = useRef(null);
+
+  // Start fade animation after 2.5 seconds
+  useEffect(() => {
+    const startFadeTimer = () => {
+      if (fadeTimeoutRef.current) {
+        clearTimeout(fadeTimeoutRef.current);
+      }
+      fadeTimeoutRef.current = setTimeout(() => {
+        setIsFading(true);
+      }, 2500);
+    };
+
+    startFadeTimer();
+
+    return () => {
+      if (fadeTimeoutRef.current) {
+        clearTimeout(fadeTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  // Reset fade timer on mouse interaction
+  const handleMouseEnter = () => {
+    setIsFading(false);
+    if (fadeTimeoutRef.current) {
+      clearTimeout(fadeTimeoutRef.current);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    fadeTimeoutRef.current = setTimeout(() => {
+      setIsFading(true);
+    }, 2500);
+  };
+
   return (
-    <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-4 z-50 animate-slide-up">
+    <div
+      className={`fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-4 z-50 animate-slide-up transition-opacity duration-500 ${
+        isFading ? 'opacity-0' : 'opacity-100'
+      }`}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <span className="text-sm font-medium">{message}</span>
       <div className="flex gap-2">
         <button

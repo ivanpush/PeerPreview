@@ -1,13 +1,23 @@
 import React, { useState } from 'react';
 import { useManuscript } from '../context/ManuscriptContext';
 import { theme, withOpacity, getTrackColor, getSeverityColor } from '../styles/theme';
+import UserEditCard from './UserEditCard';
 
 function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedReviewModal, onSelectIssue }) {
-  const { issues, setSelectedIssue, selectedIssue, manuscript, updateParagraph, acceptedIssues, setAcceptedIssues, acceptedWithRewrite, setAcceptedWithRewrite, dismissedIssues, setDismissedIssues } = useManuscript();
+  const { issues, setSelectedIssue, selectedIssue, manuscript, updateParagraph, acceptedIssues, setAcceptedIssues, acceptedWithRewrite, setAcceptedWithRewrite, dismissedIssues, setDismissedIssues, userEdits, revertUserEdit } = useManuscript();
   const [filterTrack, setFilterTrack] = useState('all');
   const [expandedIssues, setExpandedIssues] = useState(new Set());
+  const [userEditsExpanded, setUserEditsExpanded] = useState(true);
+  const [expandedAccepted, setExpandedAccepted] = useState(new Set());
+  const [expandedDismissed, setExpandedDismissed] = useState(new Set());
 
-  const filteredIssues = issues.filter(issue =>
+  // Add original index to issues for maintaining order when recalling
+  const issuesWithIndex = issues.map((issue, index) => ({
+    ...issue,
+    originalIndex: index
+  }));
+
+  const filteredIssues = issuesWithIndex.filter(issue =>
     filterTrack === 'all' || issue.track === filterTrack
   );
 
@@ -133,6 +143,7 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
     const preview = outlineArray.slice(0, 2).join('\n');
     return outlineArray.length > 2 ? preview + '\n...' : preview;
   };
+
 
   // Helper: Get quoted excerpt from paragraph
   const getQuotedExcerpt = (issue) => {
@@ -365,9 +376,8 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
     const severityColor = getSeverityColor(issue.severity);
     const isSelected = selectedIssue?.id === issue.id;
     const quotedExcerpt = getQuotedExcerpt(issue);
-    const rewritePreview = issue.track === 'C'
-      ? getRewritePreview(issue.suggested_revision)
-      : getRewritePreview(issue.suggested_rewrite);
+    // Always show full text in expanded card
+    const fullRewrite = issue.track === 'C' ? issue.suggested_revision : issue.suggested_rewrite;
     const critiquePreview = issue.track === 'C'
       ? getRewritePreview(issue.critique)
       : null;
@@ -510,8 +520,8 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
             </div>
           )}
 
-          {/* Rewrite/Strategic Solution preview (if available) */}
-          {(issue.suggested_rewrite || issue.suggested_revision) && rewritePreview && (
+          {/* Rewrite/Strategic Solution - show full text in expanded card */}
+          {(issue.suggested_rewrite || issue.suggested_revision) && (
             <div
               className="mb-3 rounded p-2"
               style={{
@@ -523,7 +533,7 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
                 {issue.track === 'C' ? 'Strategic Solution' : 'Suggested Rewrite'}
               </div>
               <p className="text-[13px] leading-relaxed" style={{ color: theme.text.secondary }}>
-                {rewritePreview}
+                {fullRewrite}
               </p>
             </div>
           )}
@@ -756,10 +766,13 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
                 No issues need attention in this track
               </div>
             ) : (
-              filteredIssues.filter(issue => !acceptedIssues.has(issue.id) && !dismissedIssues.has(issue.id)).map(issue => {
-                const isExpanded = expandedIssues.has(issue.id);
-                return isExpanded ? renderExpandedCard(issue) : renderCollapsedCard(issue);
-              })
+              filteredIssues
+                .filter(issue => !acceptedIssues.has(issue.id) && !dismissedIssues.has(issue.id))
+                .sort((a, b) => a.originalIndex - b.originalIndex)
+                .map(issue => {
+                  const isExpanded = expandedIssues.has(issue.id);
+                  return isExpanded ? renderExpandedCard(issue) : renderCollapsedCard(issue);
+                })
             )}
           </div>
         </div>
@@ -816,11 +829,11 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
                       {/* Rewrite Applied or Acknowledged pill */}
                       {acceptedWithRewrite.has(issue.id) ? (
                         <span
-                          className="px-1.5 py-0.5 rounded text-[9px] font-medium flex-shrink-0"
+                          className="px-1.5 py-0.5 rounded text-[9px] font-bold flex-shrink-0 uppercase"
                           style={{
-                            backgroundColor: withOpacity(theme.accent.uiBlue, 0.15),
-                            color: theme.accent.uiBlue,
-                            border: `1px solid ${withOpacity(theme.accent.uiBlue, 0.3)}`
+                            backgroundColor: 'rgba(34, 197, 94, 0.15)',
+                            color: '#22C55E',
+                            border: `1px solid rgba(34, 197, 94, 0.3)`
                           }}
                         >
                           Rewrite Applied
@@ -834,7 +847,7 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
                             border: `1px solid rgba(128, 128, 128, 0.3)`
                           }}
                         >
-                          Acknowledged
+                          ACKNOWLEDGED
                         </span>
                       )}
 
@@ -855,6 +868,46 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
           </div>
         )}
 
+        {/* User Edits section (included in export) */}
+        {userEdits && userEdits.size > 0 && (
+          <div className="mt-6 pt-4 border-t" style={{ borderColor: theme.border.primary }}>
+            <div
+              className="flex items-center justify-between cursor-pointer hover:bg-gray-800 rounded px-1 py-1 transition"
+              onClick={() => setUserEditsExpanded(!userEditsExpanded)}
+            >
+              <h3 className="text-[11px] font-semibold uppercase tracking-wide flex items-center gap-2" style={{ color: '#EAB308' }}>
+                <svg
+                  className={`w-3 h-3 transform transition-transform ${userEditsExpanded ? 'rotate-90' : ''}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+                User Edits - Included in Export ({userEdits.size})
+              </h3>
+            </div>
+
+            {userEditsExpanded && (
+              <div className="mt-2 space-y-1.5">
+                {Array.from(userEdits.values()).map(edit => (
+                  <UserEditCard
+                    key={edit.id}
+                    edit={edit}
+                    onRevert={revertUserEdit}
+                    onNavigate={(paragraphId) => {
+                      const element = document.getElementById(paragraphId);
+                      if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      }
+                    }}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Dismissed issues section (not included in export) */}
         {dismissedIssues.size > 0 && (
           <div className="mt-6 pt-4 border-t" style={{ borderColor: theme.border.primary }}>
@@ -871,9 +924,9 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
                     key={issue.id}
                     className="relative rounded cursor-pointer transition-all overflow-hidden"
                     style={{
-                      opacity: 0.5,
-                      backgroundColor: theme.background.tertiary,
-                      border: `1px solid ${theme.border.primary}`
+                      opacity: 0.7,
+                      backgroundColor: 'rgba(128, 128, 128, 0.05)',
+                      border: `1px solid rgba(128, 128, 128, 0.2)`
                     }}
                   >
                     {/* Left track indicator */}

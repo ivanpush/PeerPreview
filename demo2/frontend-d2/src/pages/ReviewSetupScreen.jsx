@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ConsensusToggle from '../components/ConsensusToggle';
+import ComparisonModal from '../components/ComparisonModal';
 
 function ReviewSetupScreen() {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ function ReviewSetupScreen() {
   const [detectedType, setDetectedType] = useState('');
   const [showTypeMenu, setShowTypeMenu] = useState(false);
   const [consensusReview, setConsensusReview] = useState(false);
+  const [showComparisonModal, setShowComparisonModal] = useState(false);
   const typeMenuRef = useRef(null);
 
   // Depth configurations
@@ -112,16 +114,25 @@ function ReviewSetupScreen() {
     const selectedDemo = sessionStorage.getItem('selectedDemo');
     const demoFile = sessionStorage.getItem('demoFile');
 
+    console.log('ReviewSetupScreen loading with:', { selectedDemo, demoFile });
+
     if (selectedDemo && demoFile) {
       // Load the demo fixture to get metadata
+      console.log('Fetching fixture:', `/fixtures/${demoFile}`);
       fetch(`/fixtures/${demoFile}`)
-        .then(res => res.json())
+        .then(res => {
+          if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+          }
+          return res.json();
+        })
         .then(data => {
+          console.log('Fixture loaded successfully:', data.title);
           setDocumentInfo({
             title: data.title,
             source_format: data.source_format,
-            page_count: data.meta.page_count,
-            word_count: data.meta.word_count,
+            page_count: data.meta?.page_count || data.paragraphs?.length || 0,
+            word_count: data.meta?.word_count || 0,
             document_type: data.document_type,
             fixture_file: demoFile,
             selectedDemo: selectedDemo
@@ -135,6 +146,7 @@ function ReviewSetupScreen() {
           setIsLoading(false);
         });
     } else {
+      console.log('No demo selected, using fallback document');
       // Handle uploaded file (V1 feature)
       setDocumentInfo({
         title: 'Uploaded Document',
@@ -214,12 +226,20 @@ function ReviewSetupScreen() {
 
     sessionStorage.setItem('reviewConfig', JSON.stringify(reviewConfig));
 
+    // Log what's being stored in sessionStorage
+    console.log('Starting review with mode:', reviewMode);
+    console.log('SessionStorage selectedDemo:', sessionStorage.getItem('selectedDemo'));
+    console.log('SessionStorage demoFile:', sessionStorage.getItem('demoFile'));
+    console.log('Review config:', reviewConfig);
+
     // Navigate to appropriate screen based on mode
     if (reviewMode === 'static') {
       // Go directly to ReviewScreen with static data
+      console.log('Navigating to /review for static mode');
       navigate('/review');
     } else {
       // Go to ProcessScreen which will call backend
+      console.log('Navigating to /process for dynamic mode');
       navigate('/process');
     }
   };
@@ -398,12 +418,18 @@ function ReviewSetupScreen() {
           </div>
         </div>
 
-        {/* Thin separator */}
-        <div className="border-t border-[#1A1C1F] mb-10"></div>
-
         {/* Depth Selector - SEGMENTED BLOCKS */}
-        <div className="mb-10">
-          <h2 className="text-lg font-medium text-[#E8E9EB] mb-6 text-center">How thorough should the review be?</h2>
+        <div className="mb-10 mt-16">
+          <h2 className="text-lg font-medium text-[#E8E9EB] mb-6 text-center">
+            How thorough should the review be?
+            <button
+              onClick={() => setShowComparisonModal(true)}
+              className="ml-0.5 text-[11px] font-normal text-[#6A6D73] hover:text-[#A1A5AC] transition-colors align-baseline opacity-60 hover:opacity-100"
+              aria-label="Compare review depths"
+            >
+              ⓘ
+            </button>
+          </h2>
 
           {/* Segmented control blocks */}
           <div className="grid grid-cols-3 gap-3 mb-6">
@@ -475,11 +501,8 @@ function ReviewSetupScreen() {
           )}
         </div>
 
-        {/* Thin separator */}
-        <div className="border-t border-[#1A1C1F] mb-10"></div>
-
         {/* Actions - right-aligned, minimal */}
-        <div className="flex justify-end gap-3 mb-10">
+        <div className="flex justify-end gap-3 mb-10 mt-10">
           <button
             onClick={() => navigate('/')}
             className="px-4 py-2 text-sm text-[#A1A5AC] hover:text-[#E8E9EB] transition-colors"
@@ -552,6 +575,12 @@ function ReviewSetupScreen() {
           </div>
         )}
       </div>
+
+      {/* Comparison Modal */}
+      <ComparisonModal
+        isOpen={showComparisonModal}
+        onClose={() => setShowComparisonModal(false)}
+      />
     </div>
   );
 }

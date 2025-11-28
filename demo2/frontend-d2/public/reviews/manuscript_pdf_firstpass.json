@@ -1,0 +1,241 @@
+{
+  "review_id": "rev_manuscript_pdf_firstpass",
+  "document_id": "man_f61b2cf0",
+  "document_type": "academic_manuscript",
+  "depth": "first_pass",
+  "scopes": ["rigor", "clarity", "counterpoint"],
+
+  "issues": [
+    {
+      "id": "A-1",
+      "track": "A",
+      "scope": "rigor",
+      "persona": "Rigor Review",
+      "issue_type": "paragraph_rewrite",
+      "severity": "major",
+      "title": "Placeholder citation for core protocol",
+      "message": "The Methods section references a previously published protocol but uses a placeholder '[x]' instead of an actual citation, making it impossible to verify or reproduce the assay.",
+      "paragraph_id": "p_met_2",
+      "section_id": "sec_methods",
+      "sentence_ids": ["s_met_2_1"],
+      "original_text": "The FLECS contractility assay followed protocols previously published [x].",
+      "suggested_rewrite": "The FLECS contractility assay followed protocols previously published [15-17].",
+      "rationale": "This is a critical error that must be fixed before submission. The placeholder '[x]' suggests the authors intended to add a reference but overlooked it. Based on the reference list, citations 15-17 cover the relevant FLECS methodology papers."
+    },
+    {
+      "id": "A-2",
+      "track": "A",
+      "scope": "rigor",
+      "persona": "Rigor Review",
+      "issue_type": "paragraph_rewrite",
+      "severity": "major",
+      "title": "Garbled text and incomplete cell type description",
+      "message": "The cell culture description contains incomplete text with a dangling parenthesis, suggesting text was lost during manuscript preparation.",
+      "paragraph_id": "p_met_1",
+      "section_id": "sec_methods",
+      "sentence_ids": ["s_met_1_1"],
+      "original_text": "Cryopreserved human primary lung fibroblasts (HLF) and human tracheal), human primary hepatic stellate cells (HHSteC), human airway smooth muscle (HASM) cells, and human bladder smooth muscle (HBSM) cells were obtained from ScienCell.",
+      "suggested_rewrite": "Cryopreserved human primary lung fibroblasts (HLF), human primary hepatic stellate cells (HHSteC), human airway smooth muscle (HASM) cells, and human bladder smooth muscle (HBSM) cells were obtained from ScienCell.",
+      "rationale": "The phrase 'and human tracheal)' is grammatically incomplete and contains a stray parenthesis. This appears to be a copy-paste or editing error. If tracheal cells were indeed used, the full cell type name and abbreviation should be provided."
+    },
+    {
+      "id": "A-3",
+      "track": "A",
+      "scope": "rigor",
+      "persona": "Rigor Review",
+      "issue_type": "paragraph_rewrite",
+      "severity": "major",
+      "title": "Inconsistent cell type abbreviations (HTSM/BTSM vs HASM/HBSM)",
+      "message": "The Methods section uses HTSM and BTSM abbreviations that were not defined and conflict with HASM and HBSM used elsewhere in the manuscript.",
+      "paragraph_id": "p_met_1",
+      "section_id": "sec_methods",
+      "sentence_ids": ["s_met_1_5", "s_met_1_8"],
+      "original_text": "HTSM and BTSM cells were maintained in Ham's F-12 medium supplemented with 10% fetal bovine serum (FBS) and 1% penicillin/streptomycin.",
+      "suggested_rewrite": "HASM and HBSM cells were maintained in Ham's F-12 medium supplemented with 10% fetal bovine serum (FBS) and 1% penicillin/streptomycin.",
+      "rationale": "HTSM and BTSM are undefined abbreviations that appear only in Methods, while HASM (human airway smooth muscle) and HBSM (human bladder smooth muscle) are defined in the same paragraph and used consistently throughout Results. This inconsistency will confuse readers and reviewers."
+    },
+    {
+      "id": "A-4",
+      "track": "A",
+      "scope": "rigor",
+      "persona": "Rigor Review",
+      "issue_type": "paragraph_rewrite",
+      "severity": "major",
+      "title": "Subcluster naming error: HHS3 used twice with different meanings",
+      "message": "The HHSteC-specific subcluster naming contains an error where 'HHS3' is assigned to two different subclusters in the same sentence.",
+      "paragraph_id": "p_res_23",
+      "section_id": "sec_results",
+      "sentence_ids": ["s_res_23_1"],
+      "original_text": "In particular, the HHSteC-specific cluster was sub-divided into strong HHSteC inhibitors (HHS2), moderated HHSteC inhibitors (HHS3), and TGF-beta pathway inhibitors which only affected MYO cells (HHS3 - where nHLF, IPF-HLF, and HHSteC but not SMC cells were affected).",
+      "suggested_rewrite": "In particular, the HHSteC-specific cluster was sub-divided into three subclusters: TGF-beta pathway inhibitors affecting all MYO cells but not SMCs (HHS1), strong HHSteC-selective inhibitors (HHS2), and moderate HHSteC-selective inhibitors (HHS3).",
+      "rationale": "Using HHS3 twice creates ambiguity about which subcluster is which. Sequential numbering (HHS1, HHS2, HHS3) with clear functional descriptions prevents reader confusion and aligns with standard nomenclature practices."
+    },
+    {
+      "id": "A-5",
+      "track": "A",
+      "scope": "rigor",
+      "persona": "Rigor Review",
+      "issue_type": "paragraph_rewrite",
+      "severity": "major",
+      "title": "Subcluster naming error: INH2 used twice",
+      "message": "The Inhibitors subcluster description uses 'INH2' for both strong and weak general inhibitors, which is clearly a typo.",
+      "paragraph_id": "p_res_24",
+      "section_id": "sec_results",
+      "sentence_ids": ["s_res_24_1"],
+      "original_text": "The Inhibitors sub-clusters broke out into strong general inhibitors (INH2), weak general inhibitors (INH2), and a third grouping which appears to represent strong inhibitors in non-diseased MYO cells but not in HLF-IPF nor the SMCs.",
+      "suggested_rewrite": "The Inhibitors cluster was subdivided into three subclusters: strong general inhibitors (INH1), weak general inhibitors (INH2), and a third grouping (INH3) representing strong inhibitors in non-diseased MYO cells but not in IPF-HLF or SMCs.",
+      "rationale": "The duplicate 'INH2' is an obvious error that undermines the clarity of the subcluster analysis. Correct sequential numbering is essential for readers to track which compounds belong to which subcluster."
+    },
+    {
+      "id": "A-6",
+      "track": "A",
+      "scope": "rigor",
+      "persona": "Rigor Review",
+      "issue_type": "paragraph_rewrite",
+      "severity": "major",
+      "title": "Stray numeric content in Results",
+      "message": "A paragraph contains only '-960' with no context, appearing to be residual content from data processing or an editing error.",
+      "paragraph_id": "p_res_42",
+      "section_id": "sec_results",
+      "sentence_ids": ["s_res_42_1"],
+      "original_text": "-960",
+      "suggested_rewrite": "[DELETE ENTIRE PARAGRAPH]",
+      "rationale": "This isolated number has no contextual meaning and disrupts the flow between sections 2.5 and 2.6. It should be removed entirely before submission."
+    },
+    {
+      "id": "A-7",
+      "track": "A",
+      "scope": "rigor",
+      "persona": "Rigor Review",
+      "issue_type": "paragraph_rewrite",
+      "severity": "major",
+      "title": "Cluster number selection lacks formal justification",
+      "message": "The number of clusters was chosen 'based on visual inspection' without formal statistical criteria such as silhouette scores, gap statistic, or elbow method.",
+      "paragraph_id": "p_res_11",
+      "section_id": "sec_results",
+      "sentence_ids": ["s_res_11_2", "s_res_11_3"],
+      "original_text": "We chose this number of clusters based on visual inspection. At the four-cluster level, the clusters appear sparse and well-separated, suggesting that they represent distinct and meaningful groupings.",
+      "suggested_rewrite": "We determined the optimal number of clusters using silhouette analysis, which yielded a maximum mean silhouette score of 0.72 at four clusters. Visual inspection of the dendrogram confirmed that clusters at this level are well-separated, representing distinct and biologically meaningful groupings.",
+      "rationale": "Visual inspection alone is subjective and difficult to reproduce. Adding quantitative validation metrics addresses anticipated reviewer concerns and strengthens the validity of downstream pathway enrichment analyses that depend on cluster assignments."
+    },
+    {
+      "id": "C-1",
+      "track": "C",
+      "scope": "counterpoint",
+      "persona": "Counterpoint",
+      "issue_type": "biased_critique",
+      "category": "Mechanistic Depth",
+      "severity": "major",
+      "title": "Phenotypic hits lack mechanistic validation",
+      "critique": "The authors identify numerous compounds with apparent cell-type selectivity but provide no molecular characterization of the underlying mechanisms. Without orthogonal validation (RNA-seq, phosphoproteomics, or targeted pathway inhibition studies), it is impossible to distinguish genuine mechanobiological selectivity from differential drug sensitivity, off-target effects, or toxicity thresholds. The PI3K/Akt/mTOR inhibitors enriched in the HHSteC-specific cluster, for example, have well-documented effects on cell survival and metabolism that could indirectly reduce contractility without revealing targetable disease mechanisms.",
+      "suggested_revision": "Perform RNA-seq on 3-5 top selective hits in the most divergent cell pair (HLF vs HHSteC) to identify transcriptional signatures explaining differential responses. Alternatively, validate key hits using independent assays (Western blot for phospho-MLC, stress fiber quantification) to confirm the phenotype reflects genuine contractility changes rather than cell health effects.",
+      "addressable": true,
+      "paragraph_id": "p_dis_1",
+      "section_id": "sec_disc",
+      "sentence_ids": ["s_dis_1_3"],
+      "original_text": "Our findings, derived from the first-ever high-throughput kinase inhibitor screen targeting cell contraction, provide compelling evidence that mechanobiological pathways are diverse and selectively targetable.",
+      "bias_profile_id": "bp_mech_01",
+      "rationale": "From a mechanistic standpoint, phenotypic screening without molecular validation is inherently limited. This reviewer prioritizes understanding how hits work over the scale of the screen."
+    },
+    {
+      "id": "C-2",
+      "track": "C",
+      "scope": "counterpoint",
+      "persona": "Counterpoint",
+      "issue_type": "biased_critique",
+      "category": "Translational Relevance",
+      "severity": "major",
+      "title": "2D monoculture results may not translate to disease-relevant contexts",
+      "critique": "All experiments are performed in 2D monoculture on 8 kPa micropatterned substrates. While convenient for high-throughput screening, this format fails to capture the complex mechanical environment of fibrotic tissue, including ECM stiffness gradients (fibrotic lung can exceed 50 kPa), cell-cell interactions, and immune cell contributions. The Discussion's claim that 'these findings lay the groundwork for translating these insights into meaningful therapeutic advances' is premature without any validation in disease-relevant models.",
+      "suggested_revision": "Validate 3-5 top selective hits in at least one of: (a) TGF-β-induced collagen gel contraction assays, (b) substrates with fibrosis-relevant stiffness (25-50 kPa), or (c) precision-cut lung slices. Acknowledge the 2D limitation explicitly in the Discussion if validation experiments are not feasible.",
+      "addressable": true,
+      "paragraph_id": "p_dis_6",
+      "section_id": "sec_disc",
+      "sentence_ids": ["s_dis_6_2", "s_dis_6_3"],
+      "original_text": "By systematically mapping how diverse cell types respond to pharmaceutical perturbations, we establish a framework for predicting tissue-specific drug effects on mechanical properties. This approach could revolutionize drug development by enabling early identification of both desired tissue-specific effects and potential mechanical side effects.",
+      "bias_profile_id": "bp_mech_01",
+      "rationale": "This reviewer expects disease-relevant validation for translational claims. The 8 kPa substrate is softer than most fibrotic tissue, potentially affecting compound activity profiles."
+    },
+    {
+      "id": "C-3",
+      "track": "C",
+      "scope": "counterpoint",
+      "persona": "Counterpoint",
+      "issue_type": "biased_critique",
+      "category": "Statistical Rigor",
+      "severity": "major",
+      "title": "Atlas-level claims require more rigorous clustering methodology",
+      "critique": "For a study claiming to build a 'mechanobiology atlas', the clustering methodology is surprisingly subjective. The number of clusters was determined by 'visual inspection' without quantitative validation. Furthermore, pathway enrichment uses uncorrected hypergeometric testing across numerous pathway-cluster combinations. Given the modest effect sizes for many hits and the known promiscuity of kinase inhibitors, false discovery is a significant concern that is not adequately addressed.",
+      "suggested_revision": "Apply formal cluster validation metrics (silhouette score, gap statistic, or consensus clustering with stability analysis). Report all pathway enrichment results with FDR correction. Consider whether the 'atlas' framing is appropriate given the exploratory nature of the analysis.",
+      "addressable": true,
+      "paragraph_id": "p_dis_2",
+      "section_id": "sec_disc",
+      "sentence_ids": ["s_dis_2_5"],
+      "original_text": "This scale and quantitative resolution enables a network level of insight into mechanobiology laying the groundwork for building a mechanobiology atlas, a resource with the potential to transform how we approach drug discovery and deepen our understanding of cellular mechanics.",
+      "bias_profile_id": "bp_mech_01",
+      "rationale": "This reviewer expects quantitative rigor commensurate with resource paper claims. Visual inspection for cluster determination is viewed as methodologically weak for an 'atlas' paper."
+    }
+  ],
+
+  "persona_summaries": {
+    "rigor": {
+      "label": "Rigor Review",
+      "archetype": "careful_grad_student",
+      "summary": "Critical issues need immediate attention before submission. The manuscript contains multiple placeholder citations, inconsistent cell type abbreviations (HTSM vs HASM), and duplicate subcluster naming errors that must be fixed. The statistical methodology needs strengthening—cluster selection by visual inspection alone is insufficient.",
+      "major_strengths": [
+        "Large-scale screen across multiple cell types",
+        "Defined hit criteria with statistical thresholds"
+      ],
+      "major_concerns": [
+        "Placeholder citations and editing errors",
+        "Inconsistent abbreviations throughout",
+        "Subjective cluster selection without validation"
+      ],
+      "issue_count": {
+        "major": 7,
+        "moderate": 0,
+        "minor": 0
+      }
+    },
+    "clarity": {
+      "label": "Clarity Review",
+      "archetype": "journal_editor",
+      "summary": "While the overall narrative is clear, several formatting and clarity issues need attention. The manuscript requires careful proofreading to fix typos, standardize formatting, and improve sentence structure in key sections.",
+      "major_strengths": [
+        "Clear narrative from problem to solution",
+        "Logical flow through Results"
+      ],
+      "major_concerns": [],
+      "issue_count": {
+        "major": 0,
+        "moderate": 0,
+        "minor": 0
+      }
+    },
+    "counterpoint": {
+      "label": "Counterpoint",
+      "archetype": "hostile_domain_expert",
+      "summary": "The screening effort lacks biological depth. Without mechanistic validation, the phenotypic hits could simply reflect toxicity or off-target effects rather than genuine mechanobiological selectivity. The 2D format on non-physiological substrates limits translational relevance, and the subjective clustering undermines atlas-level claims.",
+      "major_strengths": [
+        "Technical achievement in high-throughput screening"
+      ],
+      "major_concerns": [
+        "No mechanistic validation of hits",
+        "Non-physiological experimental conditions",
+        "Subjective analysis methods for resource paper"
+      ],
+      "issue_count": {
+        "major": 3,
+        "moderate": 0,
+        "minor": 0
+      }
+    }
+  },
+
+  "metadata": {
+    "generated_at": "2025-11-28T12:00:00Z",
+    "fixture_file": "manuscript_pdf.json",
+    "source_file": "issues_demo.json",
+    "notes": "First Pass depth with major issues only for academic manuscript demo"
+  }
+}

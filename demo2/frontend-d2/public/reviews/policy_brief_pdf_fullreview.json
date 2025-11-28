@@ -1,0 +1,163 @@
+{
+  "review_id": "rev_policy_brief_pdf_fullreview",
+  "document_id": "pol_brief_789",
+  "document_type": "policy_brief",
+  "depth": "full_review",
+  "scopes": ["evidence_quality", "stakeholder_objections", "implementation_feasibility", "clarity"],
+
+  "issues": [
+    {
+      "id": "P-1",
+      "track": "rigor",
+      "scope": "evidence_quality",
+      "persona": "Evidence Review",
+      "issue_type": "paragraph_rewrite",
+      "severity": "major",
+      "title": "Cherry-picked evidence supporting policy recommendation",
+      "message": "The brief cites only studies that support the proposed policy while ignoring contradictory evidence from recent meta-analyses.",
+      "paragraph_id": "p_ev_3",
+      "section_id": "sec_evidence",
+      "sentence_ids": ["s_ev_3_2"],
+      "original_text": "Multiple studies have shown this policy intervention to be effective in reducing emissions by 30-40%.",
+      "suggested_rewrite": "While three studies (Smith 2022, Jones 2023, Lee 2023) report 30-40% emission reductions, a recent meta-analysis (Brown et al., 2024) found an average reduction of only 15% across 12 studies, with significant heterogeneity based on implementation context.",
+      "rationale": "Policy makers need balanced evidence presentation. Selective citation undermines credibility and may lead to unrealistic expectations."
+    },
+    {
+      "id": "P-2",
+      "track": "domain_positioning",
+      "scope": "stakeholder_objections",
+      "persona": "Stakeholder Objections",
+      "issue_type": "paragraph_rewrite",
+      "severity": "major",
+      "title": "Industry opposition not acknowledged",
+      "message": "The brief fails to address predictable opposition from affected industries, weakening political feasibility.",
+      "paragraph_id": "p_stake_1",
+      "section_id": "sec_implementation",
+      "sentence_ids": ["s_stake_1_1"],
+      "original_text": "This policy will modernize our regulatory framework and promote innovation.",
+      "suggested_rewrite": "While this policy aims to modernize our regulatory framework, affected industries have raised concerns about compliance costs estimated at $2-5 billion annually. Addressing these concerns through phased implementation or support programs will be critical for political viability.",
+      "rationale": "Acknowledging opposition strengthens the brief by demonstrating awareness of political realities and offering mitigation strategies."
+    },
+    {
+      "id": "P-3",
+      "track": "rigor",
+      "scope": "implementation_feasibility",
+      "persona": "Implementation Feasibility",
+      "issue_type": "paragraph_rewrite",
+      "severity": "minor",
+      "title": "Timeline ignores regulatory rulemaking process",
+      "message": "The proposed 6-month implementation timeline does not account for required notice-and-comment periods.",
+      "paragraph_id": "p_impl_4",
+      "section_id": "sec_timeline",
+      "sentence_ids": ["s_impl_4_2"],
+      "original_text": "Full implementation can be achieved within 6 months of legislative approval.",
+      "suggested_rewrite": "Following legislative approval, implementation will require 12-18 months: 3 months for draft regulations, 60-day public comment period, 3 months for comment analysis and revision, 3 months for OMB review, and 3-6 months for agency preparation and training.",
+      "rationale": "Realistic timelines that account for administrative procedures enhance credibility with agency staff who will implement the policy."
+    },
+    {
+      "id": "P-4",
+      "track": "clarity",
+      "scope": "clarity",
+      "persona": "Clarity & Messaging",
+      "issue_type": "paragraph_rewrite",
+      "severity": "minor",
+      "title": "Technical jargon obscures key message",
+      "message": "Excessive use of technical terms makes the brief inaccessible to non-specialist policymakers.",
+      "paragraph_id": "p_exec_2",
+      "section_id": "sec_executive_summary",
+      "sentence_ids": ["s_exec_2_1"],
+      "original_text": "The proposed regulatory instrument leverages Pigouvian tax mechanisms to internalize negative externalities associated with carbon-intensive industrial processes.",
+      "suggested_rewrite": "The proposed carbon tax makes polluters pay for their environmental damage, creating market incentives to reduce emissions.",
+      "rationale": "Executive summaries must be accessible to generalist policymakers. Technical details belong in appendices."
+    },
+    {
+      "id": "P-5",
+      "track": "global_map",
+      "scope": "evidence_quality",
+      "persona": "Evidence Review",
+      "issue_type": "global_strategy",
+      "severity": "minor",
+      "title": "Cost-benefit analysis lacks sensitivity testing",
+      "message": "The economic analysis presents only a single point estimate without exploring uncertainty ranges.",
+      "rationale": "Policy makers need to understand best-case and worst-case scenarios. Add sensitivity analysis varying key assumptions by ±25%."
+    }
+  ],
+
+  "persona_summaries": {
+    "evidence_quality": {
+      "label": "Evidence Review",
+      "archetype": "research_analyst",
+      "summary": "The evidence base shows concerning selectivity, citing only supportive studies while ignoring contradictory meta-analyses. The cost-benefit analysis lacks robustness without sensitivity testing. These weaknesses could undermine the policy recommendation if challenged.",
+      "major_strengths": [
+        "Cites recent, relevant studies",
+        "Includes quantitative impact estimates"
+      ],
+      "major_concerns": [
+        "Selective evidence presentation",
+        "Missing sensitivity analysis for economic projections"
+      ],
+      "issue_count": {
+        "major": 1,
+        "moderate": 0,
+        "minor": 1
+      }
+    },
+    "stakeholder_objections": {
+      "label": "Stakeholder Objections",
+      "archetype": "political_staffer",
+      "summary": "The brief fails to acknowledge predictable industry opposition, which will be the primary obstacle to passage. Without addressing $2-5 billion in compliance costs, this proposal will face significant lobbying resistance.",
+      "major_strengths": [
+        "Clear policy objectives"
+      ],
+      "major_concerns": [
+        "No acknowledgment of industry opposition",
+        "Compliance costs not addressed"
+      ],
+      "issue_count": {
+        "major": 1,
+        "moderate": 0,
+        "minor": 0
+      }
+    },
+    "implementation_feasibility": {
+      "label": "Implementation Feasibility",
+      "archetype": "agency_bureaucrat",
+      "summary": "The implementation timeline is unrealistic, ignoring required regulatory processes. The 6-month timeline should be 12-18 months to account for rulemaking requirements. Otherwise, the implementation strategy appears workable.",
+      "major_strengths": [
+        "Clear implementation steps",
+        "Identifies responsible agencies"
+      ],
+      "major_concerns": [
+        "Unrealistic timeline ignoring regulatory process"
+      ],
+      "issue_count": {
+        "major": 0,
+        "moderate": 0,
+        "minor": 1
+      }
+    },
+    "clarity": {
+      "label": "Clarity & Messaging",
+      "archetype": "comms_director",
+      "summary": "The brief contains good information but uses excessive technical jargon that will lose non-specialist readers. The executive summary particularly needs simplification for congressional staff who have 2 minutes to grasp the proposal.",
+      "major_strengths": [
+        "Well-structured sections",
+        "Clear policy recommendations"
+      ],
+      "major_concerns": [
+        "Technical jargon in executive summary"
+      ],
+      "issue_count": {
+        "major": 0,
+        "moderate": 0,
+        "minor": 1
+      }
+    }
+  },
+
+  "metadata": {
+    "generated_at": "2025-11-28T12:00:00Z",
+    "fixture_file": "policy_brief_pdf.json",
+    "notes": "Full Review depth for policy brief demo with evidence, stakeholder, implementation, and clarity scopes"
+  }
+}

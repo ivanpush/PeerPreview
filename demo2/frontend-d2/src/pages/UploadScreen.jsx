@@ -39,8 +39,9 @@ function UploadScreen() {
       const demo = demoDocuments.find(d => d.id === demoId);
       setFileName(''); // Clear file upload if demo selected
       // Store selected demo in sessionStorage for next screen
-      sessionStorage.setItem('selectedDemo', demoId);
+      sessionStorage.setItem('selectedDemo', demo.label);
       sessionStorage.setItem('demoFile', demo.file);
+      console.log('Demo selected:', demo.label, 'File:', demo.file);
     } else {
       sessionStorage.removeItem('selectedDemo');
       sessionStorage.removeItem('demoFile');

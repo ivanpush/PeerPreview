@@ -1,0 +1,180 @@
+{
+  "review_id": "rev_grant_docx_fullreview",
+  "document_id": "grant_12345",
+  "document_type": "grant_application",
+  "depth": "full_review",
+  "scopes": ["significance", "innovation", "approach_rigor", "feasibility"],
+
+  "issues": [
+    {
+      "id": "G-1",
+      "track": "domain_positioning",
+      "scope": "significance",
+      "persona": "Significance Review",
+      "issue_type": "paragraph_rewrite",
+      "severity": "major",
+      "title": "Public health impact not clearly articulated",
+      "message": "The significance section lacks concrete statistics on disease burden and public health impact.",
+      "paragraph_id": "p_sig_1",
+      "section_id": "sec_significance",
+      "sentence_ids": ["s_sig_1_2"],
+      "original_text": "This disease affects many people and causes substantial morbidity.",
+      "suggested_rewrite": "This disease affects approximately 2.5 million Americans annually, resulting in over $15 billion in healthcare costs and 50,000 preventable deaths per year (CDC, 2023).",
+      "rationale": "Reviewers expect quantitative data on disease burden. Vague statements about 'many people' and 'substantial morbidity' weaken the significance argument."
+    },
+    {
+      "id": "G-2",
+      "track": "domain_positioning",
+      "scope": "innovation",
+      "persona": "Innovation Review",
+      "issue_type": "paragraph_rewrite",
+      "severity": "major",
+      "title": "Innovation claims not differentiated from existing approaches",
+      "message": "The proposal does not clearly explain how this approach differs from or improves upon existing methods.",
+      "paragraph_id": "p_inn_3",
+      "section_id": "sec_innovation",
+      "sentence_ids": ["s_inn_3_1", "s_inn_3_2"],
+      "original_text": "Our approach uses machine learning to analyze patient data. This will improve treatment outcomes.",
+      "suggested_rewrite": "Unlike existing rule-based systems that analyze only 3-5 clinical variables, our deep learning approach integrates 150+ multi-modal features including genomic, proteomic, and imaging data, achieving 40% better predictive accuracy in preliminary studies.",
+      "rationale": "Innovation sections must explicitly contrast with current state-of-the-art. Generic claims about 'using machine learning' are insufficient."
+    },
+    {
+      "id": "G-3",
+      "track": "rigor",
+      "scope": "approach_rigor",
+      "persona": "Approach & Rigor",
+      "issue_type": "paragraph_rewrite",
+      "severity": "major",
+      "title": "Power analysis missing for Aim 2",
+      "message": "Sample size justification lacks statistical power calculations for the primary outcome in Aim 2.",
+      "paragraph_id": "p_app_8",
+      "section_id": "sec_approach",
+      "sentence_ids": ["s_app_8_3"],
+      "original_text": "We will recruit 100 patients for the validation study.",
+      "suggested_rewrite": "Based on pilot data showing an effect size of 0.35, we will recruit 100 patients to achieve 80% power to detect a 25% improvement in the primary outcome (α=0.05, two-tailed), accounting for 15% attrition.",
+      "rationale": "NIH reviewers expect formal power calculations. Arbitrary sample sizes suggest inadequate statistical planning."
+    },
+    {
+      "id": "G-4",
+      "track": "rigor",
+      "scope": "feasibility",
+      "persona": "Feasibility & Team Fit",
+      "issue_type": "paragraph_rewrite",
+      "severity": "minor",
+      "title": "Recruitment timeline appears optimistic",
+      "message": "The proposed recruitment of 100 rare disease patients in 6 months seems unrealistic without established infrastructure.",
+      "paragraph_id": "p_feas_2",
+      "section_id": "sec_approach",
+      "sentence_ids": ["s_feas_2_1"],
+      "original_text": "Patient recruitment will be completed within 6 months.",
+      "suggested_rewrite": "Patient recruitment will leverage our established rare disease registry (n=450) and three clinical sites, with staggered enrollment over 12 months to account for seasonal variation and ensure adequate screening.",
+      "rationale": "Realistic timelines with contingency planning demonstrate feasibility. Consider extending recruitment period or documenting existing patient pools."
+    },
+    {
+      "id": "G-5",
+      "track": "global_map",
+      "scope": "approach_rigor",
+      "persona": "Approach & Rigor",
+      "issue_type": "global_strategy",
+      "severity": "minor",
+      "title": "Alternative approaches not discussed",
+      "message": "The proposal lacks discussion of alternative strategies if the primary approach fails.",
+      "rationale": "Strong proposals include alternative approaches and decision points. Consider adding a brief section on backup strategies for high-risk aims."
+    },
+    {
+      "id": "G-6",
+      "track": "domain_positioning",
+      "scope": "significance",
+      "persona": "Significance Review",
+      "issue_type": "paragraph_rewrite",
+      "severity": "minor",
+      "title": "Knowledge gap not explicitly stated",
+      "message": "The specific knowledge gap this research addresses is implied but not clearly articulated.",
+      "paragraph_id": "p_sig_5",
+      "section_id": "sec_significance",
+      "sentence_ids": ["s_sig_5_2"],
+      "original_text": "More research is needed in this area to improve patient outcomes.",
+      "suggested_rewrite": "The critical knowledge gap is the lack of understanding of how genetic variants in the XYZ pathway influence drug metabolism in pediatric populations, preventing personalized dosing strategies.",
+      "rationale": "Explicitly stating 'The knowledge gap is...' helps reviewers quickly identify the study's contribution to the field."
+    }
+  ],
+
+  "persona_summaries": {
+    "significance": {
+      "label": "Significance Review",
+      "archetype": "program_officer",
+      "summary": "The proposal addresses an important health problem but needs stronger articulation of public health impact with concrete statistics. The knowledge gap should be more explicitly defined to justify the research investment.",
+      "major_strengths": [
+        "Addresses a clearly important disease area",
+        "Potential for broad clinical impact"
+      ],
+      "major_concerns": [
+        "Lacks quantitative disease burden data",
+        "Knowledge gap not explicitly stated"
+      ],
+      "issue_count": {
+        "major": 1,
+        "moderate": 0,
+        "minor": 1
+      }
+    },
+    "innovation": {
+      "label": "Innovation Review",
+      "archetype": "skeptical_study_section",
+      "summary": "The innovative aspects of this proposal are not well differentiated from existing approaches. While machine learning is mentioned, the specific advances beyond current methods need clearer articulation.",
+      "major_strengths": [
+        "Applies modern computational methods"
+      ],
+      "major_concerns": [
+        "Innovation not clearly distinguished from existing work",
+        "No discussion of why previous approaches failed"
+      ],
+      "issue_count": {
+        "major": 1,
+        "moderate": 0,
+        "minor": 0
+      }
+    },
+    "approach_rigor": {
+      "label": "Approach & Rigor",
+      "archetype": "methods_reviewer",
+      "summary": "The experimental design shows promise but lacks critical methodological details. Power analysis is missing for Aim 2, and alternative approaches are not discussed. Statistical planning needs strengthening throughout.",
+      "major_strengths": [
+        "Multi-site design enhances generalizability",
+        "Appropriate controls identified"
+      ],
+      "major_concerns": [
+        "Missing power calculations for primary outcomes",
+        "No alternative strategies discussed"
+      ],
+      "issue_count": {
+        "major": 1,
+        "moderate": 0,
+        "minor": 1
+      }
+    },
+    "feasibility": {
+      "label": "Feasibility & Team Fit",
+      "archetype": "pragmatic_pi",
+      "summary": "The team has appropriate expertise but the timeline appears optimistic, particularly for recruitment. The 6-month recruitment window for rare disease patients needs justification or revision.",
+      "major_strengths": [
+        "Strong multidisciplinary team",
+        "Established collaborations"
+      ],
+      "major_concerns": [
+        "Recruitment timeline unrealistic without documented patient pool"
+      ],
+      "issue_count": {
+        "major": 0,
+        "moderate": 0,
+        "minor": 1
+      }
+    }
+  },
+
+  "metadata": {
+    "generated_at": "2025-11-28T12:00:00Z",
+    "fixture_file": "grant_docx.json",
+    "notes": "Full Review depth for grant application demo with significance, innovation, approach, and feasibility scopes"
+  }
+}

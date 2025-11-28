@@ -51,7 +51,10 @@
       "Bash(~/.ssh/known_hosts)",
       "Bash(gh auth:*)",
       "Bash(git fetch:*)",
-      "Bash(sort:*)"
+      "Bash(sort:*)",
+      "Bash(node test-demo-flow.js:*)",
+      "Bash(node test-demo-flow.cjs:*)",
+      "Bash(node test-all-demos.cjs:*)"
     ],
     "deny": [],
     "ask": []

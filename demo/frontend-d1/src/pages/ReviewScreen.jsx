@@ -10,7 +10,7 @@ import UndoBanner from '../components/UndoBanner';
 
 function ReviewScreen() {
   const navigate = useNavigate();
-  const { manuscript, issues, loading, lastRewrite, undoLastRewrite, loadMockData } = useManuscript();
+  const { manuscript, issues, loading, lastRewrite, undoLastRewrite, loadMockData, exportReview } = useManuscript();
   const [showUndoBanner, setShowUndoBanner] = useState(false);
   const [rewriteModalIssue, setRewriteModalIssue] = useState(null);
   const [outlineModalIssue, setOutlineModalIssue] = useState(null);
@@ -40,10 +40,17 @@ function ReviewScreen() {
     }
   };
 
-  // Show undo banner when a rewrite is made
+  // Show undo banner when a rewrite is made and auto-hide after 3 seconds
   useEffect(() => {
     if (lastRewrite) {
       setShowUndoBanner(true);
+
+      // Auto-hide after 3 seconds
+      const timeout = setTimeout(() => {
+        setShowUndoBanner(false);
+      }, 3000);
+
+      return () => clearTimeout(timeout);
     }
   }, [lastRewrite]);
 
@@ -85,7 +92,10 @@ function ReviewScreen() {
           <h1 className="text-lg font-medium text-gray-200">PeerPreview</h1>
         </div>
         <div className="flex gap-2">
-          <button className="px-3 py-1.5 text-sm text-gray-400 hover:text-gray-200 hover:bg-gray-800 rounded border border-gray-700 transition">
+          <button
+            onClick={exportReview}
+            className="px-3 py-1.5 text-sm text-gray-400 hover:text-gray-200 hover:bg-gray-800 rounded border border-gray-700 transition"
+          >
             Export
           </button>
           <button className="px-3 py-1.5 text-sm bg-[#3D4EFF] bg-opacity-90 text-white rounded hover:bg-opacity-100 transition">

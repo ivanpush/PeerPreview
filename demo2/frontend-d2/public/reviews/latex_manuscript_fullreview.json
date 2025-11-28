@@ -1,0 +1,152 @@
+{
+  "review_id": "rev_latex_manuscript_fullreview",
+  "document_id": "latex_doc_456",
+  "document_type": "academic_manuscript",
+  "depth": "full_review",
+  "scopes": ["rigor", "clarity", "counterpoint"],
+
+  "issues": [
+    {
+      "id": "L-1",
+      "track": "A",
+      "scope": "rigor",
+      "persona": "Rigor Review",
+      "issue_type": "paragraph_rewrite",
+      "severity": "major",
+      "title": "Missing equation justification",
+      "message": "The derivation in Equation 3 skips several critical steps, making it impossible to verify the mathematical correctness.",
+      "paragraph_id": "p_theory_4",
+      "section_id": "sec_theoretical_framework",
+      "sentence_ids": ["s_theory_4_2"],
+      "original_text": "From Equation 2, we directly obtain Equation 3.",
+      "proposed_rewrite": "From Equation 2, applying the chain rule and substituting the boundary conditions (see Appendix A), we obtain Equation 3.",
+      "rationale": "Mathematical derivations must be complete enough for readers to verify. The jump from Eq. 2 to Eq. 3 is non-trivial."
+    },
+    {
+      "id": "L-2",
+      "track": "B",
+      "scope": "clarity",
+      "persona": "Clarity Review",
+      "issue_type": "paragraph_rewrite",
+      "severity": "moderate",
+      "title": "LaTeX formatting inconsistency",
+      "message": "Inconsistent use of \\cite{} vs \\citep{} commands throughout the manuscript.",
+      "paragraph_id": "p_intro_3",
+      "section_id": "sec_introduction",
+      "sentence_ids": ["s_intro_3_1"],
+      "original_text": "Previous work \\cite{Smith2020} showed... while \\citep{Jones2021} demonstrated...",
+      "proposed_rewrite": "Previous work \\citep{Smith2020} showed... while \\citep{Jones2021} demonstrated...",
+      "rationale": "Consistent citation formatting improves readability. Choose either \\cite or \\citep and use throughout."
+    },
+    {
+      "id": "L-3",
+      "track": "C",
+      "scope": "counterpoint",
+      "persona": "Counterpoint",
+      "issue_type": "biased_critique",
+      "severity": "major",
+      "title": "Overfitting concerns not addressed",
+      "message": "The model has 15 free parameters but is validated on only 50 data points. High risk of overfitting.",
+      "paragraph_id": "p_res_8",
+      "section_id": "sec_results",
+      "sentence_ids": ["s_res_8_3"],
+      "original_text": "The model achieves R² = 0.98 on the validation set.",
+      "proposed_rewrite": "The model achieves R² = 0.98 on the validation set. To address overfitting concerns given the parameter-to-data ratio, we performed k-fold cross-validation (k=10) and bootstrapping analysis (n=1000).",
+      "rationale": "With 15 parameters and 50 data points, the high R² likely indicates overfitting rather than true predictive power."
+    },
+    {
+      "id": "L-4",
+      "track": "A",
+      "scope": "rigor",
+      "persona": "Rigor Review",
+      "issue_type": "paragraph_rewrite",
+      "severity": "minor",
+      "title": "Undefined abbreviation",
+      "message": "The abbreviation 'DFT' is used without definition on first appearance.",
+      "paragraph_id": "p_meth_2",
+      "section_id": "sec_methods",
+      "sentence_ids": ["s_meth_2_1"],
+      "original_text": "Calculations were performed using DFT with the B3LYP functional.",
+      "proposed_rewrite": "Calculations were performed using density functional theory (DFT) with the B3LYP functional.",
+      "rationale": "All abbreviations should be defined on first use, even common ones in the field."
+    },
+    {
+      "id": "L-5",
+      "track": "B",
+      "scope": "clarity",
+      "persona": "Clarity Review",
+      "issue_type": "paragraph_rewrite",
+      "severity": "minor",
+      "title": "Figure reference formatting",
+      "message": "Inconsistent figure reference formatting (Figure vs Fig. vs figure).",
+      "paragraph_id": "p_res_3",
+      "section_id": "sec_results",
+      "sentence_ids": ["s_res_3_2"],
+      "original_text": "As shown in figure 2, the trend is clear (see also Figure 3 and Fig. 4).",
+      "proposed_rewrite": "As shown in Fig. 2, the trend is clear (see also Fig. 3 and Fig. 4).",
+      "rationale": "Use consistent formatting for all figure references throughout the manuscript."
+    }
+  ],
+
+  "persona_summaries": {
+    "rigor": {
+      "label": "Rigor Review",
+      "archetype": "careful_grad_student",
+      "summary": "The mathematical framework needs more rigorous justification, particularly in the derivations. Several technical issues should be addressed including undefined abbreviations and incomplete mathematical steps.",
+      "major_strengths": [
+        "Comprehensive theoretical framework",
+        "Novel mathematical approach"
+      ],
+      "major_concerns": [
+        "Incomplete mathematical derivations",
+        "Missing definitions for technical terms"
+      ],
+      "issue_count": {
+        "major": 1,
+        "moderate": 0,
+        "minor": 1
+      }
+    },
+    "clarity": {
+      "label": "Clarity Review",
+      "archetype": "journal_editor",
+      "summary": "The manuscript has several formatting inconsistencies that detract from its professional presentation. LaTeX formatting and citation styles need standardization.",
+      "major_strengths": [
+        "Generally well-structured",
+        "Clear section organization"
+      ],
+      "major_concerns": [
+        "Inconsistent formatting throughout",
+        "Citation style inconsistencies"
+      ],
+      "issue_count": {
+        "major": 0,
+        "moderate": 1,
+        "minor": 1
+      }
+    },
+    "counterpoint": {
+      "label": "Counterpoint",
+      "archetype": "hostile_domain_expert",
+      "summary": "The statistical analysis appears questionable with clear signs of overfitting. The model complexity far exceeds what the data can support.",
+      "major_strengths": [
+        "Ambitious theoretical approach"
+      ],
+      "major_concerns": [
+        "Severe overfitting risk with 15 parameters for 50 data points",
+        "Lack of proper validation methodology"
+      ],
+      "issue_count": {
+        "major": 1,
+        "moderate": 0,
+        "minor": 0
+      }
+    }
+  },
+
+  "metadata": {
+    "generated_at": "2025-11-28T13:00:00Z",
+    "fixture_file": "latex_manuscript.json",
+    "notes": "Full Review depth for LaTeX manuscript demo with mathematical and formatting issues"
+  }
+}

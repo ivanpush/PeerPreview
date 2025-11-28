@@ -78,10 +78,37 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
     return '';
   };
 
-  // Helper: Get track name
+  // Helper: Get track name based on document type
   const getTrackName = (track) => {
-    const names = { 'A': 'Rigor', 'B': 'Clarity', 'C': 'Counterpoint' };
-    return names[track] || 'Track ' + track;
+    // Define track names for each document type
+    const trackMappings = {
+      'academic_manuscript': {
+        'A': 'Rigor',
+        'B': 'Clarity',
+        'C': 'Counterpoint'
+      },
+      'grant_proposal': {
+        'A': 'Significance',
+        'B': 'Innovation',
+        'C': 'Feasibility'
+      },
+      'policy_brief': {
+        'A': 'Evidence',
+        'B': 'Stakeholders',
+        'C': 'Implementation'
+      },
+      'legal_brief': {
+        'A': 'Precedent',
+        'B': 'Factual',
+        'C': 'Persuasive'
+      }
+    };
+
+    // Get the mapping for current document type, fallback to academic_manuscript
+    const docType = document?.document_type || 'academic_manuscript';
+    const typeMapping = trackMappings[docType] || trackMappings['academic_manuscript'];
+
+    return typeMapping[track] || 'Track ' + track;
   };
 
   const handleIssueClick = (issue) => {
@@ -651,7 +678,11 @@ function IssuesPanel({ onOpenRewriteModal, onOpenOutlineModal, onOpenBiasedRevie
           ) : (
             filteredIssues.filter(issue => !dismissedIssues.has(issue.id)).map(issue => {
               const isExpanded = expandedIssues.has(issue.id);
-              return isExpanded ? renderExpandedCard(issue) : renderCollapsedCard(issue);
+              return (
+                <div key={issue.id}>
+                  {isExpanded ? renderExpandedCard(issue) : renderCollapsedCard(issue)}
+                </div>
+              );
             })
           )}
         </div>

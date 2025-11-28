@@ -2,16 +2,14 @@
 
 ## Overview
 
-Four review tiers with increasing depth, model capability, and cost. Even the lowest tier focuses on substantive logic and reasoning — this is a thinking tool, not a grammar checker.
+Three review tiers with increasing depth and domain specificity. Optional consensus mode for high-stakes work.
 
 ---
 
-## Quick Scan
+## First Pass
 **$0.25–1.00**
 
-> Fast logic check on your core argument.
-> 
-> Scans your key sections for reasoning gaps, unsupported claims, internal contradictions, and mislabeled evidence. Not a grammar pass — a sanity check on whether your argument holds together.
+> Core logic, structure, major issues.
 
 **What you get:**
 - Priority sections analyzed
@@ -25,9 +23,7 @@ Four review tiers with increasing depth, model capability, and cost. Even the lo
 ## Full Review
 **$0.50–2.50**
 
-> Thorough analysis of your entire argument.
-> 
-> Every section examined for logical soundness, evidentiary support, and structural coherence. The review you'd get from a rigorous colleague who traced every claim back to its support.
+> Full-section critique with balanced depth.
 
 **What you get:**
 - All sections analyzed
@@ -41,28 +37,29 @@ Four review tiers with increasing depth, model capability, and cost. Even the lo
 ## Deep Analysis
 **$1.00–4.00**
 
-> What your toughest critic will say.
-> 
-> Adversarial analysis that finds every weakness before your reviewers do. Overclaiming, hidden assumptions, missing limitations, alternative explanations you didn't address.
+> Adversarial expert review of claims, methods, and reasoning.
 
 **What you get:**
 - Everything in Full Review
-- Adversarial reviewer pass
-- Domain expert analysis  
+- Domain expert analysis
+- Overclaiming detection
+- Hidden assumptions surfaced
+- Missing limitations flagged
+- Alternative explanations considered
 - Rewrites for all issues
 
 ---
 
-## Master Review
-**$3.00–10.00+**
+## Consensus Mode (Deep only)
+**+$2.00–6.00**
 
-> Multi-model verification for high-stakes work.
-> 
-> Three frontier models analyze independently. Agreement means high confidence. Disagreement means you need to look closely. Maximum rigor for documents where the outcome matters.
+> Three top models cross-check and reconcile disagreements.
+
+Available as add-on to Deep Analysis only.
 
 **What you get:**
-- Everything in Deep Analysis
 - 3 frontier models (Claude, Gemini, GPT)
+- Independent analysis from each
 - Disagreement flagging
 - Confidence scoring per issue
 - Consensus rewrites
@@ -71,43 +68,41 @@ Four review tiers with increasing depth, model capability, and cost. Even the lo
 
 ## Lever Summary
 
-| Lever | Quick Scan | Full Review | Deep Analysis | Master Review |
-|-------|------------|-------------|---------------|---------------|
+| Lever | First Pass | Full Review | Deep Analysis | + Consensus |
+|-------|------------|-------------|---------------|-------------|
 | **Model** | Haiku | Sonnet | Sonnet | Frontier × 3 |
-| **Reasoning depth** | Core logic | Full analysis | Adversarial | Adversarial × 3 |
-| **Section coverage** | Priority (top 3) | All | All | All |
-| **Domain Expert** | — | If scope needs | ✓ | ✓ |
+| **Section coverage** | Priority | All | All | All |
+| **Domain Expert** | — | If relevant | ✓ | ✓ |
 | **Cross-model** | — | — | — | ✓ |
-| **Rewrites on** | Major | Major + Moderate | All | All + consensus |
-| **Cost** | $0.25–1.00 | $0.50–2.50 | $1.00–4.00 | $3.00–10.00+ |
+| **Rewrites on** | Major | Major + Moderate | All | All + reconciled |
+| **Cost** | $0.25–1.00 | $0.50–2.50 | $1.00–4.00 | +$2.00–6.00 |
 
 ---
 
 ## What Each Tier Checks
 
-| Check | Quick | Full | Deep | Master |
-|-------|:-----:|:----:|:----:|:------:|
-| Claim-evidence alignment | ✓ | ✓ | ✓ | ✓ |
-| Internal contradictions | ✓ | ✓ | ✓ | ✓ |
-| Logical gaps / non-sequiturs | ✓ | ✓ | ✓ | ✓ |
-| Mislabeled reasoning | ✓ | ✓ | ✓ | ✓ |
-| Cross-section consistency | — | ✓ | ✓ | ✓ |
-| Domain positioning | — | If needed | ✓ | ✓ |
-| Overclaiming detection | — | — | ✓ | ✓ |
-| Hidden assumptions | — | — | ✓ | ✓ |
-| Missing limitations | — | — | ✓ | ✓ |
-| Alternative explanations | — | — | ✓ | ✓ |
-| Model disagreement flags | — | — | — | ✓ |
+| Check | First | Full | Deep |
+|-------|:-----:|:----:|:----:|
+| Claim-evidence alignment | ✓ | ✓ | ✓ |
+| Internal contradictions | ✓ | ✓ | ✓ |
+| Logical gaps / non-sequiturs | ✓ | ✓ | ✓ |
+| Mislabeled reasoning | ✓ | ✓ | ✓ |
+| Cross-section consistency | — | ✓ | ✓ |
+| Domain positioning | — | If relevant | ✓ |
+| Overclaiming detection | — | — | ✓ |
+| Hidden assumptions | — | — | ✓ |
+| Missing limitations | — | — | ✓ |
+| Alternative explanations | — | — | ✓ |
+
+Consensus mode adds: model disagreement flags, confidence scoring, reconciled rewrites.
 
 ---
 
-## Internal Tier Mapping
+## Internal Mapping
 
-Maps user-facing tiers to internal depth system:
-
-| User Tier | Internal Depth | Persona Schema Behavior |
-|-----------|----------------|-------------------------|
-| Quick Scan | `light` | Supportive tone, brief rationales |
-| Full Review | `standard` | Balanced tone, detailed rationales |
-| Deep Analysis | `heavy` | Adversarial tone, exhaustive rationales |
-| Master Review | `master` | Adversarial × 3, reconciled rationales |
+| User-Facing | Internal Alias | Depth Value |
+|-------------|----------------|-------------|
+| First Pass | `light` | `first_pass` |
+| Full Review | `standard` | `full_review` |
+| Deep Analysis | `heavy` | `deep_analysis` |
+| + Consensus | — | `consensus: true` |

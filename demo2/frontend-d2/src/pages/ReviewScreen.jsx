@@ -10,7 +10,7 @@ import UndoBanner from '../components/UndoBanner';
 
 function ReviewScreen() {
   const navigate = useNavigate();
-  const { document, issues, loading, lastRewrite, undoLastRewrite, loadMockData } = useDocument();
+  const { document, issues, loading, error, lastRewrite, undoLastRewrite, loadMockData } = useDocument();
   const [showUndoBanner, setShowUndoBanner] = useState(false);
   const [rewriteModalIssue, setRewriteModalIssue] = useState(null);
   const [outlineModalIssue, setOutlineModalIssue] = useState(null);
@@ -21,7 +21,9 @@ function ReviewScreen() {
 
   // Load mock data if document is not already loaded (for direct navigation/refresh)
   useEffect(() => {
+    console.log('ReviewScreen mounted, document:', !!document, 'loading:', loading);
     if (!document && !loading) {
+      console.log('Calling loadMockData from ReviewScreen');
       loadMockData();
     }
   }, [document, loading, loadMockData]);
@@ -55,6 +57,24 @@ function ReviewScreen() {
   const handleDismissBanner = () => {
     setShowUndoBanner(false);
   };
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-red-500 text-2xl mb-4">⚠️</div>
+          <p className="text-gray-800 font-semibold mb-2">Error loading document</p>
+          <p className="text-gray-600 text-sm mb-4">{error}</p>
+          <button
+            onClick={() => navigate('/')}
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            Back to Home
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (loading || !document) {
     return (
@@ -136,7 +156,7 @@ function ReviewScreen() {
             {/* Inline tabs when collapsed */}
             {!figuresPanelExpanded && (
               <div className="flex gap-1.5 overflow-x-auto ml-4 flex-1">
-                {manuscript?.figures?.slice(0, 10).map((fig, idx) => {
+                {document?.figures?.slice(0, 10).map((fig, idx) => {
                   const isSelected = selectedFigureId === fig.figure_id;
                   return (
                     <button
@@ -175,7 +195,7 @@ function ReviewScreen() {
             <>
               <div className="px-4 pb-2 border-b border-[#2E2E2E]">
                 <div className="flex gap-1.5 overflow-x-auto pb-1">
-                  {manuscript?.figures?.map((fig, idx) => {
+                  {document?.figures?.map((fig, idx) => {
                     const isSelected = selectedFigureId === fig.figure_id;
                     return (
                       <button
@@ -202,7 +222,7 @@ function ReviewScreen() {
                       </button>
                     );
                   })}
-                  {(!manuscript?.figures || manuscript.figures.length === 0) && (
+                  {(!document?.figures || document.figures.length === 0) && (
                     <p className="text-xs text-gray-600">No figures available</p>
                   )}
                 </div>
@@ -212,15 +232,15 @@ function ReviewScreen() {
               <div className="flex-1 overflow-y-auto p-4">
                 {selectedFigureId ? (
                   <>
-                    {manuscript?.figures?.find(f => f.figure_id === selectedFigureId) && (
+                    {document?.figures?.find(f => f.figure_id === selectedFigureId) && (
                       <div className="space-y-2">
                         <p className="text-sm text-gray-300 leading-relaxed">
-                          {manuscript.figures.find(f => f.figure_id === selectedFigureId).caption}
+                          {document.figures.find(f => f.figure_id === selectedFigureId).caption}
                         </p>
-                        {manuscript.figures.find(f => f.figure_id === selectedFigureId).mentions?.length > 0 && (
+                        {document.figures.find(f => f.figure_id === selectedFigureId).mentions?.length > 0 && (
                           <div className="flex items-center gap-2 text-xs text-gray-500 mt-3">
                             <span>Referenced in:</span>
-                            {manuscript.figures.find(f => f.figure_id === selectedFigureId).mentions.map((pid, idx) => (
+                            {document.figures.find(f => f.figure_id === selectedFigureId).mentions.map((pid, idx) => (
                               <button
                                 key={pid}
                                 onClick={() => handleParagraphClick(pid)}

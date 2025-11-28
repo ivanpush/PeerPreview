@@ -15,14 +15,19 @@ This means:
 
 ## Backend Agents
 
-| Agent | Purpose | Used By |
-|-------|---------|---------|
-| `global_map_agent` | Structure, claims, evidence links, argument map | All scopes |
-| `domain_positioning_agent` | Field detection, related work, novelty signals | Counterpoint, Significance, Precedent |
-| `rigor_agent` | Logic, stats, methods, feasibility | Rigor, Approach, Evidence Quality |
-| `clarity_agent` | Paragraph + block level readability | Clarity scopes |
-| `global_hostile_agent` | Adversarial synthesis, weakness exploitation | Counterpoint, Stakeholder Objections |
-| `assembler_agent` | Maps backend → scopes → personas | Final output |
+All agents run at every tier. Depth controls behavior intensity.
+
+| Agent | Purpose |
+|-------|---------|
+| `global_map_agent` | Structure, claims, evidence links, argument map |
+| `domain_positioning_agent` | Field detection, related work, novelty signals |
+| `rigor_agent` | Logic, stats, methods, feasibility |
+| `clarity_paragraphs` | Sentence/paragraph level readability |
+| `clarity_blocks` | Multi-paragraph flow and structure |
+| `global_hostile_agent` | Adversarial synthesis, weakness exploitation |
+| `assembler_agent` | Maps backend → scopes → personas |
+
+Full prompts in `05-BASE-AGENT-PROMPTS.md`.
 
 ---
 
@@ -36,20 +41,21 @@ ManuscriptObject + UserIntent
             │
             ▼
    PHASE 1: Global Understanding
-   ├── Global Map Agent (claims, evidence, structure)
-   └── Domain Positioning Agent (optional)
+   ├── Global Map Agent (depth varies by tier)
+   └── Domain Positioning Agent (Full Review+ only)
             │
             ▼
    PHASE 2: Local Track Agents (parallel)
-   ├── Rigor Agent
-   └── Clarity Agent
+   ├── Rigor Agent (depth varies by tier)
+   ├── Clarity B1 (always full)
+   └── Clarity B2 (Full Review+ only)
             │
             ▼
-   PHASE 3a: Global Hostile Agent (Heavy only)
+   PHASE 3a: Global Hostile Agent (Deep Analysis only)
             │
             ▼
    PHASE 3b: Assembler
-   (maps tracks → scopes → personas, merges, reframes)
+   (maps tracks → scopes → personas, merges)
             │
             ▼
       Final Issue[] + Persona Summaries
@@ -112,7 +118,8 @@ ManuscriptObject + UserIntent
 @dataclass
 class ReviewPlan:
     document_type: DocumentType
-    depth: Literal['light', 'standard', 'heavy']
+    depth: Literal['first_pass', 'full_review', 'deep_analysis']
+    consensus: bool  # True if consensus mode enabled (deep only)
     
     # Persona schema
     persona_schema: Literal[
@@ -136,8 +143,6 @@ class ReviewPlan:
     
     user_focus_summary: str
     user_constraints: list[str]
-    
-    tone: Literal['supportive', 'balanced', 'adversarial']
     
     max_tokens_per_call: int
     total_budget_tokens: int
@@ -385,11 +390,7 @@ Map backend issues → scopes → personas.
 TASKS:
 1. Assign each issue to appropriate UI scope
 2. Merge duplicates (preserve source_agent_ids)
-3. Rewrite rationales in persona voice
-4. Apply tone based on depth:
-   - light: supportive ("consider whether...")
-   - standard: balanced ("this needs attention")
-   - heavy: blunt ("this is a significant flaw")
+3. Rewrite rationales to be clear and direct
 
 RULES:
 - Preserve factual content
@@ -409,26 +410,32 @@ async def run_review(manuscript, user_intent):
     plan = await planning_agent.plan_review(manuscript, user_intent)
     
     # 2. Phase 1: Global Understanding
-    global_map = await global_map_agent.analyze(manuscript, plan)
+    global_map = await global_map_agent.analyze(
+        manuscript, plan, depth=plan.depth
+    )
     
+    # Domain positioning only runs at Full Review and Deep Analysis
     domain_positioning = None
-    if 'domain_positioning' in plan.tracks_to_run:
+    if plan.depth in ['full_review', 'deep_analysis']:
         domain_positioning = await domain_positioning_agent.analyze(
-            manuscript, global_map, plan
+            manuscript, global_map, plan, depth=plan.depth
         )
     
     # 3. Phase 2: Local Tracks (parallel)
-    tasks = []
-    if 'rigor' in plan.tracks_to_run:
-        tasks.append(rigor_agent.analyze(manuscript, global_map, plan))
-    if 'clarity' in plan.tracks_to_run:
-        tasks.append(clarity_agent.analyze(manuscript, plan))
+    tasks = [
+        rigor_agent.analyze(manuscript, global_map, plan, depth=plan.depth),
+        clarity_paragraphs.analyze(manuscript, plan),  # always full
+    ]
+    
+    # Clarity B2 only at Full Review+
+    if plan.depth != 'first_pass':
+        tasks.append(clarity_blocks.analyze(manuscript, plan))
     
     local_results = await asyncio.gather(*tasks)
     raw_issues = flatten(local_results)
     
-    # 4. Phase 3a: Global Hostile
-    if plan.run_global_hostile:
+    # 4. Phase 3a: Global Hostile (Deep Analysis only)
+    if plan.depth == 'deep_analysis':
         hostile_issues = await global_hostile_agent.analyze(
             manuscript, global_map, domain_positioning, raw_issues, plan
         )
@@ -439,6 +446,12 @@ async def run_review(manuscript, user_intent):
         plan, raw_issues, global_map
     )
     
+    # 6. Consensus Mode (if enabled, Deep only)
+    if plan.consensus and plan.depth == 'deep_analysis':
+        final_issues = await run_consensus(
+            manuscript, plan, final_issues
+        )
+    
     return ReviewResult(plan, final_issues, persona_summaries, global_map)
 ```
 
@@ -446,11 +459,25 @@ async def run_review(manuscript, user_intent):
 
 ## Depth → Agent Behavior
 
-| Depth | Global Map | Domain Pos | Rigor | Clarity | Hostile | Tone |
-|-------|------------|------------|-------|---------|---------|------|
-| Light | ✓ basic | — | ✓ light | ✓ | — | Supportive |
-| Standard | ✓ | ✓ if needed | ✓ | ✓ | — | Balanced |
-| Heavy | ✓ deep | ✓ | ✓ deep | ✓ | ✓ | Adversarial |
+Depth scales behavior. Some agents only run at higher tiers.
+
+| Agent | First Pass | Full Review | Deep Analysis |
+|-------|------------|-------------|---------------|
+| Global Map | Shallow (claims only) | Full (claims + evidence) | Max (+ argument chain) |
+| Domain Positioning | Off | Full | Full + retrieval |
+| Rigor | Major issues only | Full section-level | Expert-level |
+| Clarity B1 | Full | Full | Full |
+| Clarity B2 | Off | Full | Full |
+| Global Hostile | Off | Off | **ON** |
+
+| Aspect | First Pass | Full Review | Deep Analysis |
+|--------|------------|-------------|---------------|
+| **Model** | Haiku | Sonnet | Opus + Sonnet |
+| **Tokens/call** | 1–3k | 10–20k | 20–40k |
+| **Rewrites on** | Major | Major + Moderate | All |
+| **Cost** | $0.25–1.00 | $0.50–2.50 | $1.00–4.00 |
+
+See `04-REVIEW-TIERS.md` for full canonical definitions.
 
 ---
 
@@ -463,7 +490,8 @@ async def run_review(manuscript, user_intent):
 │   ├── global_map_agent.py
 │   ├── domain_positioning_agent.py
 │   ├── rigor_agent.py
-│   ├── clarity_agent.py
+│   ├── clarity_paragraphs.py
+│   ├── clarity_blocks.py
 │   ├── global_hostile_agent.py
 │   └── assembler_agent.py
 ├── core/

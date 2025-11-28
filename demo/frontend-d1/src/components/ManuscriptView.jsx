@@ -3,7 +3,7 @@ import { useManuscript } from '../context/ManuscriptContext';
 import * as Diff from 'diff';
 
 function ManuscriptView({ onFigureClick, selectIssueRef }) {
-  const { manuscript, selectedIssue, issues, setSelectedIssue, updateParagraph, restoreDeleted, dismissedIssues } = useManuscript();
+  const { manuscript, selectedIssue, issues, setSelectedIssue, updateParagraph, restoreDeleted, dismissedIssues, acceptedIssues } = useManuscript();
   const paragraphRefs = useRef({});
   const sectionRefs = useRef({});
   const [activeSection, setActiveSection] = useState(null);
@@ -128,11 +128,11 @@ function ManuscriptView({ onFigureClick, selectIssueRef }) {
     );
   }
 
-  // Get issues for a specific paragraph (filter out dismissed)
+  // Get issues for a specific paragraph (filter out accepted and dismissed)
   const getParagraphIssues = (paragraphId) => {
     if (!issues || !Array.isArray(issues)) return [];
     return issues.filter(issue =>
-      issue.paragraph_id === paragraphId && !dismissedIssues.has(issue.id)
+      issue.paragraph_id === paragraphId && !dismissedIssues.has(issue.id) && !acceptedIssues.has(issue.id)
     );
   };
 
@@ -492,7 +492,7 @@ function ManuscriptView({ onFigureClick, selectIssueRef }) {
               <div className="mt-3 flex items-center">
                 <button
                   onClick={() => setShowOriginal(isShowingOriginal ? null : paragraphId)}
-                  className={`inline-flex items-center gap-1.5 text-[9px] font-semibold px-2 py-1 rounded border transition cursor-pointer ${
+                  className={`inline-flex items-center gap-1.5 text-[9px] font-bold uppercase px-2 py-1 rounded border transition cursor-pointer ${
                     isRewritten
                       ? 'text-green-400 bg-green-900/30 border-green-800/50 hover:bg-green-900/50'
                       : 'text-yellow-400 bg-yellow-900/30 border-yellow-800/50 hover:bg-yellow-900/50'
@@ -503,7 +503,7 @@ function ManuscriptView({ onFigureClick, selectIssueRef }) {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                   </svg>
-                  {isRewritten ? 'REWRITTEN' : 'EDITED'}
+                  {isRewritten ? 'REWRITE APPLIED' : 'EDITED'}
                 </button>
               </div>
             )}
