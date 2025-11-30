@@ -2,249 +2,6 @@ import React, { createContext, useContext, useState, useCallback } from 'react';
 
 const DocumentContext = createContext();
 
-// Helper function to generate mock issues based on document type
-const generateMockIssues = (fixtureData) => {
-  const issues = [];
-
-  // Get first few paragraphs for realistic issue locations
-  const firstPara = fixtureData.paragraphs?.[0]?.paragraph_id || 'p_1';
-  const secondPara = fixtureData.paragraphs?.[1]?.paragraph_id || 'p_2';
-  const firstSection = fixtureData.sections?.[0]?.section_id || 'introduction';
-  const secondSection = fixtureData.sections?.[1]?.section_id || 'methods';
-
-  // Generate a variety of issues based on document type
-  if (fixtureData.document_type === 'academic_manuscript') {
-    issues.push(
-      {
-        id: 'issue_001',
-        track: 'A',
-        persona: 'Methods Reviewer',
-        severity: 'major',
-        code: 'MISSING_STAT_DETAILS',
-        title: 'Missing statistical details',
-        message: 'Statistical test details missing. Need to specify multiple comparisons correction method.',
-        paragraph_id: secondPara,
-        section_id: secondSection,
-        rationale: 'Statistical test details missing. Need to specify multiple comparisons correction method.',
-        suggestion: 'Add details about Bonferroni or FDR correction used for multiple comparisons.',
-        proposed_rewrite: null
-      },
-      {
-        id: 'issue_002',
-        track: 'B',
-        persona: 'Clarity Reviewer',
-        severity: 'moderate',
-        code: 'UNCLEAR_TRANSITION',
-        title: 'Unclear transition',
-        message: 'Abrupt transition between background and hypothesis. Reader needs clearer connection.',
-        paragraph_id: firstPara,
-        section_id: firstSection,
-        rationale: 'Abrupt transition between background and hypothesis. Reader needs clearer connection.',
-        suggestion: 'Add a bridging sentence explaining how the background leads to your hypothesis.',
-        proposed_rewrite: 'Given these limitations in current approaches, we hypothesized that...'
-      },
-      {
-        id: 'issue_003',
-        track: 'C',
-        persona: 'Domain Expert',
-        severity: 'major',
-        code: 'ALTERNATIVE_EXPLANATION',
-        title: 'Alternative explanation not addressed',
-        message: 'The observed effect could be explained by confounding factors not addressed in the experimental design.',
-        paragraph_id: secondPara,
-        section_id: secondSection,
-        rationale: 'The observed effect could be explained by confounding factors not addressed in the experimental design.',
-        suggestion: 'Discuss alternative explanations and how your controls rule them out.',
-        proposed_rewrite: null
-      }
-    );
-  } else if (fixtureData.document_type === 'grant_proposal') {
-    issues.push(
-      {
-        id: 'issue_001',
-        track: 'A',
-        persona: 'Study Section Member',
-        severity: 'major',
-        code: 'IMPACT_UNCLEAR',
-        title: 'Impact not clearly articulated',
-        message: 'Impact on field not clearly articulated. How will this change clinical practice?',
-        paragraph_id: firstPara,
-        section_id: firstSection,
-        rationale: 'Impact on field not clearly articulated. How will this change clinical practice?',
-        suggestion: 'Explicitly state how findings will translate to patient care improvements.',
-        proposed_rewrite: null
-      },
-      {
-        id: 'issue_002',
-        track: 'B',
-        persona: 'Innovation Reviewer',
-        severity: 'moderate',
-        code: 'INCREMENTAL_ADVANCE',
-        title: 'Appears incremental',
-        message: 'The proposed approach appears incremental rather than innovative.',
-        paragraph_id: secondPara,
-        section_id: secondSection,
-        rationale: 'The proposed approach appears incremental rather than innovative.',
-        suggestion: 'Emphasize what makes your approach novel compared to existing methods.',
-        proposed_rewrite: null
-      },
-      {
-        id: 'issue_003',
-        track: 'C',
-        persona: 'Budget Reviewer',
-        severity: 'major',
-        code: 'TIMELINE_UNREALISTIC',
-        title: 'Unrealistic timeline',
-        message: 'Timeline appears overly ambitious given the scope of proposed experiments.',
-        paragraph_id: firstPara,
-        section_id: firstSection,
-        rationale: 'Timeline appears overly ambitious given the scope of proposed experiments.',
-        suggestion: 'Consider extending timeline or reducing scope for Aims 2 and 3.',
-        proposed_rewrite: null
-      }
-    );
-  } else if (fixtureData.document_type === 'policy_brief') {
-    issues.push(
-      {
-        id: 'issue_001',
-        track: 'A',
-        persona: 'Policy Analyst',
-        severity: 'moderate',
-        code: 'EVIDENCE_CHERRY_PICKED',
-        title: 'Selective evidence',
-        message: 'Evidence appears selectively chosen. Missing studies with contradictory findings.',
-        paragraph_id: firstPara,
-        section_id: firstSection,
-        rationale: 'Evidence appears selectively chosen. Missing studies with contradictory findings.',
-        suggestion: 'Include and address contradictory evidence to strengthen credibility.',
-        proposed_rewrite: null
-      },
-      {
-        id: 'issue_002',
-        track: 'C',
-        persona: 'Stakeholder Advocate',
-        severity: 'major',
-        code: 'IMPLEMENTATION_COSTS',
-        title: 'Implementation costs not addressed',
-        message: 'Implementation costs not adequately addressed. Budget-conscious legislators will object.',
-        paragraph_id: secondPara,
-        section_id: secondSection,
-        rationale: 'Implementation costs not adequately addressed. Budget-conscious legislators will object.',
-        suggestion: 'Add cost-benefit analysis showing long-term savings.',
-        proposed_rewrite: null
-      }
-    );
-  } else if (fixtureData.document_type === 'legal_brief') {
-    issues.push(
-      {
-        id: 'issue_001',
-        track: 'A',
-        persona: 'Opposing Counsel',
-        severity: 'major',
-        code: 'DISTINGUISHABLE_PRECEDENT',
-        title: 'Precedent is distinguishable',
-        message: 'Cited precedent is distinguishable on material facts.',
-        paragraph_id: firstPara,
-        section_id: firstSection,
-        rationale: 'Cited precedent is distinguishable on material facts.',
-        suggestion: 'Address the factual distinctions or find more analogous precedent.',
-        proposed_rewrite: null
-      },
-      {
-        id: 'issue_002',
-        track: 'B',
-        persona: 'Senior Partner',
-        severity: 'moderate',
-        code: 'WEAK_OPENING',
-        title: 'Weak opening argument',
-        message: 'Opening argument buries the lede. Judge will lose interest.',
-        paragraph_id: firstPara,
-        section_id: firstSection,
-        rationale: 'Opening argument buries the lede. Judge will lose interest.',
-        suggestion: 'Lead with your strongest argument and most favorable facts.',
-        proposed_rewrite: null
-      }
-    );
-  } else {
-    // Generic document type
-    issues.push(
-      {
-        id: 'issue_001',
-        track: 'B',
-        persona: 'Editor',
-        severity: 'moderate',
-        code: 'UNCLEAR_PURPOSE',
-        title: 'Purpose unclear',
-        message: 'Document purpose not clear from opening. Reader may be confused about intent.',
-        paragraph_id: firstPara,
-        section_id: firstSection,
-        rationale: 'Document purpose not clear from opening. Reader may be confused about intent.',
-        suggestion: 'State the document\'s purpose clearly in the first paragraph.',
-        proposed_rewrite: null
-      }
-    );
-  }
-
-  // Add some generic issues that work for any document
-  issues.push(
-    {
-      id: `issue_${issues.length + 1}`,
-      track: 'A',
-      persona: 'Consistency Checker',
-      severity: 'minor',
-      code: 'INCONSISTENT_TERMINOLOGY',
-      title: 'Inconsistent terminology',
-      message: 'Inconsistent use of terminology throughout document.',
-      paragraph_id: firstPara,
-      section_id: firstSection,
-      rationale: 'Inconsistent use of terminology throughout document.',
-      suggestion: 'Use consistent terminology throughout the document.',
-      proposed_rewrite: null
-    }
-  );
-
-  return issues;
-};
-
-// Helper function to generate mock bias profile
-const generateMockBiases = (documentType) => {
-  const biases = [];
-
-  if (documentType === 'academic_manuscript') {
-    biases.push(
-      {
-        bias_type: 'statistical_rigor',
-        severity: 'high',
-        description: 'Tendency to overlook multiple comparisons issues'
-      },
-      {
-        bias_type: 'clarity',
-        severity: 'medium',
-        description: 'May miss unclear transitions between sections'
-      }
-    );
-  } else if (documentType === 'grant_proposal') {
-    biases.push(
-      {
-        bias_type: 'novelty_bias',
-        severity: 'high',
-        description: 'May overvalue novelty at expense of feasibility'
-      }
-    );
-  }
-
-  // Add generic biases
-  biases.push(
-    {
-      bias_type: 'confirmation_bias',
-      severity: 'low',
-      description: 'General tendency to favor expected outcomes'
-    }
-  );
-
-  return biases;
-};
-
 export const useDocument = () => {
   const context = useContext(DocumentContext);
   if (!context) {
@@ -420,10 +177,10 @@ export const DocumentProvider = ({ children }) => {
           document_type: fixtureData.document_type
         };
 
-        // Generate mock bias profile based on document type
+        // Backend will provide real bias analysis
         const mockBiasProfile = {
           document_id: fixtureData.manuscript_id || fixtureData.document_id,
-          biases: generateMockBiases(fixtureData.document_type)
+          biases: []  // Backend will provide real bias analysis
         };
 
         // Use backend issues instead of fixture issues
@@ -513,15 +270,16 @@ export const DocumentProvider = ({ children }) => {
           }
         }
 
-        // Fall back to fixture issues or generate mock ones if no review file
+        // Fall back to fixture issues or empty array if no review file
         if (!issuesData) {
-          issuesData = fixtureData.issues || generateMockIssues(fixtureData);
+          issuesData = fixtureData.issues || [];
+          console.warn('No review file found and no issues in fixture');
         }
 
-        // Generate mock bias profile
+        // Backend will provide real bias analysis
         const mockBiasProfile = {
           document_id: fixtureData.manuscript_id || fixtureData.document_id,
-          biases: generateMockBiases(fixtureData.document_type)
+          biases: []  // Backend will provide real bias analysis
         };
 
         setDocument(documentData);

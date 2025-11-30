@@ -54,7 +54,9 @@
       "Bash(sort:*)",
       "Bash(node test-demo-flow.js:*)",
       "Bash(node test-demo-flow.cjs:*)",
-      "Bash(node test-all-demos.cjs:*)"
+      "Bash(node test-all-demos.cjs:*)",
+      "Bash(node -c:*)",
+      "Bash(timeout 5 npm run dev:*)"
     ],
     "deny": [],
     "ask": []

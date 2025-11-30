@@ -98,20 +98,19 @@ function ProcessScreen() {
             }, 1000);
           } catch (error) {
             console.error('Backend API call failed:', error);
-            // Fallback to mock data if backend is not running
-            console.log('Falling back to mock data...');
 
-            for (const stage of stages) {
-              setProgress(stage.progress);
-              await new Promise(resolve => setTimeout(resolve, stage.duration));
-            }
+            // Show clear error message instead of faking it
+            setStatus('error');
+            setProgress(0);
 
-            await loadMockData();
-            setStatus('complete');
+            // Store error for display
+            sessionStorage.setItem('backendError', JSON.stringify({
+              message: 'Backend server is not running',
+              detail: 'The backend API at http://localhost:8000 is not available. Please start the backend server to use dynamic analysis mode.',
+              suggestion: 'Run: cd demo2/backend && ./start.sh'
+            }));
 
-            setTimeout(() => {
-              navigate('/review');
-            }, 1000);
+            // Don't navigate away - stay on this screen to show error
           }
         };
 
@@ -138,6 +137,52 @@ function ProcessScreen() {
             >
               Back to Upload
             </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Handle backend error state
+  if (status === 'error') {
+    const backendError = JSON.parse(sessionStorage.getItem('backendError') || '{}');
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center p-8">
+        <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
+          <div className="text-center">
+            <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span className="text-3xl">⚠️</span>
+            </div>
+            <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+              Backend Not Available
+            </h2>
+            <p className="text-gray-600 mb-4">{backendError.detail}</p>
+            <div className="bg-gray-100 rounded-lg p-3 mb-6">
+              <code className="text-sm font-mono text-gray-700">
+                {backendError.suggestion}
+              </code>
+            </div>
+            <div className="flex gap-3 justify-center">
+              <button
+                onClick={() => navigate('/')}
+                className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition"
+              >
+                Back to Upload
+              </button>
+              <button
+                onClick={() => {
+                  setReviewMode('static');
+                  sessionStorage.setItem('reviewConfig', JSON.stringify({
+                    ...JSON.parse(sessionStorage.getItem('reviewConfig') || '{}'),
+                    reviewMode: 'static'
+                  }));
+                  window.location.reload();
+                }}
+                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+              >
+                Use Static Demo
+              </button>
+            </div>
           </div>
         </div>
       </div>
